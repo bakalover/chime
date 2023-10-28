@@ -9,11 +9,8 @@ add_subdirectory(fibers)
 add_subdirectory(futures)
 add_subdirectory(support)
 
-macro(CollectCxxSources Dir OutSources)
-    file(GLOB_RECURSE DirSources ${Dir}/*.cpp)
-    set(${OutSources} ${${OutSources}} ${DirSources})
-endmacro()
+include(cmake_support/build.cmake)
 
-CollectCxxSources("." LIB_SOURCES)
+CollectCxxSources("."  LIB_SOURCES)
 
 add_library(meijic STATIC "${LIB_SOURCES}")
