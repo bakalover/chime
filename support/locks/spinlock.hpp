@@ -1,35 +1,37 @@
 #include <atomic>
-
-class SpinLock
+namespace sup
 {
-public:
-    class Guard
+    class SpinLock
     {
-        friend class SpinLock;
-
     public:
-        explicit Guard(SpinLock &host);
+        class Guard
+        {
+            friend class SpinLock;
 
-        ~Guard();
+        public:
+            explicit Guard(SpinLock &host);
+
+            ~Guard();
+
+        private:
+            SpinLock &host_;
+            std::atomic<Guard *> next_{nullptr};
+            std::atomic<bool> is_owner_{false};
+        };
+
+        SpinLock(){};
 
     private:
-        SpinLock &host_;
-        std::atomic<Guard *> next_{nullptr};
-        std::atomic<bool> is_owner_{false};
+        void Acquire(Guard *waiter);
+        void Release(Guard *owner);
+        void CompleteLink(Guard *prev, Guard *next);
+        void WaitForAccess(Guard *waiter);
+        void WaitForLink(Guard *owner);
+        void SignalToNext(Guard *owner);
+        bool IsChainLeader(Guard *waiter);
+        bool HaveNextWaiter(Guard *owner);
+
+    private:
+        std::atomic<Guard *> tail_{nullptr};
     };
-
-    SpinLock(){};
-
-private:
-    void Acquire(Guard *waiter);
-    void Release(Guard *owner);
-    void CompleteLink(Guard *prev, Guard *next);
-    void WaitForAccess(Guard *waiter);
-    void WaitForLink(Guard *owner);
-    void SignalToNext(Guard *owner);
-    bool IsChainLeader(Guard *waiter);
-    bool HaveNextWaiter(Guard *owner);
-
-private:
-    std::atomic<Guard *> tail_{nullptr};
-};
+}
