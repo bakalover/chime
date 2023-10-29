@@ -1,3 +1,4 @@
+#pragma once
 #include <cstdlib>
 #include <mutex>
 #include <condition_variable>
