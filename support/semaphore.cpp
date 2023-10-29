@@ -1,4 +1,4 @@
-#include "semaphore.hpp"
+#include <meijic/support/semaphore.hpp>
 namespace sup
 {
     template <class Tag>
@@ -21,13 +21,7 @@ namespace sup
     }
 
     template <class Tag>
-    Semaphore<Tag>::Semaphore(size_t tokens)
-        : available_tokens_(tokens)
-    {
-    }
-
-    template <class Tag>
-    Semaphore<Tag>::Token Semaphore<Tag>::Acquire()
+    typename Semaphore<Tag>::Token Semaphore<Tag>::Acquire()
     {
         std::unique_lock<std::mutex> guard(mutex_);
         while (available_tokens_ == 0)

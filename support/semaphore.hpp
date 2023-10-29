@@ -34,7 +34,10 @@ namespace sup
         };
 
     public:
-        explicit Semaphore(size_t tokens);
+        explicit Semaphore(size_t tokens)
+            : available_tokens_(tokens)
+        {
+        }
 
         Token Acquire();
 
