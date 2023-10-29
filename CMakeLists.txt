@@ -2,13 +2,6 @@ cmake_minimum_required(VERSION 3.20)
 project(meijic)
 set(CMAKE_CXX_STANDARD 20)
 
-# get_filename_component(LIB_SOURSES "." ABSOLUTE)
-
-# add_subdirectory(executors)
-# add_subdirectory(fibers)
-# add_subdirectory(futures)
-# add_subdirectory(support)
-
 set(LIB_TARGET meijic)
 
 get_filename_component(LIB_INCLUDE_PATH ".." ABSOLUTE)
