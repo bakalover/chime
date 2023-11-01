@@ -30,7 +30,7 @@ private:
   std::atomic<size_t> count_{0};
   // TODO: Transfer to MPSCQueue (Lock-free!!)
   std::queue<Task *> queue_;
-  sup::SpinLock spinlock_;
+  supp::SpinLock spinlock_;
 };
 
 } // namespace exec
