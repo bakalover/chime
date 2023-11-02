@@ -1,7 +1,7 @@
 #pragma once
 namespace exec {
-struct Task {
-  virtual ~Task() = default;
+struct Runnable{
+  virtual ~Runnable() = default;
   virtual void Run() noexcept = 0;
 };
 } // namespace exec

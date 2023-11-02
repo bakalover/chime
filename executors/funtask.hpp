@@ -1,15 +1,15 @@
 #pragma once
-#include <meijic/executors/task.hpp>
+#include <meijic/executors/run.hpp>
 #include <utility>
 namespace exec {
-template <typename Fun> struct FunTask : Task {
-  FunTask(Fun fun) : fun_(fun) {}
+template <typename Fun> struct Function : Runnable {
+  Function(Fun fun) : fun_(fun) {}
 
   void Run() noexcept override { fun_(); }
-  Fun fun_;
+  Function fun_;
 };
 
-template <typename Fun> Task *MakeFunTask(Fun fun) {
-  return new FunTask(std::move(fun));
+template <typename Fun> Runnable *MakeFunTask(Fun fun) {
+  return new Function(std::move(fun));
 }
 } // namespace exec
