@@ -6,7 +6,7 @@ namespace exec {
 Strand::Strand(Executor &underlying)
     : underlying_(underlying), queue_(), spinlock_() {}
 
-void Strand::Submit(Task *task) {
+void Strand::Submit(Runnable *task) {
   {
     supp::SpinLock::Guard guard(spinlock_);
     queue_.push(std::move(task));
