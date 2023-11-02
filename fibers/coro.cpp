@@ -1,30 +1,26 @@
-#include "meijic/executors/run.hpp"
 #include <meijic/fibers/coro.hpp>
-
 namespace fibers::coro
 {
 
-    Coroutine::Coroutine(exec::Runnable* runnable){
-        callee_.Setup(this);
+    Coroutine::Coroutine(exec::Runnable* runnable):stack_(sure::Stack::AllocateBytes(65536)){
+        me_.Setup(stack_.MutView(), this);
     }
 
     void Coroutine::Run() noexcept{
         routine_->Run();
         Complete();
-        std::abort();
     }
 
     void Coroutine::Resume() noexcept{
-        caller_.SwitchTo(callee_);
+        caller_.SwitchTo(me_);
     }
 
     void Coroutine::Suspend() {
-        callee_.SwitchTo(caller_);
+        me_.SwitchTo(caller_);
     }
 
     void Coroutine::Complete() {
         is_complete_ = true;
-        callee_.SwitchTo(caller_);
-        std::abort();
+        me_.SwitchTo(caller_);
     }
 } // namespace fibers::coro
