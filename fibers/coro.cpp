@@ -22,5 +22,6 @@ namespace fibers::coro
     void Coroutine::Complete() {
         is_complete_ = true;
         me_.SwitchTo(caller_);
+        std::abort();
     }
 } // namespace fibers::coro
