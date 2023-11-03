@@ -3,13 +3,13 @@
 #include <meijic/executors/impl/strand.hpp>
 namespace exec {
 
-Strand::Strand(Executor &underlying)
+Strand::Strand(IExecutor &underlying)
     : underlying_(underlying), queue_(), spinlock_() {}
 
-void Strand::Submit(Runnable *task) {
+void Strand::Submit(TaskBase* task) {
   {
     supp::SpinLock::Guard guard(spinlock_);
-    queue_.push(std::move(task));
+    queue_.push(task);
   }
   if (count_.fetch_add(1) == 0) {
     SubmitSelf();

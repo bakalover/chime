@@ -1,14 +1,14 @@
 #pragma once
-#include <meijic/executors/run.hpp>
+#include <meijic/executors/task.hpp>
 #include <atomic>
 #include <meijic/executors/executor.hpp>
 #include <meijic/support/locks/spinlock.hpp>
 #include <queue>
 
 namespace exec {
-class Strand : public Executor, Runnable {
+class Strand : public IExecutor, TaskBase {
 public:
-  explicit Strand(Executor &underlying);
+  explicit Strand(IExecutor &underlying);
 
   // Non-copyable
   Strand(const Strand &) = delete;
@@ -18,7 +18,7 @@ public:
   Strand(Strand &&) = delete;
   Strand &operator=(Strand &&) = delete;
 
-  void Submit(Runnable *task) override;
+  void Submit(TaskBase *task) override;
 
 private:
   void SubmitSelf();
@@ -26,10 +26,10 @@ private:
   size_t RunTasks();
 
 private:
-  exec::Executor &underlying_;
+  exec::IExecutor &underlying_;
   std::atomic<size_t> count_{0};
   // TODO: Transfer to MPSCQueue (Lock-free!!)
-  std::queue<Runnable *> queue_;
+  std::queue<TaskBase*> queue_;
   supp::SpinLock spinlock_;
 };
 

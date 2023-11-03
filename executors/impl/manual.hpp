@@ -1,10 +1,10 @@
 #pragma once
 #include <meijic/executors/executor.hpp>
-#include <meijic/executors/run.hpp>
+#include <meijic/executors/task.hpp>
 #include <queue>
 namespace exec {
 
-class ManualExecutor : public Executor {
+class ManualExecutor : public IExecutor {
 public:
   ManualExecutor() = default;
 
@@ -16,7 +16,7 @@ public:
   ManualExecutor(ManualExecutor &&) = delete;
   ManualExecutor &operator=(ManualExecutor &&) = delete;
 
-  void Submit(Runnable *task) override;
+  void Submit(TaskBase *task) override;
 
   size_t RunAtMost(size_t limit);
 
@@ -31,7 +31,7 @@ public:
   bool NonEmpty() const { return !IsEmpty(); }
 
 private:
-  std::queue<Runnable *> queue_;
+  std::queue<TaskBase *> queue_;
 };
 
 } // namespace exec

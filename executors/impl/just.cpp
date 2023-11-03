@@ -1,10 +1,10 @@
 #include <meijic/executors/impl/just.hpp>
 namespace exec {
-class JustExecutor : public Executor {
-  void Submit(Runnable *task) override { task->Run(); }
+class JustExecutor : public IExecutor {
+  void Submit(TaskBase *task) override { task->Run(); }
 };
 
-Executor &JustGet() {
+IExecutor &JustGet() {
   static JustExecutor instance;
   return instance;
 }

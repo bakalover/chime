@@ -1,6 +1,6 @@
 #include <meijic/executors/impl/manual.hpp>
 namespace exec {
-void ManualExecutor::Submit(Runnable *task) { queue_.push(std::move(task)); }
+void ManualExecutor::Submit(TaskBase *task) { queue_.push(task); }
 
 size_t ManualExecutor::RunAtMost(size_t limit) {
   size_t task_number = std::min(limit, queue_.size());

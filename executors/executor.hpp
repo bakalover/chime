@@ -1,10 +1,10 @@
 #pragma once
-#include <meijic/executors/run.hpp>
+#include <meijic/executors/task.hpp>
 namespace exec {
 
-struct Executor {
-  virtual ~Executor() = default;
-  virtual void Submit(Runnable *task) = 0;
+struct IExecutor {
+  virtual ~IExecutor() = default;
+  virtual void Submit(TaskBase *task) = 0;
 };
 
 } // namespace exec
