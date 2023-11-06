@@ -1,10 +1,9 @@
 #pragma once
-#include <meijic/executors/task.hpp>
+#include "meijic/executors/task.hpp"
 #include <utility>
 namespace exec {
 
-// Standalone task without linking
-template <typename Fun> struct LambdaContainer : ITask {
+template <typename Fun> struct LambdaContainer : TaskBase {
 
   // Non-copyable
   LambdaContainer(const LambdaContainer &) = delete;
