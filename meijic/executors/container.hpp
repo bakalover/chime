@@ -19,7 +19,7 @@ template <typename Fun> struct LambdaContainer : TaskBase {
     lambda_();
     delete this;
   }
-  LambdaContainer lambda_;
+  Fun lambda_;
 };
 
 template <typename Fun> TaskBase *MakeContainer(Fun fun) {

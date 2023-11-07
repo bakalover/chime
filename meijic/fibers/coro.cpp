@@ -1,14 +1,18 @@
 
+#include <iostream>
 #include <meijic/fibers/coro.hpp>
+#include <ostream>
 namespace fibers::coro {
 
 Coroutine::Coroutine(exec::ITask *routine)
-    : stack_(sure::Stack::AllocateBytes(65536)) {
+    : stack_(sure::Stack::AllocateBytes(65536)), routine_(routine) {
   me_.Setup(stack_.MutView(), this);
 }
 
 void Coroutine::Run() noexcept {
+
   routine_->Run();
+
   Complete();
 }
 

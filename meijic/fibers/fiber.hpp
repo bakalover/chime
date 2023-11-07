@@ -7,7 +7,7 @@ namespace fibers {
 class Fiber : public exec::TaskBase {
 public:
   // TODO: Resourse management
-  Fiber(exec::IExecutor &sched, exec::ITask *routine);
+  Fiber(exec::IExecutor *sched, exec::ITask *routine);
   void Reschedule();
 
   void Yield();
@@ -20,7 +20,7 @@ public:
 
 private:
   coro::Coroutine core_;
-  exec::IExecutor &sched_;
+  exec::IExecutor *sched_;
 };
 
 thread_local static Fiber *me = nullptr;

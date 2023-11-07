@@ -9,7 +9,7 @@ namespace fibers {
 class Spawner {
 public:
   explicit Spawner(exec::IExecutor &scheduler)
-      : scheduler_(scheduler), tasks_(){};
+      : scheduler_(&scheduler), tasks_(){};
 
   template <typename Fun> Spawner *Spawn(Fun fun) {
     AddTask(exec::MakeContainer(std::move(fun)));
@@ -17,12 +17,9 @@ public:
   }
 
   Spawner *Via(exec::IExecutor &scheduler) {
-    scheduler_ = scheduler;
+    scheduler_ = &scheduler;
     return this;
   };
-
-private:
-  void AddTask(exec::TaskBase *task) { tasks_.push(task); }
 
   void RunAll() {
     while (!tasks_.empty()) {
@@ -30,8 +27,12 @@ private:
     }
     SelfDestroy();
   }
+
+private:
+  void AddTask(exec::TaskBase *task) { tasks_.push({scheduler_, task}); }
   void RunSingle() {
-    scheduler_.Submit(tasks_.front());
+    auto [scheduler, task] = tasks_.front();
+    scheduler->Submit(new Fiber(scheduler, task));
     tasks_.pop();
   }
 
@@ -39,7 +40,7 @@ private:
 
 private:
   // TODO: Stack configuration
-  exec::IExecutor &scheduler_;
-  std::queue<exec::TaskBase *> tasks_;
+  exec::IExecutor *scheduler_;
+  std::queue<std::pair<exec::IExecutor *, exec::TaskBase *>> tasks_;
 };
 } // namespace fibers

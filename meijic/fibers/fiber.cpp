@@ -1,7 +1,8 @@
+#include <iostream>
 #include <meijic/fibers/fiber.hpp>
 namespace fibers {
 
-Fiber::Fiber(exec::IExecutor &sched, exec::ITask *routine)
+Fiber::Fiber(exec::IExecutor *sched, exec::ITask *routine)
     : core_(routine), sched_(sched) {}
 
 void Fiber::Step() noexcept {
@@ -12,7 +13,7 @@ void Fiber::Step() noexcept {
 
 void Fiber::Reschedule() {
   if (!core_.IsCompleted()) {
-    sched_.Submit(this);
+    sched_->Submit(this);
   } else {
     delete this;
   }

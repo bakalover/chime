@@ -5,7 +5,6 @@
 #include <utility>
 
 namespace exec {
-// Proceed standalone task
 template <typename Fun> void Submit(IExecutor &executor, Fun &&fun) {
   executor.Submit(exec::MakeContainer(std::move(fun)));
 }
