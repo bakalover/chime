@@ -2,8 +2,7 @@
 #include <cstddef>
 #include <iostream>
 #include <meijic/executors/impl/manual.hpp>
-#include <meijic/fibers/api/via.hpp>
-#include <meijic/fibers/api/yield.hpp>
+#include <meijic/fibers/api.hpp>
 #include <ostream>
 #include <thread>
 using namespace std::chrono_literals;
@@ -44,12 +43,12 @@ int main() {
         ++step_counter;
       })
       ->RunAll();
+
   std::cout << "Warming up First Scheduler" << std::endl;
-  manual1.RunNext();
   std::this_thread::sleep_for(2s);
   manual1.Drain();
+
   std::cout << "Warming up Second Scheduler" << std::endl;
-  manual2.RunNext();
   std::this_thread::sleep_for(2s);
   manual2.Drain();
   assert(step_counter == 8);
