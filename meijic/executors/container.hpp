@@ -22,7 +22,7 @@ template <typename Fun> struct LambdaContainer : TaskBase {
   LambdaContainer lambda_;
 };
 
-template <typename Fun> ITask *MakeContainer(Fun fun) {
+template <typename Fun> TaskBase *MakeContainer(Fun fun) {
   return new LambdaContainer(std::move(fun));
 }
 } // namespace exec
