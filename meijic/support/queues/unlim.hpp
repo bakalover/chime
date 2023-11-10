@@ -2,7 +2,7 @@
 #include <mutex>
 #include <optional>
 #include <queue>
-namespace queue::supp {
+namespace supp::queue {
 template <typename T> class MPMCUnlimitedQueue {
 public:
   bool Put(T val);
@@ -21,4 +21,4 @@ private:
   bool is_open_ = true;
 };
 
-} // namespace supp
+} // namespace supp::queue
