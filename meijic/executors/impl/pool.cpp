@@ -11,17 +11,17 @@ Pool::Pool(size_t threads_number)
       threads_number_(std::min(threads_number, AvailableCores())) {}
 
 void Pool::Start() {
-  this->is_processing_.store(true);
-  for (size_t i = 0; i < this->threads_number_; ++i) {
-    this->workers_.emplace_back([this]() { StartWorker(this); });
+  is_processing_.store(true);
+  for (size_t i = 0; i < threads_number_; ++i) {
+    workers_.emplace_back([this]() { StartWorker(this); });
   }
 }
 
-Pool::~Pool() { assert(!this->is_processing_.load()); }
+Pool::~Pool() { assert(!is_processing_.load()); }
 
 void Pool::Submit(TaskBase *task) {
-  this->group_.Add(1);
-  this->queue_.Put(std::move(task));
+  group_.Add(1);
+  queue_.Put(std::move(task));
 }
 
 void Pool::StartWorker(Pool *owner) {
@@ -45,16 +45,16 @@ size_t Pool::AvailableCores() {
 
 Pool *Pool::Current() { return thread_owner; }
 
-void Pool::WaitIdle() { this->group_.Wait(); }
+void Pool::WaitIdle() { group_.Wait(); }
 
 void Pool::Stop() {
-  this->queue_.Close();
-  this->is_processing_.store(false, std::memory_order_release);
+  queue_.Close();
+  is_processing_.store(false, std::memory_order_release);
   PackWorkers();
 }
 
 void Pool::PackWorkers() {
-  for (auto &worker_shell : this->workers_) {
+  for (auto &worker_shell : workers_) {
     worker_shell.join();
   }
 }
