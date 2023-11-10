@@ -1,0 +1,62 @@
+#include "meijic/executors/task.hpp"
+#include <cstddef>
+#include <meijic/executors/impl/pool.hpp>
+#include <thread>
+namespace exec {
+
+thread_local static Pool *thread_owner = nullptr;
+
+Pool::Pool(size_t threads_number)
+    : queue_(), group_(),
+      threads_number_(std::min(threads_number, AvailableCores())) {}
+
+void Pool::Start() {
+  this->is_processing_.store(true);
+  for (size_t i = 0; i < this->threads_number_; ++i) {
+    this->workers_.emplace_back([this]() { StartWorker(this); });
+  }
+}
+
+Pool::~Pool() { assert(!this->is_processing_.load()); }
+
+void Pool::Submit(TaskBase *task) {
+  this->group_.Add(1);
+  this->queue_.Put(std::move(task));
+}
+
+void Pool::StartWorker(Pool *owner) {
+  thread_owner = owner;
+  WorkerProcess();
+}
+
+void Pool::WorkerProcess() {
+  while (thread_owner->is_processing_.load(std::memory_order_acquire)) {
+    auto task = thread_owner->queue_.Take();
+    if (task.has_value()) {
+      (task.value())->Run();
+      thread_owner->group_.Done();
+    }
+  }
+}
+
+size_t Pool::AvailableCores() {
+  return (size_t)std::thread::hardware_concurrency();
+}
+
+Pool *Pool::Current() { return thread_owner; }
+
+void Pool::WaitIdle() { this->group_.Wait(); }
+
+void Pool::Stop() {
+  this->queue_.Close();
+  this->is_processing_.store(false, std::memory_order_release);
+  PackWorkers();
+}
+
+void Pool::PackWorkers() {
+  for (auto &worker_shell : this->workers_) {
+    worker_shell.join();
+  }
+}
+
+} // namespace exec
