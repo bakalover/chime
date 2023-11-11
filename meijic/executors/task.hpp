@@ -1,6 +1,6 @@
 #pragma once
 #include <wheels/intrusive/forward_list.hpp>
-namespace exec {
+namespace exe {
 struct ITask {
   virtual ~ITask() = default;
 
@@ -8,4 +8,4 @@ struct ITask {
 };
 
 struct TaskBase : ITask, wheels::IntrusiveForwardListNode<TaskBase> {};
-} // namespace exec
+} // namespace exe

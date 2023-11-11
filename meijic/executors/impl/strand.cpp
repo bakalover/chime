@@ -1,14 +1,14 @@
 
 #include <cstddef>
 #include <meijic/executors/impl/strand.hpp>
-namespace exec {
+namespace exe {
 
 Strand::Strand(IExecutor &underlying)
     : underlying_(underlying), queue_(), spinlock_() {}
 
 void Strand::Submit(TaskBase* task) {
   {
-    supp::SpinLock::Guard guard(spinlock_);
+    sup::SpinLock::Guard guard(spinlock_);
     queue_.push(task);
   }
   if (count_.fetch_add(1) == 0) {
@@ -27,7 +27,7 @@ void Strand::Run() noexcept {
 size_t Strand::RunTasks() {
   size_t done = 0;
   {
-    supp::SpinLock::Guard guard(spinlock_);
+    sup::SpinLock::Guard guard(spinlock_);
     while (!queue_.empty()) {
       queue_.front()->Run();
       queue_.pop();
@@ -38,4 +38,4 @@ size_t Strand::RunTasks() {
 }
 // TODO: Lifetime problems
 void Strand::SubmitSelf() { underlying_.Submit(this); }
-} // namespace exec
+} // namespace exe

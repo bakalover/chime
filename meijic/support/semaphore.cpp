@@ -1,5 +1,5 @@
 #include <meijic/support/semaphore.hpp>
-namespace supp {
+namespace sup {
 template <class Tag> Semaphore<Tag>::Token::Token(Token &&that) {
   that.Invalidate();
 }

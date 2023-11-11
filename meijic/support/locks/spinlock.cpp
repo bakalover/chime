@@ -1,5 +1,5 @@
 #include "spinlock.hpp"
-namespace supp {
+namespace sup {
 void SpinLock::Acquire(SpinLock::Guard *waiter) {
   auto prev_tail = tail_.exchange(waiter);
   if (IsChainLeader(prev_tail)) {

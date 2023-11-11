@@ -1,8 +1,8 @@
 #include <iostream>
 #include <meijic/fibers/fiber.hpp>
-namespace fibers {
+namespace fib {
 
-Fiber::Fiber(exec::IExecutor *sched, exec::ITask *routine)
+Fiber::Fiber(exe::IExecutor *sched, exe::ITask *routine)
     : core_(routine), sched_(sched) {}
 
 void Fiber::Step() noexcept {

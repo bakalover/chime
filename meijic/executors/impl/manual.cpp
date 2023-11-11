@@ -1,5 +1,5 @@
 #include <meijic/executors/impl/manual.hpp>
-namespace exec {
+namespace exe {
 void ManualExecutor::Submit(TaskBase *task) { queue_.push(task); }
 
 size_t ManualExecutor::RunAtMost(size_t limit) {
@@ -20,4 +20,4 @@ size_t ManualExecutor::Drain() {
   }
   return done;
 }
-} // namespace exec
+} // namespace exe

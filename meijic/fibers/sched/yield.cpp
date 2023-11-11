@@ -1,6 +1,6 @@
-#include <meijic/fibers/api/yield.hpp>
+#include <meijic/fibers/sched/yield.hpp>
 #include <meijic/fibers/fiber.hpp>
-namespace fibers {
+namespace fib {
 void Yield() {
   Fiber *cur_fiber = Fiber::Self();
   if (cur_fiber != nullptr) {

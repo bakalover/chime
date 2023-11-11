@@ -3,11 +3,11 @@
 #include <meijic/executors/task.hpp>
 #include <meijic/fibers/coro.hpp>
 
-namespace fibers {
-class Fiber : public exec::TaskBase {
+namespace fib {
+class Fiber : public exe::TaskBase {
 public:
   // TODO: Resourse management
-  Fiber(exec::IExecutor *sched, exec::ITask *routine);
+  Fiber(exe::IExecutor *sched, exe::ITask *routine);
   void Reschedule();
 
   void Yield();
@@ -20,7 +20,7 @@ public:
 
 private:
   coro::Coroutine core_;
-  exec::IExecutor *sched_;
+  exe::IExecutor *sched_;
 };
 
 thread_local static Fiber *me = nullptr;

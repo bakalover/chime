@@ -2,7 +2,7 @@
 #include <condition_variable>
 #include <cstdlib>
 #include <mutex>
-namespace supp {
+namespace sup {
 class Group {
 public:
   void Add(size_t delta);

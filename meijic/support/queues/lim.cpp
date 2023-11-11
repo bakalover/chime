@@ -1,5 +1,5 @@
 #include <meijic/support/queues/lim.hpp>
-namespace supp::queue {
+namespace sup::queue {
 template <typename T> void MPMCLimitedQueue<T>::Put(T obj) {
   Token t(std::move(produce_.Acquire()));
 

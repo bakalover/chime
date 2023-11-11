@@ -2,7 +2,7 @@
 #include <cstddef>
 #include <meijic/executors/impl/pool.hpp>
 #include <thread>
-namespace exec {
+namespace exe {
 
 thread_local static Pool *thread_owner = nullptr;
 
@@ -59,4 +59,4 @@ void Pool::PackWorkers() {
   }
 }
 
-} // namespace exec
+} // namespace exe

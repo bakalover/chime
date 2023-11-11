@@ -1,7 +1,7 @@
 #include <meijic/support/queues/unlim.hpp>
-namespace supp::queue {
+namespace sup::queue {
 
-template <typename T> bool supp::queue::MPMCUnlimitedQueue<T>::Put(T val) {
+template <typename T> bool sup::queue::MPMCUnlimitedQueue<T>::Put(T val) {
   {
     std::lock_guard<std::mutex> lg(mutex_);
     if (!is_open_) {
@@ -14,7 +14,7 @@ template <typename T> bool supp::queue::MPMCUnlimitedQueue<T>::Put(T val) {
 }
 
 template <typename T>
-std::optional<T> supp::queue::MPMCUnlimitedQueue<T>::Take() {
+std::optional<T> sup::queue::MPMCUnlimitedQueue<T>::Take() {
   std::optional<T> res;
   {
     std::unique_lock<std::mutex> ul(mutex_);
@@ -30,7 +30,7 @@ std::optional<T> supp::queue::MPMCUnlimitedQueue<T>::Take() {
   return res;
 }
 
-template <typename T> void supp::queue::MPMCUnlimitedQueue<T>::Close() {
+template <typename T> void sup::queue::MPMCUnlimitedQueue<T>::Close() {
   {
     std::lock_guard<std::mutex> lg(mutex_);
     is_open_ = false;

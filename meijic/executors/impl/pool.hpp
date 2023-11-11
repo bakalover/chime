@@ -6,7 +6,7 @@
 #include <meijic/support/group.hpp>
 #include <meijic/support/queues/unlim.hpp>
 #include <thread>
-namespace exec {
+namespace exe {
 
 // Fixed-size pool of worker threads
 
@@ -49,11 +49,11 @@ private:
   void PackWorkers();
 
 private:
-  supp::queue::MPMCUnlimitedQueue<TaskBase *> queue_;
+  sup::queue::MPMCUnlimitedQueue<TaskBase *> queue_;
   std::vector<std::thread> workers_;
-  supp::Group group_;
+  sup::Group group_;
   std::atomic<bool> is_processing_{false};
   size_t threads_number_;
 };
 
-} // namespace exec
+} // namespace exe

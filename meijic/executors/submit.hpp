@@ -4,8 +4,8 @@
 #include "meijic/executors/executor.hpp"
 #include <utility>
 
-namespace exec {
+namespace exe {
 template <typename Fun> void Submit(IExecutor &executor, Fun &&fun) {
-  executor.Submit(exec::MakeContainer(std::move(fun)));
+  executor.Submit(exe::MakeContainer(std::move(fun)));
 }
-} // namespace exec
+} // namespace exe

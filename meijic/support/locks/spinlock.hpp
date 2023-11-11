@@ -1,6 +1,6 @@
 #pragma once
 #include <atomic>
-namespace supp {
+namespace sup {
 class SpinLock {
 public:
   class Guard {

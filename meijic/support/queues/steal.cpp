@@ -1,7 +1,7 @@
 #include <atomic>
 #include <cstddef>
 #include <meijic/support/queues/steal.hpp>
-namespace supp::queue {
+namespace sup::queue {
 
 // Used by a single thread
 template <typename T, size_t Cap> bool StealingQueue<T, Cap>::TryPush(T *item) {

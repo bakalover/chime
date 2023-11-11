@@ -5,18 +5,18 @@
 #include <meijic/fibers/fiber.hpp>
 #include <queue>
 #include <utility>
-namespace fibers {
+namespace fib {
 class Spawner {
 public:
-  explicit Spawner(exec::IExecutor &scheduler)
+  explicit Spawner(exe::IExecutor &scheduler)
       : scheduler_(&scheduler), tasks_(){};
 
   template <typename Fun> Spawner *Spawn(Fun fun) {
-    AddTask(exec::MakeContainer(std::move(fun)));
+    AddTask(exe::MakeContainer(std::move(fun)));
     return this;
   }
 
-  Spawner *Via(exec::IExecutor &scheduler) {
+  Spawner *Via(exe::IExecutor &scheduler) {
     scheduler_ = &scheduler;
     return this;
   };
@@ -29,7 +29,7 @@ public:
   }
 
 private:
-  void AddTask(exec::TaskBase *task) { tasks_.push({scheduler_, task}); }
+  void AddTask(exe::TaskBase *task) { tasks_.push({scheduler_, task}); }
   void RunSingle() {
     auto [scheduler, task] = tasks_.front();
     scheduler->Submit(new Fiber(scheduler, task));
@@ -40,7 +40,7 @@ private:
 
 private:
   // TODO: Stack configuration
-  exec::IExecutor *scheduler_;
-  std::queue<std::pair<exec::IExecutor *, exec::TaskBase *>> tasks_;
+  exe::IExecutor *scheduler_;
+  std::queue<std::pair<exe::IExecutor *, exe::TaskBase *>> tasks_;
 };
 } // namespace fibers

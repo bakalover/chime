@@ -1,3 +1,0 @@
-namespace fibers {
-void Yield();
-}

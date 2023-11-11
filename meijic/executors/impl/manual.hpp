@@ -2,7 +2,7 @@
 #include <meijic/executors/executor.hpp>
 #include <meijic/executors/task.hpp>
 #include <queue>
-namespace exec {
+namespace exe {
 
 class ManualExecutor : public IExecutor {
 public:
@@ -34,4 +34,4 @@ private:
   std::queue<TaskBase *> queue_;
 };
 
-} // namespace exec
+} // namespace exe
