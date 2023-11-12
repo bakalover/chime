@@ -29,4 +29,4 @@ void Fiber::Run() noexcept { Step(); }
 
 Fiber *Fiber::Self() { return me; }
 
-} // namespace fibers
+} // namespace fib
