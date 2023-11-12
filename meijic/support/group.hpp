@@ -3,6 +3,7 @@
 #include <cstdlib>
 #include <mutex>
 namespace sup {
+// Group for wild threads
 class Group {
 public:
   void Add(size_t delta);
@@ -10,8 +11,8 @@ public:
   void Wait();
 
 private:
-  std::mutex mutex_; // Transfer to lock-free + intrusive
+  std::mutex mutex_;
   std::condition_variable cond_;
   size_t counter_{0}, sleeps_{0};
 };
-} // namespace supp
+} // namespace sup

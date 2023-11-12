@@ -1,3 +1,5 @@
+#pragma once
+#include "meijic/support/locks/spinlock.hpp"
 #include <atomic>
 #include <cassert>
 #include <cstddef>
@@ -49,11 +51,12 @@ private:
   void PackWorkers();
 
 private:
-  sup::queue::MPMCUnlimitedQueue<TaskBase *> queue_;
+  sup::queue::MPMCUnlimitedQueue<TaskBase> queue_;
   std::vector<std::thread> workers_;
   sup::Group group_;
   std::atomic<bool> is_processing_{false};
   size_t threads_number_;
+  sup::SpinLock spin_;
 };
 
 } // namespace exe

@@ -3,24 +3,45 @@
 #include <deque>
 #include <meijic/support/locks/spinlock.hpp>
 #include <meijic/support/semaphore.hpp>
+#include <wheels/intrusive/forward_list.hpp>
 namespace sup::queue {
 template <typename T> class MPMCLimitedQueue {
 public:
   explicit MPMCLimitedQueue(size_t cap) : produce_(cap), consume_(0) {}
 
-  void Put(T obj);
+  void Put(T *obj) {
+    Token t(std::move(produce_.Acquire()));
 
-  T Take();
+    {
+      SpinLock::Guard guard(spinlock_);
+      buff_.PushFront(obj);
+    }
+
+    consume_.Release(std::move(t));
+  };
+
+  T *Take() {
+    Token t(std::move(consume_.Acquire()));
+    T *obj;
+
+    {
+      SpinLock::Guard guard{spinlock_};
+      obj = buff_.PopFront();
+    }
+
+    produce_.Release(std::move(t));
+    return obj;
+  };
 
 private:
   // Tags
   struct SomeTag;
 
 private:
-  using Token = typename sup::Semaphore<T>::Token;
-  Semaphore<T> produce_;
-  Semaphore<T> consume_;
+  using Token = typename sup::Semaphore<T *>::Token;
+  Semaphore<T *> produce_;
+  Semaphore<T *> consume_;
   SpinLock spinlock_;
-  std::deque<T> buff_;
+  wheels::IntrusiveForwardList<T> buff_;
 };
-} // namespace supp::queue
+} // namespace sup::queue

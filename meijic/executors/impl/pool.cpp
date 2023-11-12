@@ -21,7 +21,7 @@ Pool::~Pool() { assert(!is_processing_.load()); }
 
 void Pool::Submit(TaskBase *task) {
   group_.Add(1);
-  queue_.Put(std::move(task));
+  queue_.Put(task);
 }
 
 void Pool::StartWorker(Pool *owner) {
