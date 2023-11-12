@@ -5,11 +5,3 @@ FetchContent_Declare(
         GIT_TAG master
 )
 FetchContent_MakeAvailable(sure)
-
-FetchContent_Declare(
-        wheels
-        GIT_REPOSITORY https://gitlab.com/Lipovsky/wheels.git
-        GIT_TAG master
-)
-FetchContent_MakeAvailable(wheels)
-
