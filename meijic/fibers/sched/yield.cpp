@@ -1,6 +1,6 @@
 #include <meijic/fibers/fiber.hpp>
 #include <meijic/fibers/sched/yield.hpp>
-namespace fib::sched {
+namespace fib {
 struct YieldAwaiter : IAwaiter {
   void AwaitSuspend(FiberHandle handle) override { handle.Schedule(); }
 };

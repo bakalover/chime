@@ -1,3 +1,3 @@
-namespace fib::sched {
+namespace fib {
 void Yield();
 }
