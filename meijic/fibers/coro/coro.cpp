@@ -1,6 +1,6 @@
 
 #include <iostream>
-#include <meijic/fibers/coro.hpp>
+#include <meijic/fibers/coro/coro.hpp>
 #include <ostream>
 namespace fib::coro {
 

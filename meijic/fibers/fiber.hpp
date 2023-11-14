@@ -1,27 +1,35 @@
 #pragma once
 #include <meijic/executors/executor.hpp>
 #include <meijic/executors/task.hpp>
-#include <meijic/fibers/coro.hpp>
+#include <meijic/fibers/awaiter.hpp>
+#include <meijic/fibers/coro/coro.hpp>
 
 namespace fib {
-class Fiber : public exe::TaskBase {
+
+// Fiber = stackful coroutine + exe::IExecutor (executor)
+
+class Fiber : exe::TaskBase {
 public:
-  // TODO: Resourse management
-  Fiber(exe::IExecutor *sched, exe::ITask *routine);
-  void Reschedule();
+  Fiber(exe::IExecutor *sched, TaskBase *routine);
+  void Suspend(IAwaiter *awaiter);
 
-  void Yield();
-
-  void Step() noexcept;
+  void Schedule();
+  void Switch();
+  void Await();
+  // Task
+  void Run() noexcept override;
 
   static Fiber *Self();
 
-  void Run() noexcept override;
+  static bool IsFiber();
 
 private:
-  coro::Coroutine core_;
-  exe::IExecutor *sched_;
-};
+  void Step() noexcept;
 
-thread_local static Fiber *me = nullptr;
-} // namespace fibers
+private:
+  coro::Coroutine coro_;
+  exe::IExecutor *sched_;
+  IAwaiter *awaiter_;
+};
+static thread_local Fiber *me = nullptr;
+} // namespace fib
