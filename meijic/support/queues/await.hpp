@@ -2,7 +2,6 @@
 #include <atomic>
 #include <cstdint>
 #include <meijic/fibers/awaiter.hpp>
-#include <sched.h>
 namespace sup::queue {
 using IChainAwaiter = fib::IChainAwaiter;
 

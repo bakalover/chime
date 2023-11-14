@@ -8,7 +8,7 @@ namespace fib {
 
 // Fiber = stackful coroutine + exe::IExecutor (executor)
 
-class Fiber : exe::TaskBase {
+class Fiber : public exe::TaskBase {
 public:
   Fiber(exe::IExecutor *sched, TaskBase *routine);
   void Suspend(IAwaiter *awaiter);
