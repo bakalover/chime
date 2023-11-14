@@ -13,7 +13,7 @@ template <typename Fun> struct LambdaContainer : TaskBase {
   LambdaContainer(LambdaContainer &&that) = delete;
   LambdaContainer &operator=(LambdaContainer &&) = delete;
 
-  LambdaContainer(Fun fun) : lambda_(fun) {}
+  explicit LambdaContainer(Fun fun) : lambda_(fun) {}
 
   void Run() noexcept override {
     lambda_();
@@ -22,6 +22,7 @@ template <typename Fun> struct LambdaContainer : TaskBase {
   Fun lambda_;
 };
 
+// TODO get rid of TaskBase, also separate in executors
 template <typename Fun> TaskBase *MakeContainer(Fun fun) {
   return new LambdaContainer(std::move(fun));
 }
