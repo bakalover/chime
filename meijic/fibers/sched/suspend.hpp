@@ -1,7 +1,7 @@
 #pragma once
 #include <meijic/fibers/awaiter.hpp>
-namespace exe::fibers {
+namespace fib {
 
 void Suspend(IAwaiter *awaiter);
 
-} // namespace exe::fibers
+} // namespace fib
