@@ -1,6 +1,5 @@
 #pragma once
 
-// std::lock_guard and std::unique_lock
 #include <atomic>
 #include <cassert>
 #include <cstddef>
@@ -9,8 +8,6 @@
 #include <meijic/fibers/awaiter.hpp>
 #include <meijic/fibers/fiber.hpp>
 #include <meijic/fibers/handle.hpp>
-#include <mutex>
-#include <ostream>
 
 namespace fib {
 
@@ -25,8 +22,11 @@ private:
         handle_.Schedule();
       };
     }
+
     Mutex &host_;
   };
+
+  using State = IChainAwaiter *;
 
 public:
   void Lock() {
@@ -40,17 +40,18 @@ public:
     while (true) {
       // Prerequisite: head_ != nullptr =>
       // => head_ == (LockAwaiter*)1 aka SingleLocked or LockAwaiter* aka Queue
-      LockAwaiter *current_head = head_.load(std::memory_order_acquire);
+      State current_head = GetCurrent();
 
-      assert(current_head != nullptr);
+      assert(!IsUnlocked(current_head));
 
-      if (current_head == (LockAwaiter *)1) {
-        if (head_.compare_exchange_weak(current_head, nullptr)) {
+      if (IsSingleLocked(current_head)) {
+        if (TryCommit(current_head, Unlocked(), std::memory_order::release)) {
           return;
         }
         continue;
       } else {
-        if (head_.compare_exchange_weak(current_head, current_head->next_)) {
+        if (TryCommit(current_head, current_head->next_,
+                      std::memory_order::release)) {
           current_head->handle_.Schedule();
           return;
         }
@@ -59,17 +60,18 @@ public:
     }
   }
 
+private:
   bool Acquire(LockAwaiter *awaiter) {
     while (true) {
-      LockAwaiter *cur_head = head_.load();
-      if (cur_head == nullptr) {
-        if (head_.compare_exchange_weak(cur_head, (LockAwaiter *)1)) {
+      State cur_head = head_.load(std::memory_order_acquire);
+      if (IsUnlocked(cur_head)) {
+        if (TryCommit(cur_head, SingleLocked(), std::memory_order::acquire)) {
           return true;
         }
         continue;
       } else {
         awaiter->next_ = cur_head;
-        if (head_.compare_exchange_weak(cur_head, awaiter)) {
+        if (TryCommit(cur_head, awaiter, std::memory_order::release)) {
           return false;
         }
         continue;
@@ -77,8 +79,20 @@ public:
     }
   }
 
-  // BasicLockable
+  bool TryCommit(State from, State to, std::memory_order mo) {
+    return head_.compare_exchange_weak(from, to, mo);
+  }
 
+  State GetCurrent() { return head_.load(std::memory_order_acquire); }
+
+  State Unlocked() { return nullptr; }
+
+  bool IsUnlocked(State state) { return state == Unlocked(); }
+  State SingleLocked() { return (IChainAwaiter *)1; }
+
+  bool IsSingleLocked(State state) { return state == SingleLocked(); }
+
+public:
   void lock() { // NOLINT
     Lock();
   }
@@ -91,7 +105,7 @@ private:
   // nullptr aka 0 -> Unlocked
   // (LockAwaiter*)1 aka 1 -> SingleLocked
   // LockAwaiter* -> Queue
-  std::atomic<LockAwaiter *> head_{nullptr};
+  std::atomic<State> head_{nullptr};
 };
 
 } // namespace fib
