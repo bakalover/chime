@@ -4,7 +4,8 @@
 #include <meijic/fibers/sched/launch/spawn.hpp>
 
 namespace fibers::sched {
-template <typename L> void SpawnVia(executors::IExecutor &scheduler, L lambda) {
+template <typename L>
+void SpawnVia(executors::IExecutor &scheduler, L &&lambda) {
   launch::Spawn(scheduler, executors::MakeContainer(std::move(lambda)));
 };
 
