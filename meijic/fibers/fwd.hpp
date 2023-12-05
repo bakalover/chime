@@ -1,7 +1,7 @@
 #pragma once
 
-namespace fib {
+namespace fibers {
 
 class Fiber;
 
-} // namespace exe::fibers
+} // namespace fibers

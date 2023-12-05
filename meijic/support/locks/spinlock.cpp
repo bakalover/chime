@@ -1,5 +1,5 @@
-#include "spinlock.hpp"
-namespace sup {
+#include <meijic/support/locks/spinlock.hpp>
+namespace support {
 void SpinLock::Acquire(SpinLock::Guard *waiter) {
   auto prev_tail = tail_.exchange(waiter);
   if (IsChainLeader(prev_tail)) {
@@ -44,4 +44,4 @@ void SpinLock::SignalToNext(SpinLock::Guard *owner) {
 SpinLock::Guard::Guard(SpinLock &host) : host_(host) { host_.Acquire(this); }
 
 SpinLock::Guard::~Guard() { host_.Release(this); }
-} // namespace supp
+} // namespace support

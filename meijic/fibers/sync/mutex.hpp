@@ -1,15 +1,13 @@
 #pragma once
-
 #include <atomic>
 #include <cassert>
 #include <cstddef>
-#include <cstdint>
 #include <iostream>
 #include <meijic/fibers/awaiter.hpp>
 #include <meijic/fibers/fiber.hpp>
 #include <meijic/fibers/handle.hpp>
 
-namespace fib {
+namespace fibers::sync {
 
 class Mutex {
 private:
@@ -38,8 +36,8 @@ public:
 
   void Unlock() {
     while (true) {
-      // Prerequisite: head_ != nullptr =>
-      // => head_ == (LockAwaiter*)1 aka SingleLocked or LockAwaiter* aka Queue
+      // Prerequisite: head_ != Unlocked =>
+      // => head_ ->  SingleLocked or Queue
       State current_head = GetCurrent();
 
       assert(!IsUnlocked(current_head));
@@ -87,25 +85,22 @@ private:
 
   State Unlocked() { return nullptr; }
 
-  bool IsUnlocked(State state) { return state == Unlocked(); }
   State SingleLocked() { return (IChainAwaiter *)1; }
+
+  bool IsUnlocked(State state) { return state == Unlocked(); }
 
   bool IsSingleLocked(State state) { return state == SingleLocked(); }
 
 public:
-  void lock() { // NOLINT
-    Lock();
-  }
+  void lock() { Lock(); }
 
-  void unlock() { // NOLINT
-    Unlock();
-  }
+  void unlock() { Unlock(); }
 
 private:
   // nullptr aka 0 -> Unlocked
-  // (LockAwaiter*)1 aka 1 -> SingleLocked
-  // LockAwaiter* -> Queue
+  // (IChainAwaiter*)1 aka 1 -> SingleLocked
+  // IChainAwaiter* -> Queue
   std::atomic<State> head_{nullptr};
 };
 
-} // namespace fib
+} // namespace fibers

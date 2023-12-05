@@ -1,14 +1,15 @@
 #pragma once
-#include "meijic/support/locks/spinlock.hpp"
 #include <atomic>
 #include <cassert>
 #include <cstddef>
 #include <meijic/executors/executor.hpp>
 #include <meijic/executors/task.hpp>
 #include <meijic/support/group.hpp>
+#include <meijic/support/locks/spinlock.hpp>
 #include <meijic/support/queues/unlim.hpp>
 #include <thread>
-namespace exe {
+
+namespace executors {
 
 // Fixed-size pool of worker threads
 
@@ -51,12 +52,12 @@ private:
   void PackWorkers();
 
 private:
-  sup::queue::MPMCUnlimitedQueue<TaskBase> queue_;
+  support::queue::MPMCUnlimitedQueue<TaskBase> queue_;
   std::vector<std::thread> workers_;
-  sup::Group group_;
+  support::Group group_;
   std::atomic<bool> is_processing_{false};
   size_t threads_number_;
-  sup::SpinLock spin_;
+  support::SpinLock spin_;
 };
 
-} // namespace exe
+} // namespace executors

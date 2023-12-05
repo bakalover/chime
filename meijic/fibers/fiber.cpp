@@ -6,9 +6,9 @@
 #include <ostream>
 #include <utility>
 
-namespace fib {
+namespace fibers {
 
-Fiber::Fiber(exe::IExecutor *sched, exe::TaskBase *routine)
+Fiber::Fiber(executors::IExecutor *sched, executors::TaskBase *routine)
     : coro_(routine), sched_(sched) {}
 
 void Fiber::Suspend(IAwaiter *awaiter) {
@@ -45,4 +45,4 @@ Fiber *Fiber::Self() { return me; }
 
 bool Fiber::IsFiber() { return Fiber::Self() != nullptr; }
 
-} // namespace fib
+} // namespace fibers

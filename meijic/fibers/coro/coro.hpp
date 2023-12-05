@@ -4,10 +4,10 @@
 #include <sure/stack.hpp>
 #include <sure/trampoline.hpp>
 
-namespace fib::coro {
+namespace fibers::coro {
 class Coroutine : private sure::ITrampoline {
 public:
-  explicit Coroutine(exe::ITask *routine);
+  explicit Coroutine(executors::ITask *routine);
 
   void Resume() noexcept;
 
@@ -18,7 +18,7 @@ public:
 private:
   // TODO: Get rid of stack
   sure::Stack stack_;
-  exe::ITask *routine_;
+  executors::ITask *routine_;
   sure::ExecutionContext me_, caller_;
   bool is_complete_ = false;
 

@@ -1,8 +1,7 @@
 #pragma once
-
 #include <meijic/fibers/fwd.hpp>
 
-namespace fib {
+namespace fibers {
 
 // Lightweight non-owning handle to a _suspended_ fiber
 class FiberHandle {

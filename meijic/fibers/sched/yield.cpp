@@ -1,15 +1,13 @@
+#include "meijic/fibers/sched/suspend.hpp"
 #include <meijic/fibers/fiber.hpp>
 #include <meijic/fibers/sched/yield.hpp>
-namespace fib {
+namespace fibers::sched {
 struct YieldAwaiter : IAwaiter {
   void AwaitSuspend(FiberHandle handle) override { handle.Schedule(); }
 };
 
 void Yield() {
   YieldAwaiter awaiter;
-  auto cur_fiber = Fiber::Self();
-  if (cur_fiber != nullptr) {
-    cur_fiber->Suspend(&awaiter);
-  }
+  Suspend(&awaiter);
 }
-} // namespace fib::sched
+} // namespace fibers::sched

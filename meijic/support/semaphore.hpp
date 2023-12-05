@@ -3,7 +3,7 @@
 #include <condition_variable>
 #include <cstdlib>
 #include <mutex>
-namespace sup {
+namespace support {
 template <class Tag> class Semaphore {
 public:
   class Token {

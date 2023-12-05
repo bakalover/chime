@@ -4,7 +4,7 @@
 #include <optional>
 #include <queue>
 #include <wheels/intrusive/forward_list.hpp>
-namespace sup::queue {
+namespace support::queue {
 template <typename T> class MPMCUnlimitedQueue {
 public:
   bool Put(T* val) {

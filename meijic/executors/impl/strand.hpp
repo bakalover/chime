@@ -5,7 +5,7 @@
 #include <meijic/support/locks/spinlock.hpp>
 #include <queue>
 
-namespace exe {
+namespace executors {
 class Strand : public IExecutor, TaskBase {
 public:
   explicit Strand(IExecutor &underlying);
@@ -26,11 +26,11 @@ private:
   size_t RunTasks();
 
 private:
-  exe::IExecutor &underlying_;
+  executors::IExecutor &underlying_;
   std::atomic<size_t> count_{0};
   // TODO: Transfer to MPSCQueue (Lock-free!!)
   std::queue<TaskBase*> queue_;
-  sup::SpinLock spinlock_;
+  support::SpinLock spinlock_;
 };
 
-} // namespace exe
+} // namespace executors

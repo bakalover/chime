@@ -1,6 +1,6 @@
 #pragma once
 #include <meijic/fibers/awaiter.hpp>
-namespace fib {
+namespace fibers::sched {
 
 void Suspend(IAwaiter *awaiter);
 

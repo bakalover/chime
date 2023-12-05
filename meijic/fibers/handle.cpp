@@ -3,7 +3,7 @@
 #include <meijic/fibers/handle.hpp>
 #include <utility>
 
-namespace fib {
+namespace fibers {
 
 Fiber *FiberHandle::Release() {
   assert(IsValid());

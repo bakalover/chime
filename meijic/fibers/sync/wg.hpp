@@ -1,7 +1,8 @@
 #pragma once
 #include <atomic>
 #include <meijic/fibers/sync/event.hpp>
-namespace fib::sync {
+
+namespace fibers::sync {
 
 // https://gobyexample.com/waitgroups
 
@@ -12,7 +13,7 @@ public:
   }
 
   void Done() {
-    if (counter_.fetch_sub(1, std::memory_order_release) == 1) {
+    if (counter_.fetch_sub(1, std::memory_order_acquire) == 1) {
       event_.Fire();
     }
   }
@@ -24,4 +25,4 @@ private:
   Event event_;
 };
 
-} // namespace fib::sync
+} // namespace fibers::sync

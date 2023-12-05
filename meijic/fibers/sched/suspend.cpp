@@ -1,7 +1,7 @@
 #include <meijic/fibers/sched/suspend.hpp>
 #include <meijic/fibers/fiber.hpp>
 
-namespace fib {
+namespace fibers::sched {
 
 void Suspend(IAwaiter* awaiter) {
   if (Fiber::IsFiber()) {

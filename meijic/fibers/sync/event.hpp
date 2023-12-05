@@ -1,5 +1,4 @@
 #pragma once
-
 #include <atomic>
 #include <meijic/executors/task.hpp>
 #include <meijic/fibers/awaiter.hpp>
@@ -7,7 +6,8 @@
 #include <meijic/fibers/handle.hpp>
 #include <meijic/support/locks/spinlock.hpp>
 #include <meijic/support/queues/await.hpp>
-namespace fib::sync {
+
+namespace fibers::sync {
 
 // One-shot
 
@@ -63,8 +63,8 @@ private:
   void WakeUpFiber(FiberHandle handle) { handle.Schedule(); }
 
 private:
-  sup::queue::AwaitersList wait_queue_;
-  sup::SpinLock spinlock_;
+  support::queue::AwaitersList wait_queue_;
+  support::SpinLock spinlock_;
 };
 
-} // namespace fib::sync
+} // namespace fibers::sync

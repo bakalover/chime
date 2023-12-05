@@ -4,7 +4,7 @@
 #include <cstdlib>
 #include <span>
 #include <tuple>
-namespace sup::queue {
+namespace support::queue {
 
 template <typename T, size_t Cap> class StealingQueue {
   struct Slot {

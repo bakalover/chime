@@ -1,5 +1,5 @@
 #include <meijic/support/group.hpp>
-namespace sup {
+namespace support {
 void Group::Add(size_t delta) {
   std::lock_guard<std::mutex> guard(mutex_);
   counter_ += delta;
@@ -28,4 +28,4 @@ void Group::Wait() {
     --sleeps_;
   }
 }
-} // namespace supp
+} // namespace support

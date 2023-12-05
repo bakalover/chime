@@ -1,8 +1,9 @@
-#include "meijic/executors/task.hpp"
 #include <cstddef>
 #include <meijic/executors/impl/pool.hpp>
+#include <meijic/executors/task.hpp>
 #include <thread>
-namespace exe {
+
+namespace executors {
 
 thread_local static Pool *thread_owner = nullptr;
 
@@ -59,4 +60,4 @@ void Pool::PackWorkers() {
   }
 }
 
-} // namespace exe
+} // namespace executors

@@ -2,7 +2,7 @@
 #include <condition_variable>
 #include <cstdlib>
 #include <mutex>
-namespace sup {
+namespace support {
 // Group for wild threads
 class Group {
 public:
@@ -15,4 +15,4 @@ private:
   std::condition_variable cond_;
   size_t counter_{0}, sleeps_{0};
 };
-} // namespace sup
+} // namespace support

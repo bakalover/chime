@@ -1,6 +1,7 @@
 #pragma once
 #include <meijic/executors/executor.hpp>
 #include <meijic/executors/task.hpp>
-namespace exe {
+
+namespace executors {
 IExecutor &JustGet();
 }

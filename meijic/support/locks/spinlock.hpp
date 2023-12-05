@@ -1,6 +1,6 @@
 #pragma once
 #include <atomic>
-namespace sup {
+namespace support {
 class SpinLock {
 public:
   class Guard {
@@ -32,4 +32,4 @@ private:
 private:
   std::atomic<Guard *> tail_{nullptr};
 };
-} // namespace supp
+} // namespace support

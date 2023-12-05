@@ -1,7 +1,8 @@
 #pragma once
 #include <meijic/executors/task.hpp>
 #include <utility>
-namespace exe {
+
+namespace executors {
 
 template <typename Fun> struct LambdaContainer : TaskBase {
 
@@ -26,4 +27,4 @@ template <typename Fun> struct LambdaContainer : TaskBase {
 template <typename Fun> TaskBase *MakeContainer(Fun fun) {
   return new LambdaContainer(std::move(fun));
 }
-} // namespace exe
+} // namespace executors

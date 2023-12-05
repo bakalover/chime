@@ -1,9 +1,10 @@
 #pragma once
 #include <meijic/executors/task.hpp>
-namespace exe {
+
+namespace executors {
 struct IExecutor {
   virtual ~IExecutor() = default;
   virtual void Submit(TaskBase *task) = 0;
 };
 
-} // namespace exe
+} // namespace executors

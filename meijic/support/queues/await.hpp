@@ -2,8 +2,8 @@
 #include <atomic>
 #include <cstdint>
 #include <meijic/fibers/awaiter.hpp>
-namespace sup::queue {
-using IChainAwaiter = fib::IChainAwaiter;
+namespace support::queue {
+using IChainAwaiter = fibers::IChainAwaiter;
 
 class AwaitersList {
 public:
@@ -35,4 +35,4 @@ private:
 private:
   std::atomic<IChainAwaiter *> head_{nullptr};
 };
-} // namespace sup::queue
+} // namespace support::queue
