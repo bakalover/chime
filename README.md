@@ -1,5 +1,5 @@
 # Concurrency framework 
-(Gratitude to Roman Lipovsky's)
+(Gratitude to Roman Lipovsky)
 
 Doing concurrency for fun (or not...)
 
