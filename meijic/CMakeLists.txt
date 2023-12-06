@@ -9,5 +9,5 @@ file(GLOB_RECURSE LIB_HEADERS ${LIB_PATH}/*.hpp)
 add_library(${LIB_TARGET} STATIC ${LIB_CXX_SOURCES} ${LIB_HEADERS})
 target_include_directories(${LIB_TARGET} PUBLIC ${LIB_INCLUDE_PATH})
 
-set(LIB_DEPENDENCIES sure)
+set(LIB_DEPENDENCIES sure twist wheels)
 target_link_libraries(${LIB_TARGET} PUBLIC ${LIB_DEPENDENCIES})
