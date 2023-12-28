@@ -14,4 +14,10 @@ void FiberHandle::Schedule() { Release()->Schedule(); }
 
 void FiberHandle::Switch() { Release()->Switch(); }
 
-} // namespace fib
+void FiberHandle::ScheduleVia(executors::IExecutor *scheduler) {
+  assert(scheduler != nullptr);
+  fiber_->SetScheduler(scheduler);
+  Schedule();
+}
+
+} // namespace fibers

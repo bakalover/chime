@@ -27,7 +27,7 @@ Doing concurrency for fun (or not...)
 + Name for project))
 + Channel
 + Cancellation
-+ Structured Runtime
-+ RPC communication between actors
++  +/- Runtime
++ RPC communication
 + Oh my, what will happen here...
 

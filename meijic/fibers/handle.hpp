@@ -1,4 +1,5 @@
 #pragma once
+#include "meijic/executors/executor.hpp"
 #include <meijic/fibers/fwd.hpp>
 
 namespace fibers {
@@ -19,6 +20,8 @@ public:
   // Switch to this fiber immediately
   void Switch();
 
+  void ScheduleVia(executors::IExecutor *scheduler);
+
 private:
   explicit FiberHandle(Fiber *fiber) : fiber_(fiber) {}
 
@@ -27,4 +30,4 @@ private:
 private:
   Fiber *fiber_;
 };
-} // namespace fib
+} // namespace fibers

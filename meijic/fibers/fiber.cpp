@@ -11,6 +11,10 @@ namespace fibers {
 Fiber::Fiber(executors::IExecutor *sched, executors::TaskBase *routine)
     : coro_(routine), sched_(sched) {}
 
+void Fiber::SetScheduler(executors::IExecutor *scheduler) {
+  sched_ = scheduler;
+}
+
 void Fiber::Suspend(IAwaiter *awaiter) {
   awaiter_ = awaiter;
   assert(awaiter != nullptr);

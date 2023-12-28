@@ -6,11 +6,13 @@
 
 namespace fibers {
 
-// Fiber = stackful coroutine + exe::IExecutor (executor)
+// Fiber = stackful coroutine + executor::IExecutor (executor)
 
 class Fiber : public executors::TaskBase {
 public:
   Fiber(executors::IExecutor *sched, TaskBase *routine);
+
+  void SetScheduler(executors::IExecutor *scheduler);
 
   void Suspend(IAwaiter *awaiter);
 
