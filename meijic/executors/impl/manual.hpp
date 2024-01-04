@@ -1,4 +1,5 @@
 #pragma once
+#include "wheels/intrusive/list.hpp"
 #include <meijic/executors/executor.hpp>
 #include <meijic/executors/task.hpp>
 #include <queue>
@@ -25,14 +26,14 @@ public:
 
   size_t Drain();
 
-  size_t TaskCount() const { return queue_.size(); }
+  size_t TaskCount() const { return queue_.Size(); }
 
-  bool IsEmpty() const { return queue_.empty(); }
+  bool IsEmpty() const { return queue_.IsEmpty(); }
 
   bool NonEmpty() const { return !IsEmpty(); }
 
 private:
-  std::queue<TaskBase *> queue_;
+  wheels::IntrusiveForwardList<TaskBase> queue_;
 };
 
 } // namespace executors

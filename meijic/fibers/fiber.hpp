@@ -1,10 +1,14 @@
 #pragma once
+#include "twist/rt/facade/static/thread_local/ptr.hpp"
 #include <meijic/executors/executor.hpp>
 #include <meijic/executors/task.hpp>
 #include <meijic/fibers/awaiter.hpp>
 #include <meijic/fibers/coro/coro.hpp>
+#include <twist/ed/static/thread_local/ptr.hpp>
 
 namespace fibers {
+
+TWISTED_STATIC_THREAD_LOCAL_PTR(Fiber, me);
 
 // Fiber = stackful coroutine + executor::IExecutor (executor)
 
@@ -37,5 +41,5 @@ private:
   executors::IExecutor *sched_;
   IAwaiter *awaiter_;
 };
-static thread_local Fiber *me = nullptr;
+
 } // namespace fibers

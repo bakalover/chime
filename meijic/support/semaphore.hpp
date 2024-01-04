@@ -1,8 +1,8 @@
 #pragma once
 #include <cassert>
-#include <condition_variable>
 #include <cstdlib>
-#include <mutex>
+#include <twist/ed/std/condition_variable.hpp>
+#include <twist/ed/std/mutex.hpp>
 namespace support {
 template <class Tag> class Semaphore {
 public:
@@ -35,7 +35,7 @@ public:
   explicit Semaphore(size_t tokens) : available_tokens_(tokens) {}
 
   Token Acquire() {
-    std::unique_lock<std::mutex> guard(mutex_);
+    std::unique_lock<Mutex> guard(mutex_);
     while (available_tokens_ == 0) {
       cond_.wait(guard);
     }
@@ -45,7 +45,7 @@ public:
 
   void Release(Token &&token) {
     {
-      std::unique_lock<std::mutex> guard(mutex_);
+      std::unique_lock<Mutex> guard(mutex_);
       ++available_tokens_;
     }
     cond_.notify_one();
@@ -53,9 +53,10 @@ public:
   };
 
 private:
+  using Mutex = twist::ed::std::mutex;
   size_t available_tokens_;
-  std::mutex mutex_;
-  std::condition_variable cond_;
+  Mutex mutex_;
+  twist::ed::std::condition_variable cond_;
 };
 
-} // namespace sup
+} // namespace support

@@ -1,7 +1,7 @@
 #pragma once
-#include <atomic>
 #include <cstdint>
 #include <meijic/fibers/awaiter.hpp>
+#include <twist/ed/std/atomic.hpp>
 namespace support::queue {
 using IChainAwaiter = fibers::IChainAwaiter;
 
@@ -33,6 +33,6 @@ private:
   bool CheckState(IChainAwaiter *state) { return (uintptr_t)state == 1; }
 
 private:
-  std::atomic<IChainAwaiter *> head_{nullptr};
+  twist::ed::std::atomic<IChainAwaiter *> head_{nullptr};
 };
 } // namespace support::queue

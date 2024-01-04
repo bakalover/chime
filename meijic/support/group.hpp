@@ -1,7 +1,7 @@
 #pragma once
-#include <condition_variable>
 #include <cstdlib>
-#include <mutex>
+#include <twist/ed/std/condition_variable.hpp>
+#include <twist/ed/std/mutex.hpp>
 namespace support {
 // Group for wild threads
 class Group {
@@ -11,8 +11,9 @@ public:
   void Wait();
 
 private:
-  std::mutex mutex_;
-  std::condition_variable cond_;
+  using Mutex = twist::ed::std::mutex;
+  Mutex mutex_;
+  twist::ed::std::condition_variable cond_;
   size_t counter_{0}, sleeps_{0};
 };
 } // namespace support

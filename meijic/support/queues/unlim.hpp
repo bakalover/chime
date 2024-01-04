@@ -1,13 +1,12 @@
 #pragma once
-#include <condition_variable>
-#include <mutex>
 #include <optional>
-#include <queue>
+#include <twist/ed/std/condition_variable.hpp>
+#include <twist/ed/std/mutex.hpp>
 #include <wheels/intrusive/forward_list.hpp>
 namespace support::queue {
 template <typename T> class MPMCUnlimitedQueue {
 public:
-  bool Put(T* val) {
+  bool Put(T *val) {
     {
       std::lock_guard<std::mutex> lg(mutex_);
       if (!is_open_) {
@@ -19,8 +18,8 @@ public:
     return true;
   }
 
-  std::optional<T*> Take() {
-    std::optional<T*> res;
+  std::optional<T *> Take() {
+    std::optional<T *> res;
     {
       std::unique_lock<std::mutex> ul(mutex_);
       while (queue_.IsEmpty()) {
@@ -29,7 +28,7 @@ public:
         }
         cond_.wait(ul);
       }
-      res = std::make_optional<T*>(queue_.PopFront());
+      res = std::make_optional<T *>(queue_.PopFront());
     }
     return res;
   }
@@ -44,9 +43,9 @@ public:
 
 private:
   wheels::IntrusiveForwardList<T> queue_;
-  std::mutex mutex_;
-  std::condition_variable cond_;
+  twist::ed::std::mutex mutex_;
+  twist::ed::std::condition_variable cond_;
   bool is_open_ = true;
 };
 
-} // namespace sup::queue
+} // namespace support::queue

@@ -1,14 +1,14 @@
 #pragma once
-#include <atomic>
 #include <cstddef>
 #include <cstdlib>
 #include <span>
 #include <tuple>
+#include <twist/ed/std/atomic.hpp>
 namespace support::queue {
 
 template <typename T, size_t Cap> class StealingQueue {
   struct Slot {
-    std::atomic<T *> item{nullptr};
+    twist::ed::std::atomic<T *> item{nullptr};
   };
 
 private:
@@ -93,9 +93,9 @@ public:
   };
 
 private:
-  std::atomic<size_t> head_{0}, tail_{0};
+  twist::ed::std::atomic<size_t> head_{0}, tail_{0};
 
   // Circle buffer
   std::array<Slot, Cap> buffer_;
 };
-} // namespace supp::queue
+} // namespace support::queue

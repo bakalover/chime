@@ -1,6 +1,6 @@
 #pragma once
-#include <atomic>
 #include <meijic/fibers/sync/event.hpp>
+#include <twist/ed/std/atomic.hpp>
 
 namespace fibers::sync {
 
@@ -21,7 +21,7 @@ public:
   void Wait() { event_.Wait(); }
 
 private:
-  std::atomic<size_t> counter_{0};
+  twist::ed::std::atomic<size_t> counter_{0};
   Event event_;
 };
 

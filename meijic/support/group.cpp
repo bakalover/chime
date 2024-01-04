@@ -1,12 +1,12 @@
 #include <meijic/support/group.hpp>
 namespace support {
 void Group::Add(size_t delta) {
-  std::lock_guard<std::mutex> guard(mutex_);
+  std::lock_guard<Mutex> guard{mutex_};
   counter_ += delta;
 }
 
 void Group::Done() {
-  std::lock_guard<std::mutex> guard(mutex_);
+  std::lock_guard<Mutex> guard{mutex_};
   --counter_;
   if (counter_ == 0) {
     if (sleeps_ > 1) {
@@ -20,7 +20,7 @@ void Group::Done() {
 
 void Group::Wait() {
   {
-    std::unique_lock<std::mutex> guard(mutex_);
+    std::unique_lock<Mutex> guard{mutex_};
     ++sleeps_;
 
     cond_.wait(guard, [&]() { return counter_ == 0; });
