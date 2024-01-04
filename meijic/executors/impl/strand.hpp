@@ -1,14 +1,49 @@
 #pragma once
-#include <meijic/executors/task.hpp>
 #include <atomic>
 #include <meijic/executors/executor.hpp>
-#include <meijic/support/locks/spinlock.hpp>
-#include <queue>
+#include <meijic/executors/task.hpp>
+#include <meijic/support/life/management.hpp>
+#include <meijic/support/lock/spinlock.hpp>
+#include <twist/ed/std/atomic.hpp>
+#include <wheels/intrusive/forward_list.hpp>
 
 namespace executors {
-class Strand : public IExecutor, TaskBase {
+namespace internal {
+class ActualStrand : private IExecutor,
+                     private TaskBase,
+                     public support::life::LifeManagableBase<ActualStrand> {
+public:
+  explicit ActualStrand(IExecutor &underlying);
+
+  // Non-copyable
+  ActualStrand(const ActualStrand &) = delete;
+  ActualStrand &operator=(const ActualStrand &) = delete;
+
+  // Non-movable
+  ActualStrand(ActualStrand &&) = delete;
+  ActualStrand &operator=(ActualStrand &&) = delete;
+
+  void Submit(TaskBase *task) override;
+
+private:
+  void SubmitSelf();
+  void Run() noexcept override;
+  size_t RunTasks();
+
+private:
+  executors::IExecutor &underlying_;
+  twist::ed::std::atomic<size_t> count_{0};
+  // TODO: Transfer to MPSCQueue (Lock-free!!)
+  wheels::IntrusiveForwardList<TaskBase> queue_;
+  support::SpinLock spinlock_;
+};
+} // namespace internal
+
+class Strand : public IExecutor {
 public:
   explicit Strand(IExecutor &underlying);
+
+  ~Strand() { strand_->ShortenLife(); }
 
   // Non-copyable
   Strand(const Strand &) = delete;
@@ -21,16 +56,7 @@ public:
   void Submit(TaskBase *task) override;
 
 private:
-  void SubmitSelf();
-  void Run() noexcept override;
-  size_t RunTasks();
-
-private:
-  executors::IExecutor &underlying_;
-  std::atomic<size_t> count_{0};
-  // TODO: Transfer to MPSCQueue (Lock-free!!)
-  std::queue<TaskBase*> queue_;
-  support::SpinLock spinlock_;
+  internal::ActualStrand *strand_;
 };
 
 } // namespace executors

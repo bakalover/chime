@@ -1,4 +1,4 @@
-#include <meijic/support/locks/spinlock.hpp>
+#include <meijic/support/lock/spinlock.hpp>
 namespace support {
 void SpinLock::Acquire(SpinLock::Guard *waiter) {
   auto prev_tail = tail_.exchange(waiter);

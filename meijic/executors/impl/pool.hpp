@@ -1,11 +1,12 @@
 #pragma once
+#include "twist/ed/std/atomic.hpp"
 #include <atomic>
 #include <cassert>
 #include <cstddef>
 #include <meijic/executors/executor.hpp>
 #include <meijic/executors/task.hpp>
 #include <meijic/support/group.hpp>
-#include <meijic/support/locks/spinlock.hpp>
+#include <meijic/support/lock/spinlock.hpp>
 #include <meijic/support/queues/unlim.hpp>
 #include <thread>
 
@@ -55,6 +56,7 @@ private:
   support::queue::MPMCUnlimitedQueue<TaskBase> queue_;
   std::vector<std::thread> workers_;
   support::Group group_;
+  twist::ed::std::atomic<bool> a;
   std::atomic<bool> is_processing_{false};
   size_t threads_number_;
   support::SpinLock spin_;

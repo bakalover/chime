@@ -1,7 +1,7 @@
 #pragma once
 #include <cstdlib>
 #include <deque>
-#include <meijic/support/locks/spinlock.hpp>
+#include <meijic/support/lock/spinlock.hpp>
 #include <meijic/support/semaphore.hpp>
 #include <wheels/intrusive/forward_list.hpp>
 namespace support::queue {
@@ -13,7 +13,7 @@ public:
     Token t(std::move(produce_.Acquire()));
 
     {
-      SpinLock::Guard guard(spinlock_);
+      SpinLock::Guard guard{spinlock_};
       buff_.PushFront(obj);
     }
 

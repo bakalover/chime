@@ -4,7 +4,7 @@
 #include <meijic/fibers/awaiter.hpp>
 #include <meijic/fibers/fiber.hpp>
 #include <meijic/fibers/handle.hpp>
-#include <meijic/support/locks/spinlock.hpp>
+#include <meijic/support/lock/spinlock.hpp>
 #include <meijic/support/queues/await.hpp>
 
 namespace fibers::sync {
