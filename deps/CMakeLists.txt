@@ -20,3 +20,11 @@ FetchContent_Declare(
         GIT_TAG master
 )
 FetchContent_MakeAvailable(twist)
+
+
+FetchContent_Declare(
+        expected
+        GIT_REPOSITORY https://github.com/TartanLlama/expected.git
+        GIT_TAG cmake_love
+)
+FetchContent_MakeAvailable(expected)
