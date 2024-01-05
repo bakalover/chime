@@ -1,33 +1,17 @@
 # Concurrency framework 
-(Gratitude to Roman Lipovsky)
+Gratitude to Roman Lipovsky
+
+Based on Roman Liposvsky's concurrency course
 
 Doing concurrency for fun (or not...)
 
 ## Intrusive Executors
-
-- Manual (for testing purposes / deterministic runtime)
-- Pool (just thread pool for heavy computations)
-- Strand aka Async - Mutex (currently bad for lifetimes)
+[Link](./meijic/executors/README.md)
 
 ## Fibers
-+ Manual start (TODO: structured concurrency with Runtime)
-+ Synchronization:
-    + Lock-free Mutex
-    + Lock-free One-Shot Event
-    + Lock-free WaitGroup (certain Event)
+[Link](./meijic/fibers/README.md)
 
-- Scheduling:
-    - SpawnVia (spawn via certain executor)
-    - Yield (suspend with rescheduling)
+## Futures
+[Link](./meijic/futures/README.md)
 
-## TODO Queue
-+ Lazy futures
-+ Fiber's SleepFor via futures 
-+ Schedulers
-+ Name for project))
-+ Channel
-+ Cancellation
-+  +/- Runtime
-+ RPC communication
-+ Oh my, what will happen here...
 
