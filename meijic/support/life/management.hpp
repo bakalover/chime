@@ -3,7 +3,7 @@
 #include <cstddef>
 #include <twist/ed/std/atomic.hpp>
 
-namespace support::life {
+namespace support {
 template <typename T> struct LifeManagableBase {
   void ShortenLife() {
     if (life_counter.fetch_sub(1, std::memory_order::acq_rel) == 1) {
@@ -17,4 +17,4 @@ template <typename T> struct LifeManagableBase {
 
   twist::ed::std::atomic<size_t> life_counter{1};
 };
-} // namespace support::life
+} // namespace support

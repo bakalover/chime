@@ -11,7 +11,7 @@ namespace executors {
 namespace internal {
 class ActualStrand : private IExecutor,
                      private TaskBase,
-                     public support::life::LifeManagableBase<ActualStrand> {
+                     public support::LifeManagableBase<ActualStrand> {
 public:
   explicit ActualStrand(IExecutor &underlying);
 

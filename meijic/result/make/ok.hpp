@@ -3,7 +3,7 @@
 #include <meijic/result/types/result.hpp>
 #include <meijic/result/types/status.hpp>
 
-namespace meijic::result::make {
+namespace result {
 
 /*
  * Usage:
@@ -27,4 +27,4 @@ template <typename T> Result<T> Ok(T value) { return {std::move(value)}; }
 
 inline Status Ok() { return {Unit{}}; }
 
-} // namespace meijic::result::make
+} // namespace result

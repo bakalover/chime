@@ -2,8 +2,8 @@
 
 #include <system_error>
 
-namespace meijic::result {
+namespace result {
 
 using Error = std::error_code;
 
-} // namespace meijic::result::types
+} // namespace result

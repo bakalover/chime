@@ -3,5 +3,5 @@
 #include <meijic/executors/task.hpp>
 
 namespace executors {
-IExecutor &JustGet();
+IExecutor &Inline();
 }

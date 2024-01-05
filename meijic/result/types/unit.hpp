@@ -2,8 +2,8 @@
 
 #include <variant>
 
-namespace meijic::result {
+namespace result {
 
 using Unit = std::monostate;
 
-} // namespace meijic::result::types
+} // namespace result

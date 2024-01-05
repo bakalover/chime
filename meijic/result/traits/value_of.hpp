@@ -2,7 +2,7 @@
 
 #include <meijic/result/types/result.hpp>
 
-namespace meijic::result::traits {
+namespace result::traits {
 
 namespace match {
 
@@ -15,4 +15,4 @@ template <typename T> struct ValueOf<Result<T>> { using Type = T; };
 template <typename Result>
 using ValueOf = typename match::ValueOf<Result>::Type;
 
-} // namespace meijic::result::traits
+} // namespace result::traits

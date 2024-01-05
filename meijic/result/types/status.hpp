@@ -3,8 +3,8 @@
 #include <meijic/result/types/result.hpp>
 #include <meijic/result/types/unit.hpp>
 
-namespace meijic::result {
+namespace result {
 
 using Status = Result<Unit>;
 
-} // namespace meijic::result::types
+} // namespace result

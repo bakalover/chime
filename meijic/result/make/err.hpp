@@ -1,7 +1,7 @@
 #pragma once
 #include <meijic/result/types/result.hpp>
 
-namespace meijic::result::make {
+namespace result {
 
 /*
  *
@@ -15,4 +15,4 @@ namespace meijic::result::make {
 
 inline auto Err(Error error) { return tl::unexpected(error); }
 
-} // namespace meijic::result::make
+} // namespace result
