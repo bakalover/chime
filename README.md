@@ -14,4 +14,7 @@ Doing concurrency for fun (or not...)
 ## Futures
 [Link](./meijic/futures/README.md)
 
+## TODO
++ Simple namespaces
+
 
