@@ -1,7 +1,7 @@
 # Concurrency framework 
 Gratitude to Roman Lipovsky
 
-Based on Roman Liposvsky's concurrency course
+Based on Roman Lipovsky's concurrency course
 
 Doing concurrency for fun (or not...)
 
