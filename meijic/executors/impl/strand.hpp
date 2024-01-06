@@ -3,7 +3,7 @@
 #include <meijic/executors/executor.hpp>
 #include <meijic/executors/task.hpp>
 #include <meijic/support/life/management.hpp>
-#include <meijic/support/lock/spinlock.hpp>
+#include <meijic/support/spinlock.hpp>
 #include <twist/ed/std/atomic.hpp>
 #include <wheels/intrusive/forward_list.hpp>
 

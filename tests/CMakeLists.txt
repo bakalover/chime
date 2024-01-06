@@ -1,7 +1,8 @@
 ProjectLog("Tests")
 
-# List sources
+option(DTWIST_FAULTY ON)
 
+# List sources
 file(GLOB_RECURSE TEST_SOURCES "*.cpp")
 
 # All tests target

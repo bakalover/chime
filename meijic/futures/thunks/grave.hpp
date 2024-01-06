@@ -4,6 +4,7 @@
 #include <meijic/futures/traits/value_of.hpp>
 #include <meijic/futures/types/future.hpp>
 #include <meijic/result/make/ok.hpp>
+
 namespace futures::thunks {
 template <SomeFuture Producer>
 struct [[nodiscard]] Grave final

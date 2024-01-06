@@ -5,8 +5,8 @@
 #include <meijic/futures/types/future.hpp>
 #include <meijic/result/make/err.hpp>
 #include <meijic/result/make/ok.hpp>
-#include <meijic/support/lock/spinlock.hpp>
 #include <tuple>
+
 namespace futures::thunks {
 
 template <SomeFuture Producer>

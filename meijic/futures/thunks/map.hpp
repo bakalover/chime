@@ -8,6 +8,7 @@
 #include <meijic/result/make/ok.hpp>
 #include <meijic/result/traits/value_of.hpp>
 #include <meijic/result/types/result.hpp>
+
 namespace futures::thunks {
 
 template <SomeFuture Producer, typename Mapper>

@@ -2,6 +2,7 @@
 #include <meijic/futures/model/consumer.hpp>
 #include <meijic/futures/model/context.hpp>
 #include <meijic/result/make/ok.hpp>
+
 namespace futures::thunks {
 template <typename T> struct [[nodiscard]] Value final {
 public:

@@ -8,10 +8,11 @@
 #include <meijic/result/make/err.hpp>
 #include <meijic/result/make/ok.hpp>
 #include <meijic/support/life/management.hpp>
-#include <meijic/support/lock/spinlock.hpp>
+#include <meijic/support/spinlock.hpp>
 #include <optional>
 #include <tuple>
 #include <utility>
+
 namespace futures::thunks {
 
 template <SomeFuture LeftProducer, SomeFuture RightProducer>

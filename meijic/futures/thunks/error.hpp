@@ -2,6 +2,7 @@
 #include <meijic/futures/model/consumer.hpp>
 #include <meijic/result/make/err.hpp>
 #include <meijic/result/types/error.hpp>
+
 namespace futures::thunks {
 
 template <typename T> struct [[nodiscard]] Failure final {

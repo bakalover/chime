@@ -9,9 +9,10 @@
 #include <meijic/futures/traits/value_of.hpp>
 #include <meijic/futures/types/future.hpp>
 #include <meijic/result/make/err.hpp>
-#include <meijic/support/lock/spinlock.hpp>
+#include <meijic/support/spinlock.hpp>
 #include <optional>
 #include <twist/ed/std/atomic.hpp>
+
 namespace futures::thunks {
 
 template <SomeFuture LeftProducer, SomeFuture RightProducer>

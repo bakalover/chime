@@ -4,7 +4,7 @@
 #include <meijic/executors/executor.hpp>
 #include <meijic/executors/task.hpp>
 #include <meijic/support/group.hpp>
-#include <meijic/support/lock/spinlock.hpp>
+#include <meijic/support/spinlock.hpp>
 #include <meijic/support/queues/unlim.hpp>
 #include <thread>
 #include <twist/ed/std/atomic.hpp>
