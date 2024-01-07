@@ -4,6 +4,7 @@
 #include "twist/run/cross.hpp"
 #include "twist/test/budget.hpp"
 #include "twist/test/repeat.hpp"
+#include "wheels/test/runtime.hpp"
 #include <cassert>
 #include <cstdlib>
 #include <iostream>
