@@ -1,86 +1,56 @@
 #include "meijic/executors/impl/manual.hpp"
+#include "meijic/executors/impl/pool.hpp"
+#include "meijic/futures/combine/seq/flatten.hpp"
+#include "meijic/futures/combine/seq/map.hpp"
+#include "meijic/futures/make/value.hpp"
+#include "meijic/futures/run/detach.hpp"
+#include "meijic/futures/run/get.hpp"
+#include "meijic/result/make/ok.hpp"
 #include "meijic/result/types/error.hpp"
+#include "meijic/result/types/result.hpp"
 #include "meijic/result/types/status.hpp"
+#include "meijic/result/types/unit.hpp"
+#include "twist/ed/std/atomic.hpp"
 #include "twist/run/cross.hpp"
 #include "twist/test/budget.hpp"
 #include "twist/test/repeat.hpp"
 #include "wheels/test/runtime.hpp"
 #include <cassert>
+#include <cstddef>
 #include <cstdlib>
 #include <iostream>
 #include <meijic/fibers/sync.hpp>
-#include <meijic/futures/futures.hpp>
+#include <meijic/futures/full_pack.hpp>
 #include <mutex>
+#include <utility>
 using std::chrono_literals::operator""s;
 int main() {
   twist::run::Cross([] {
-    twist::test::TimeBudget budget{5s};
-    twist::test::Repeat repeater{budget};
+    executors::Pool pool1{4};
+    executors::Pool pool2{4};
+    pool1.Start();
+    pool2.Start();
+    auto fut = Just() | Via(pool1) |
+               AndThen([&](result::Unit) { return result::Ok(Value(1)); }) |
+               Flatten() | FlatMap([&](int val) {
+                 twist::ed::std::atomic<size_t> counter = 0;
 
-    executors::ManualExecutor manual1;
-    executors::ManualExecutor manual2;
-    using Unit = result::Unit;
-    using Status = result::Status;
-    using Error = result::Error;
+                 for (size_t i = 0; i < 1000000; ++i) {
 
-    while (repeater()) {
-
-      size_t steps = 0;
-
-      futures::Just() | futures::Via(manual1) | futures::Map([&](Unit) {
-        ++steps;
-        return Unit{};
-      }) | futures::AndThen([&](Unit) -> Status {
-        ++steps;
-        return result::Ok();
-      }) | futures::Map([](Unit) { return Unit{}; }) |
-          futures::Via(manual2) | futures::Map([&](Unit) {
-            ++steps;
-            return Unit{};
-          }) |
-          futures::OrElse([&](Error) -> Status {
-            std::abort();
-            return result::Ok();
-          }) |
-          futures::Map([&](Unit) {
-            ++steps;
-            return Unit{};
-          })
-
-          | futures::Via(manual1) | futures::Map([&](Unit) {
-              ++steps;
-              return Unit{};
-            }) |
-          futures::FlatMap([&](Unit) {
-            ++steps;
-            return futures::Value(1);
-          }) |
-          futures::Map([&](int v) {
-            assert(v == 1);
-            ++steps;
-            return Unit{};
-          }) |
-          futures::Detach();
-
-      {
-        size_t tasks = manual1.Drain();
-        assert(tasks == 3);
-      }
-
-      assert(steps == 2);
-
-      {
-        size_t tasks = manual2.Drain();
-        assert(tasks >= 2);
-      }
-
-      assert(steps == 4);
-
-      {
-        size_t tasks = manual1.Drain();
-        assert(tasks >= 3);
-      }
-      assert(steps == 7);
-    }
+                   Submit(pool2, [&] {
+                     counter.fetch_add(1);
+                     return result::Ok();
+                   }) | Detach();
+                 }
+                 pool2.WaitIdle();
+                 return Value(counter.load());
+               }) |
+               Flatten();
+    auto res = move(fut) | Get();
+    pool1.WaitIdle();
+    pool2.WaitIdle();
+    pool1.Stop();
+    pool2.Stop();
+    std::cout << *res << std::endl;
   });
 }
