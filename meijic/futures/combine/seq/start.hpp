@@ -23,8 +23,6 @@ struct [[nodiscard]] Start {
 
 } // namespace pipe
 
-// Future<T> -> EagerFuture<T>
-
 inline auto Start() { return pipe::Start{}; }
 
 inline auto Bang() { return pipe::Start{}; }

@@ -22,8 +22,6 @@ template <typename F> struct [[nodiscard]] FlatMap {
 
 } // namespace pipe
 
-// Future<T> -> (T -> Future<U>) -> Future<U>
-
 template <typename F> auto FlatMap(F fun) {
   return pipe::FlatMap{std::move(fun)};
 }

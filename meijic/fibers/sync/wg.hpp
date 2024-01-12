@@ -5,8 +5,6 @@
 
 namespace fibers::sync {
 
-// https://gobyexample.com/waitgroups
-
 class WaitGroup {
 public:
   void Add(size_t delta) {

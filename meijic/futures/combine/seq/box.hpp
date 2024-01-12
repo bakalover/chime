@@ -17,8 +17,6 @@ struct [[nodiscard]] Box {
 
 } // namespace pipe
 
-// Future<T> -> BoxedFuture<T>
-
 inline auto Box() { return pipe::Box{}; }
 
 } // namespace futures

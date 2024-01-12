@@ -27,8 +27,6 @@ template <typename F> struct [[nodiscard]] AndThen {
 
 } // namespace pipe
 
-// Future<T> -> (T -> Result<U>) -> Future<U>
-
 template <typename F> auto AndThen(F fun) {
   return pipe::AndThen{std::move(fun)};
 }

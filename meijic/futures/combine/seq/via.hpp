@@ -18,7 +18,6 @@ struct [[nodiscard]] Via {
 
 } // namespace pipe
 
-// Future<T> -> Executor -> Future<T>
 
 inline auto Via(executors::IExecutor &executor) { return pipe::Via{executor}; }
 

@@ -1,5 +1,6 @@
 #include "meijic/executors/impl/manual.hpp"
 #include "meijic/executors/impl/pool.hpp"
+#include "meijic/futures/combine/seq/and_then.hpp"
 #include "meijic/futures/combine/seq/flatten.hpp"
 #include "meijic/futures/combine/seq/map.hpp"
 #include "meijic/futures/make/value.hpp"

@@ -13,5 +13,5 @@
  */
 
 template <futures::SomeFuture InputFuture> auto operator!(InputFuture f) {
-  return std::move(f) | futures::Start();
+  return std::move(f) | futures::Bang();
 }

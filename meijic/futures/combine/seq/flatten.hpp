@@ -15,8 +15,6 @@ struct [[nodiscard]] Flatten {
 
 } // namespace pipe
 
-// Future<Future<T>> -> Future<T>
-
 inline auto Flatten() { return pipe::Flatten{}; }
 
 } // namespace futures

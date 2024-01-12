@@ -24,8 +24,6 @@ template <typename F> struct [[nodiscard]] Map {
 
 } // namespace pipe
 
-// Future<T> -> (T -> U) -> Future<U>
-
 template <typename F> auto Map(F fun) { return pipe::Map{std::move(fun)}; }
 
 } // namespace futures

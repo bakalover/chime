@@ -22,8 +22,6 @@ template <typename F> struct [[nodiscard]] OrElse {
 
 } // namespace pipe
 
-// Future<T> -> (Error -> Result<T>) -> Future<T>
-
 template <typename F> auto OrElse(F fun) {
   return pipe::OrElse{std::move(fun)};
 }
