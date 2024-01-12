@@ -1,5 +1,6 @@
 #pragma once
 #include <meijic/executors/task.hpp>
+#include <meijic/fibers/routine.hpp>
 #include <sure/context.hpp>
 #include <sure/stack.hpp>
 #include <sure/trampoline.hpp>
@@ -7,7 +8,7 @@
 namespace fibers::coro {
 class Coroutine : private sure::ITrampoline {
 public:
-  explicit Coroutine(executors::ITask *routine);
+  explicit Coroutine(IRoutine *routine);
 
   void Resume() noexcept;
 
@@ -18,7 +19,7 @@ public:
 private:
   // TODO: Get rid of stack
   sure::Stack stack_;
-  executors::ITask *routine_;
+  IRoutine *routine_;
   sure::ExecutionContext me_, caller_;
   bool is_complete_ = false;
 

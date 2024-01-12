@@ -1,5 +1,6 @@
 #pragma once
-#include "meijic/executors/executor.hpp"
+
+#include <meijic/executors/executor.hpp>
 #include <meijic/fibers/fwd.hpp>
 
 namespace fibers {

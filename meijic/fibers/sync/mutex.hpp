@@ -1,7 +1,7 @@
 #pragma once
+
 #include <cassert>
 #include <cstddef>
-#include <iostream>
 #include <meijic/fibers/awaiter.hpp>
 #include <meijic/fibers/fiber.hpp>
 #include <meijic/fibers/handle.hpp>
@@ -29,7 +29,7 @@ private:
 public:
   void Lock() {
     LockAwaiter lock_awaiter{*this};
-    if (Fiber::IsFiber()) {
+    if (Fiber::InContext()) {
       Fiber::Self()->Suspend(&lock_awaiter);
     }
   }

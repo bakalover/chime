@@ -4,7 +4,7 @@
 namespace fibers::sched {
 
 void Suspend(IAwaiter* awaiter) {
-  if (Fiber::IsFiber()) {
+  if (Fiber::InContext()) {
     Fiber::Self()->Suspend(awaiter);
   }
 }

@@ -20,18 +20,4 @@
 #include <meijic/futures/syntax/both.hpp>
 #include <meijic/futures/syntax/or.hpp>
 #include <meijic/futures/syntax/pipe.hpp>
-using futures::AndThen;  // NOLINT
-using futures::Box;      // NOLINT
-using futures::Contract; // NOLINT
-using futures::Detach;   // NOLINT
-using futures::Failure;  // NOLINT
-using futures::FlatMap;  // NOLINT
-using futures::Flatten;  // NOLINT
-using futures::Get;      // NOLINT
-using futures::Just;     // NOLINT
-using futures::Map;      // NOLINT
-using futures::OrElse;   // NOLINT
-using futures::Start;    // NOLINT
-using futures::Submit;   // NOLINT
-using futures::Value;    // NOLINT
-using futures::Via;      // NOLINT
+using namespace futures;

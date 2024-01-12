@@ -1,15 +1,14 @@
 #include <cassert>
-#include <iostream>
 #include <meijic/executors/task.hpp>
 #include <meijic/fibers/fiber.hpp>
 #include <meijic/fibers/handle.hpp>
-#include <ostream>
+#include <meijic/fibers/routine.hpp>
 #include <utility>
 
 namespace fibers {
 
-Fiber::Fiber(executors::IExecutor *sched, executors::TaskBase *routine)
-    : coro_(routine), sched_(sched) {}
+Fiber::Fiber(executors::IExecutor *sched, IRoutine *routine)
+    : coro_{routine}, sched_{sched} {}
 
 void Fiber::SetScheduler(executors::IExecutor *scheduler) {
   sched_ = scheduler;
@@ -24,11 +23,11 @@ void Fiber::Suspend(IAwaiter *awaiter) {
 void Fiber::Schedule() { sched_->Submit(this); }
 
 void Fiber::Step() noexcept {
-  me = this;
+  CURRENT_FIBER = this;
   coro_.Resume();
 }
 
-void Fiber::Await() {
+void Fiber::ActivateAwaiter() {
   auto awaiter = std::exchange(awaiter_, nullptr);
   assert(awaiter != nullptr);
   awaiter->AwaitSuspend(FiberHandle{this});
@@ -39,14 +38,22 @@ void Fiber::Switch() { Run(); }
 void Fiber::Run() noexcept {
   Step();
   if (coro_.IsCompleted()) {
-    delete this;
-    return;
+    EndLifeCycle();
+    return; // delete???
   }
-  Await();
+  ActivateAwaiter();
 }
 
-Fiber *Fiber::Self() { return me; }
+void Fiber::EndLifeCycle() {
+  // Structured concurrency
+  // manipulator_->Manipulate(FiberHandle{this})
+  SelfDestroy(); // delete???
+}
 
-bool Fiber::IsFiber() { return Fiber::Self() != nullptr; }
+void Fiber::SelfDestroy() { delete this; }
+
+Fiber *Fiber::Self() { return CURRENT_FIBER; }
+
+bool Fiber::InContext() { return Fiber::Self() != nullptr; }
 
 } // namespace fibers

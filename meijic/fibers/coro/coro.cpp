@@ -1,11 +1,10 @@
 
-#include <iostream>
 #include <meijic/fibers/coro/coro.hpp>
-#include <ostream>
+#include <meijic/fibers/routine.hpp>
 namespace fibers::coro {
 
-Coroutine::Coroutine(executors::ITask *routine)
-    : stack_(sure::Stack::AllocateBytes(65536)), routine_(routine) {
+Coroutine::Coroutine(IRoutine *routine)
+    : stack_{sure::Stack::AllocateBytes(65536)}, routine_{routine} {
   me_.Setup(stack_.MutView(), this);
 }
 

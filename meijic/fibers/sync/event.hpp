@@ -33,7 +33,7 @@ private:
 
 public:
   void Wait() {
-    if (Fiber::IsFiber()) {
+    if (Fiber::InContext()) {
       DoWait();
     }
   }
