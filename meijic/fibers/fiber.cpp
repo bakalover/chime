@@ -15,8 +15,8 @@ void Fiber::SetScheduler(executors::IExecutor *scheduler) {
 }
 
 void Fiber::Suspend(IAwaiter *awaiter) {
-  awaiter_ = awaiter;
   assert(awaiter != nullptr);
+  awaiter_ = awaiter;
   coro_.Suspend();
 }
 
