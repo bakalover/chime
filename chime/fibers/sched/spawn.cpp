@@ -7,12 +7,12 @@
 #include <utility>
 
 namespace fibers::sched {
-template <typename L> void Spawn(executors::IExecutor &scheduler, L &&labmda) {
-  Spawn(&scheduler, executors::MakeContainer(std::move(labmda)));
-}
 
+namespace internal {
 void Spawn(executors::IExecutor *scheduler, IRoutine *task) {
   // + manipulator field
   scheduler->Submit(new Fiber(scheduler, task));
 }
+
+} // namespace internal
 } // namespace fibers::sched
