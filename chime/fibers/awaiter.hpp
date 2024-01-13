@@ -8,10 +8,10 @@ struct IAwaiter {
   virtual void AwaitSuspend(FiberHandle handle) = 0;
 };
 
-struct IChainAwaiter : IAwaiter {
+struct ChainAwaiterBase : IAwaiter {
 
   // Link
-  IChainAwaiter *next_;
+  ChainAwaiterBase *next_;
 
   // Chain awaiter has to store it's handle until time to go
   FiberHandle handle_;

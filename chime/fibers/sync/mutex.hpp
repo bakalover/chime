@@ -11,7 +11,7 @@ namespace fibers::sync {
 
 class Mutex {
 private:
-  struct LockAwaiter : IChainAwaiter {
+  struct LockAwaiter : ChainAwaiterBase {
     explicit LockAwaiter(Mutex &host) : host_(host) {}
 
     void AwaitSuspend(FiberHandle handle) override {
@@ -24,7 +24,7 @@ private:
     Mutex &host_;
   };
 
-  using State = IChainAwaiter *;
+  using State = ChainAwaiterBase *;
 
 public:
   void Lock() {
@@ -85,7 +85,7 @@ private:
 
   State Unlocked() { return nullptr; }
 
-  State SingleLocked() { return (IChainAwaiter *)1; }
+  State SingleLocked() { return (ChainAwaiterBase *)1; }
 
   bool IsUnlocked(State state) { return state == Unlocked(); }
 

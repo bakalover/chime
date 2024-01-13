@@ -1,15 +1,15 @@
 #pragma once
-#include <cstdint>
 #include <chime/fibers/awaiter.hpp>
+#include <cstdint>
 #include <twist/ed/std/atomic.hpp>
 namespace support::queue {
-using IChainAwaiter = fibers::IChainAwaiter;
+using ChainAwaiterBase = fibers::ChainAwaiterBase;
 
 class AwaitersList {
 public:
-  bool TryAdd(IChainAwaiter *waiter) {
+  bool TryAdd(ChainAwaiterBase *waiter) {
     while (true) {
-      IChainAwaiter *head = head_.load();
+      ChainAwaiterBase *head = head_.load();
 
       if (CheckState(head)) {
         return false;
@@ -22,17 +22,17 @@ public:
     }
   }
 
-  IChainAwaiter *Close() { return head_.exchange(ClosedState()); }
+  ChainAwaiterBase *Close() { return head_.exchange(ClosedState()); }
 
   bool IsClosed() { return CheckState(head_.load()); }
 
 private:
   // Gratitude to Lipovsky Sealable Queue
-  IChainAwaiter *ClosedState() { return (IChainAwaiter *)1; }
+  ChainAwaiterBase *ClosedState() { return (ChainAwaiterBase *)1; }
 
-  bool CheckState(IChainAwaiter *state) { return (uintptr_t)state == 1; }
+  bool CheckState(ChainAwaiterBase *state) { return (uintptr_t)state == 1; }
 
 private:
-  twist::ed::std::atomic<IChainAwaiter *> head_{nullptr};
+  twist::ed::std::atomic<ChainAwaiterBase *> head_{nullptr};
 };
 } // namespace support::queue

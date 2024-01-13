@@ -13,7 +13,7 @@ namespace fibers::sync {
 
 class Event {
 private:
-  struct Waiter : IChainAwaiter {
+  struct Waiter : ChainAwaiterBase {
     explicit Waiter(Event &event) : event_(event) {}
 
     void AwaitSuspend(FiberHandle handle) override {
@@ -51,10 +51,10 @@ private:
 
   bool Wait(Waiter *waiter) { return wait_queue_.TryAdd(waiter); }
 
-  void ChainResume(IChainAwaiter *awaiter) {
-    IChainAwaiter *current = awaiter;
+  void ChainResume(ChainAwaiterBase *awaiter) {
+    ChainAwaiterBase *current = awaiter;
     while (current != nullptr) {
-      IChainAwaiter *next = current->next_;
+      ChainAwaiterBase *next = current->next_;
       WakeUpFiber(current->handle_);
       current = next;
     }
