@@ -1,4 +1,4 @@
-# Concurrency framework 
+# Chime - the concurrency framework 
 Gratitude to Roman Lipovsky
 
 Based on Roman Lipovsky's concurrency course
