@@ -13,8 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: Dependencies
     steps:
-      - name: Magic
-        run: cd ..
+      - uses: actions/checkout@v2
       - name: Configure
         run:  cmake --no-warn-unused-cli -DCMAKE_BUILD_TYPE:STRING=Debug -DTSAN:STRING= -DASAN:STRING= -DTWIST_FIBERS:STRING= -DTWIST_FAST_FIBER_QUEUES:STRING= -DTWIST_PRINT_STACKS:STRING= -DTWIST_FAULTY:STRING= -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE -DCMAKE_C_COMPILER:FILEPATH=/usr/bin/clang -DCMAKE_CXX_COMPILER:FILEPATH=/usr/bin/clang++ -S. -B./build -G "Unix Makefiles"
       - name: Build
