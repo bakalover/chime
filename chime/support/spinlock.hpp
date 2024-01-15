@@ -1,5 +1,5 @@
 #pragma once
-#include <twist/ed/std/atomic.hpp>
+#include <twist/ed/stdlike/atomic.hpp>
 namespace support {
 class SpinLock {
 public:
@@ -13,8 +13,8 @@ public:
 
   private:
     SpinLock &host_;
-    twist::ed::std::atomic<Guard *> next_{nullptr};
-    twist::ed::std::atomic<bool> is_owner_{false};
+    twist::ed::stdlike::atomic<Guard *> next_{nullptr};
+    twist::ed::stdlike::atomic<bool> is_owner_{false};
   };
 
   SpinLock(){};
@@ -62,6 +62,6 @@ private:
   }
 
 private:
-  twist::ed::std::atomic<Guard *> tail_{nullptr};
+  twist::ed::stdlike::atomic<Guard *> tail_{nullptr};
 };
 } // namespace support

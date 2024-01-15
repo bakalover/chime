@@ -1,11 +1,11 @@
 #pragma once
 
 #include <cassert>
-#include <cstddef>
 #include <chime/fibers/awaiter.hpp>
 #include <chime/fibers/fiber.hpp>
 #include <chime/fibers/handle.hpp>
-#include <twist/ed/std/atomic.hpp>
+#include <cstddef>
+#include <twist/ed/stdlike/atomic.hpp>
 
 namespace fibers::sync {
 
@@ -100,7 +100,7 @@ private:
   // nullptr aka 0 -> Unlocked
   // (IChainAwaiter*)1 aka 1 -> SingleLocked
   // IChainAwaiter* -> Queue
-  twist::ed::std::atomic<State> head_{nullptr};
+  twist::ed::stdlike::atomic<State> head_{nullptr};
 };
 
 } // namespace fibers::sync

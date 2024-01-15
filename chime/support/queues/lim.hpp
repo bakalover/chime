@@ -1,7 +1,7 @@
 #pragma once
 #include <cstdlib>
 #include <deque>
-#include <chime/support/lock/spinlock.hpp>
+#include <chime/support/spinlock.hpp>
 #include <chime/support/semaphore.hpp>
 #include <wheels/intrusive/forward_list.hpp>
 namespace support::queue {

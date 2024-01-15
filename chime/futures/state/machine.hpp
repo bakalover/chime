@@ -1,7 +1,7 @@
 #pragma once
 #include <cstdint>
 #include <cstdlib>
-#include <twist/ed/std/atomic.hpp>
+#include <twist/ed/stdlike/atomic.hpp>
 namespace futures::state {
 class StateMachine {
 private:
@@ -39,6 +39,6 @@ public:
   }
 
 private:
-  twist::ed::std::atomic<State> state_{States::Init};
+  twist::ed::stdlike::atomic<State> state_{States::Init};
 };
 } // namespace futures::state

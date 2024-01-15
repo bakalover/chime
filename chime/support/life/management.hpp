@@ -1,7 +1,7 @@
 #pragma once
 #include <atomic>
 #include <cstddef>
-#include <twist/ed/std/atomic.hpp>
+#include <twist/ed/stdlike/atomic.hpp>
 
 namespace support {
 template <typename T> struct LifeManagableBase {
@@ -15,6 +15,6 @@ template <typename T> struct LifeManagableBase {
 
   void SelfDestroy() { delete static_cast<T *>(this); }
 
-  twist::ed::std::atomic<size_t> life_counter{1};
+  twist::ed::stdlike::atomic<size_t> life_counter{1};
 };
 } // namespace support

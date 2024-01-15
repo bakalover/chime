@@ -1,8 +1,8 @@
 #pragma once
 #include <cassert>
 #include <cstdlib>
-#include <twist/ed/std/condition_variable.hpp>
-#include <twist/ed/std/mutex.hpp>
+#include <twist/ed/stdlike/condition_variable.hpp>
+#include <twist/ed/stdlike/mutex.hpp>
 namespace support {
 template <class Tag> class Semaphore {
 public:
@@ -53,10 +53,10 @@ public:
   };
 
 private:
-  using Mutex = twist::ed::std::mutex;
+  using Mutex = twist::ed::stdlike::mutex;
   size_t available_tokens_;
   Mutex mutex_;
-  twist::ed::std::condition_variable cond_;
+  twist::ed::stdlike::condition_variable cond_;
 };
 
 } // namespace support

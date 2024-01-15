@@ -1,8 +1,8 @@
 #pragma once
 
 #include <optional>
-#include <twist/ed/std/condition_variable.hpp>
-#include <twist/ed/std/mutex.hpp>
+#include <twist/ed/stdlike/condition_variable.hpp>
+#include <twist/ed/stdlike/mutex.hpp>
 #include <wheels/intrusive/forward_list.hpp>
 
 namespace support::queue {
@@ -44,12 +44,12 @@ public:
   }
 
 private:
-  using Mutex = twist::ed::std::mutex;
+  using Mutex = twist::ed::stdlike::mutex;
 
 private:
   wheels::IntrusiveForwardList<T> queue_;
   Mutex mutex_;
-  twist::ed::std::condition_variable cond_;
+  twist::ed::stdlike::condition_variable cond_;
   bool is_open_ = true;
 };
 

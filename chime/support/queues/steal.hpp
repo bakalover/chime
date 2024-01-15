@@ -3,12 +3,12 @@
 #include <cstdlib>
 #include <span>
 #include <tuple>
-#include <twist/ed/std/atomic.hpp>
+#include <twist/ed/stdlike/atomic.hpp>
 namespace support::queue {
 
 template <typename T, size_t Cap> class StealingQueue {
   struct Slot {
-    twist::ed::std::atomic<T *> item{nullptr};
+    twist::ed::stdlike::atomic<T *> item{nullptr};
   };
 
 private:
@@ -93,7 +93,7 @@ public:
   };
 
 private:
-  twist::ed::std::atomic<size_t> head_{0}, tail_{0};
+  twist::ed::stdlike::atomic<size_t> head_{0}, tail_{0};
 
   // Circle buffer
   std::array<Slot, Cap> buffer_;

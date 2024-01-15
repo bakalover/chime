@@ -4,7 +4,7 @@
 #include <chime/executors/task.hpp>
 #include <chime/support/life/management.hpp>
 #include <chime/support/spinlock.hpp>
-#include <twist/ed/std/atomic.hpp>
+#include <twist/ed/stdlike/atomic.hpp>
 #include <wheels/intrusive/forward_list.hpp>
 
 namespace executors {
@@ -32,7 +32,7 @@ private:
 
 private:
   executors::IExecutor &underlying_;
-  twist::ed::std::atomic<size_t> count_{0};
+  twist::ed::stdlike::atomic<size_t> count_{0};
   // TODO: Transfer to MPSCQueue (Lock-free!!)
   wheels::IntrusiveForwardList<TaskBase> queue_;
   support::SpinLock spinlock_;

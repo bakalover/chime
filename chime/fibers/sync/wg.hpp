@@ -1,7 +1,7 @@
 #pragma once
 
 #include <chime/fibers/sync/event.hpp>
-#include <twist/ed/std/atomic.hpp>
+#include <twist/ed/stdlike/atomic.hpp>
 
 namespace fibers::sync {
 
@@ -20,7 +20,7 @@ public:
   void Wait() { event_.Wait(); }
 
 private:
-  twist::ed::std::atomic<size_t> counter_{0};
+  twist::ed::stdlike::atomic<size_t> counter_{0};
   Event event_;
 };
 

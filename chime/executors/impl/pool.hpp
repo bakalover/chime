@@ -1,14 +1,14 @@
 #pragma once
 #include <cassert>
-#include <cstddef>
 #include <chime/executors/executor.hpp>
 #include <chime/executors/task.hpp>
 #include <chime/support/group.hpp>
-#include <chime/support/spinlock.hpp>
 #include <chime/support/queues/unlim.hpp>
+#include <chime/support/spinlock.hpp>
+#include <cstddef>
 #include <thread>
-#include <twist/ed/std/atomic.hpp>
-#include <twist/ed/std/thread.hpp>
+#include <twist/ed/stdlike/atomic.hpp>
+#include <twist/ed/stdlike/thread.hpp>
 #include <vector>
 
 namespace executors {
@@ -55,9 +55,9 @@ private:
 
 private:
   support::queue::MPMCUnlimitedQueue<TaskBase> queue_;
-  std::vector<twist::ed::std::thread> workers_;
+  std::vector<twist::ed::stdlike::thread> workers_;
   support::Group group_;
-  twist::ed::std::atomic<bool> is_processing_{false};
+  twist::ed::stdlike::atomic<bool> is_processing_{false};
   size_t threads_number_;
   support::SpinLock spin_;
 };

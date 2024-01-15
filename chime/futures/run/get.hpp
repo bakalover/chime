@@ -1,18 +1,18 @@
 #pragma once
 
 #include <cassert>
-#include <cstdint>
 #include <chime/futures/model/consumer.hpp>
 #include <chime/futures/model/output.hpp>
 #include <chime/futures/syntax/pipe.hpp>
 #include <chime/futures/traits/value_of.hpp>
 #include <chime/result/types/result.hpp>
 #include <chime/support/life/management.hpp>
+#include <cstdint>
 #include <optional>
 #include <tl/expected.hpp>
-#include <twist/ed/std/atomic.hpp>
-#include <twist/ed/std/condition_variable.hpp>
-#include <twist/ed/std/mutex.hpp>
+#include <twist/ed/stdlike/atomic.hpp>
+#include <twist/ed/stdlike/condition_variable.hpp>
+#include <twist/ed/stdlike/mutex.hpp>
 
 namespace futures {
 
@@ -49,11 +49,11 @@ private:
   bool HaveResult() { return has_result_; }
 
 private:
-  using Mutex = twist::ed::std::mutex;
+  using Mutex = twist::ed::stdlike::mutex;
 
   Mutex mutex_;
   bool has_result_{false};
-  twist::ed::std::condition_variable is_ready_;
+  twist::ed::stdlike::condition_variable is_ready_;
   std::optional<result::Result<T>> result_;
 };
 

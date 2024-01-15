@@ -1,23 +1,22 @@
 #pragma once
 
-#include <twist/rt/facade/static/thread_local/ptr.hpp>
 #include <chime/executors/executor.hpp>
 #include <chime/executors/task.hpp>
 #include <chime/fibers/awaiter.hpp>
 #include <chime/fibers/coro/coro.hpp>
-#include <twist/ed/static/thread_local/ptr.hpp>
 #include <chime/fibers/routine.hpp>
+#include <twist/ed/local/ptr.hpp>
 
 namespace fibers {
 
-TWISTED_STATIC_THREAD_LOCAL_PTR(Fiber, CURRENT_FIBER);
+TWISTED_THREAD_LOCAL_PTR_INIT(Fiber, CURRENT_FIBER, nullptr)
 
 // Fiber = stackful coroutine + executor::IExecutor (executor)
 
 class Fiber : public executors::TaskBase {
 public:
   // + Manipulator field
-  Fiber(executors::IExecutor *sched, IRoutine* routine);
+  Fiber(executors::IExecutor *sched, IRoutine *routine);
 
   void SetScheduler(executors::IExecutor *scheduler);
 

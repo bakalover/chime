@@ -1,7 +1,7 @@
 #pragma once
 #include <chime/fibers/awaiter.hpp>
 #include <cstdint>
-#include <twist/ed/std/atomic.hpp>
+#include <twist/ed/stdlike/atomic.hpp>
 namespace support::queue {
 using ChainAwaiterBase = fibers::ChainAwaiterBase;
 
@@ -33,6 +33,6 @@ private:
   bool CheckState(ChainAwaiterBase *state) { return (uintptr_t)state == 1; }
 
 private:
-  twist::ed::std::atomic<ChainAwaiterBase *> head_{nullptr};
+  twist::ed::stdlike::atomic<ChainAwaiterBase *> head_{nullptr};
 };
 } // namespace support::queue

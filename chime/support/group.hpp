@@ -1,7 +1,7 @@
 #pragma once
 #include <cstdlib>
-#include <twist/ed/std/condition_variable.hpp>
-#include <twist/ed/std/mutex.hpp>
+#include <twist/ed/stdlike/condition_variable.hpp>
+#include <twist/ed/stdlike/mutex.hpp>
 namespace support {
 // Group for wild threads
 class Group {
@@ -36,9 +36,9 @@ public:
   }
 
 private:
-  using Mutex = twist::ed::std::mutex;
+  using Mutex = twist::ed::stdlike::mutex;
   Mutex mutex_;
-  twist::ed::std::condition_variable cond_;
+  twist::ed::stdlike::condition_variable cond_;
   size_t counter_{0}, sleeps_{0};
 };
 } // namespace support
