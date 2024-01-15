@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Install Dependencies
-        run: sudo apt-get -y install binutils-dev clang-14 make cmake build-essential libclang-rt-14-dev libc++-14-dev libc++abi-14-dev
+        run: sudo apt-get -y install binutils-dev clang-14 make cmake build-essential libc++-14-dev libc++abi-14-dev
 
   ProfileDebug:
     runs-on: ubuntu-latest
