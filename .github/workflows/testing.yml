@@ -9,7 +9,7 @@ jobs:
       - name: Install Dependencies
         run: apt-get install binutils-dev clang-14 make cmake
 
-  Debug Testing:
+  ProfileDebug:
     runs-on: ubuntu-latest
     needs: Dependencies
     steps:
