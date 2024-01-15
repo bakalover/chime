@@ -6,12 +6,8 @@ jobs:
   Dependencies:
     runs-on: ubuntu-latest
     steps:
-      - name: Fetch
-        run: |
-          wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add -
-          add-apt-repository -y "deb http://apt.llvm.org/focal/ llvm-toolchain-focal-14 main"
       - name: Install Dependencies
-        run: sudo apt-get -y install binutils-dev clang-14 make cmake  build-essential libclang-rt-14-dev libc++-14-dev libc++abi-14-dev
+        run: sudo apt-get -y install binutils-dev clang-14 make cmake build-essential libclang-rt-14-dev libc++-14-dev libc++abi-14-dev
 
   ProfileDebug:
     runs-on: ubuntu-latest
