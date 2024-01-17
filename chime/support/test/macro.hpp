@@ -26,7 +26,7 @@ inline twist::rt::IEnv *TestEnv() {
   return &instance;
 }
 
-#define _STRESS_TEST_IMPL(name, options)                                       \
+#define _TWIST_STRESS_TEST_IMPL(name, options)                                 \
   void TwistTestRoutine##name();                                               \
   TEST(name, options) {                                                        \
     ::twist::rt::Run(TestEnv(), [] { TwistTestRoutine##name(); });             \
@@ -35,5 +35,17 @@ inline twist::rt::IEnv *TestEnv() {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-#define STRESS_TEST(name, budget)                                              \
-  _STRESS_TEST_IMPL(name, ::wheels::test::TestOptions().TimeLimit(budget))
+#define TWIST_STRESS_TEST(name, budget)                                        \
+  _TWIST_STRESS_TEST_IMPL(name, ::wheels::test::TestOptions().TimeLimit(budget))
+
+#define _TWIST_UNIT_TEST_IMPL(name, options)                                 \
+  void TwistTestRoutine##name();                                               \
+  TEST(name, options) {                                                        \
+    ::twist::rt::Run(TestEnv(), [] { TwistTestRoutine##name(); });             \
+  }                                                                            \
+  void TwistTestRoutine##name()
+
+////////////////////////////////////////////////////////////////////////////////
+
+#define TWIST_UNIT_TEST(name)                                        \
+  _TWIST_UNIT_TEST_IMPL(name, ::wheels::test::TestOptions())

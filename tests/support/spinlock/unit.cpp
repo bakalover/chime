@@ -1,15 +1,16 @@
 #include <chime/support/spinlock.hpp>
+#include <chime/support/test/macro.hpp>
 #include <cstddef>
 #include <twist/ed/stdlike/thread.hpp>
 #include <wheels/test/framework.hpp>
 
 TEST_SUITE(ScalableSpinLock) {
-  SIMPLE_TEST(LockUnlock) {
+  TWIST_UNIT_TEST(LockUnlock) {
     support::SpinLock spinlock;
     { support::SpinLock::Guard guard{spinlock}; }
   }
 
-  SIMPLE_TEST(Sequential) {
+  TWIST_UNIT_TEST(Sequential) {
     support::SpinLock spinlock;
 
     { support::SpinLock::Guard guard{spinlock}; }
@@ -17,7 +18,7 @@ TEST_SUITE(ScalableSpinLock) {
     { support::SpinLock::Guard guard{spinlock}; }
   }
 
-  SIMPLE_TEST(ConcurrentIncrements) {
+  TWIST_UNIT_TEST(ConcurrentIncrements) {
     support::SpinLock spinlock;
 
     size_t counter = 0;

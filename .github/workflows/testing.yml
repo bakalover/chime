@@ -36,5 +36,5 @@ jobs:
         run:  cmake --no-warn-unused-cli -DCMAKE_BUILD_TYPE:STRING=Debug -DTSAN:STRING= -DASAN:STRING= -DTWIST_FIBERS:STRING=ON -DTWIST_FAST_FIBER_QUEUES:STRING= -DTWIST_PRINT_STACKS:STRING=ON -DTWIST_FAULTY:STRING=ON -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE -DCMAKE_C_COMPILER:FILEPATH=/usr/bin/clang-14 -DCMAKE_CXX_COMPILER:FILEPATH=/usr/bin/clang++-14 -S. -B./build -G "Unix Makefiles"
       - name: BuildFaultyFibers
         run:  cmake --build ./build --config Debug --target chime chime_tests -j 10 --
-      - name: RunFibers
+      - name: RunFaultyFibers
         run: ./build/tests/chime_tests
