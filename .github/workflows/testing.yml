@@ -5,6 +5,7 @@ on: [push, pull_request]
 jobs:
  Testing:
     runs-on: ubuntu-latest
+    container: ubuntu
     steps:
       - name: Install Dependencies
         run: |
