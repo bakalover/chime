@@ -21,7 +21,7 @@ struct TestEnv : twist::rt::IEnv {
   }
 };
 
-twist::rt::IEnv *TestEnv() {
+inline twist::rt::IEnv *TestEnv() {
   static struct TestEnv instance;
   return &instance;
 }
