@@ -17,7 +17,7 @@ jobs:
           sudo wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc | sudo apt-key add -
           sudo apt-add-repository 'deb https://apt.kitware.com/ubuntu/ focal main'
           sudo apt-get update
-          sudo apt-get -y install build-essential ninja-build linux-tools-linux-tools-generic  binutils-dev g++-12 clang-14 clang-format-14 clang-tidy-14 cmake build-essential libc++-14-dev libc++abi-14-dev libclang-rt-14-dev libdwarf-dev libdw-dev 
+          sudo apt-get -y install build-essential ninja-build linux-tools-common linux-tools-generic  binutils-dev g++-12 clang-14 clang-format-14 clang-tidy-14 cmake build-essential libc++-14-dev libc++abi-14-dev libclang-rt-14-dev libdwarf-dev libdw-dev 
 
   ProfileDebug:
     runs-on: ubuntu-latest
