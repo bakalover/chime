@@ -18,7 +18,7 @@ jobs:
           wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc | apt-key add -
           apt-add-repository 'deb https://apt.kitware.com/ubuntu/ focal main'
           apt-get update
-          apt-get -y install build-essential ninja-build linux-tools-common linux-tools-generic  binutils-dev g++-12 clang-14 clang-format-14 clang-tidy-14 cmake build-essential libc++-14-dev libc++abi-14-dev libclang-rt-14-dev libdwarf-dev libdw-dev 
+          apt-get -y install libssl1.1 build-essential ninja-build linux-tools-common linux-tools-generic  binutils-dev g++-12 clang-14 clang-format-14 clang-tidy-14 cmake build-essential libc++-14-dev libc++abi-14-dev libclang-rt-14-dev libdwarf-dev libdw-dev 
       - uses: actions/checkout@v2
       - name: Configure
         run:  cmake --no-warn-unused-cli -DCMAKE_BUILD_TYPE:STRING=Debug -DTSAN:STRING= -DASAN:STRING= -DTWIST_FIBERS:STRING= -DTWIST_FAST_FIBER_QUEUES:STRING= -DTWIST_PRINT_STACKS:STRING= -DTWIST_FAULTY:STRING= -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE -DCMAKE_C_COMPILER:FILEPATH=/usr/bin/clang-14 -DCMAKE_CXX_COMPILER:FILEPATH=/usr/bin/clang++-14 -S. -B./build -G "Unix Makefiles"
