@@ -8,8 +8,9 @@ jobs:
     steps:
       - name: Install Dependencies
         run: |
+          sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
           sudo apt update
-          sudo apt-get -y install binutils-dev clang-14 cmake build-essential libc++-14-dev libc++abi-14-dev llvm gcc-14
+          sudo apt-get -y install binutils-dev clang-14 cmake build-essential libc++-14-dev libc++abi-14-dev llvm
 
   ProfileDebug:
     runs-on: ubuntu-latest
