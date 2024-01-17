@@ -5,7 +5,7 @@ on: [push, pull_request]
 jobs:
  Prepare:
     runs-on: ubuntu-latest
-    # container: ubuntu:20.04
+    container: ubuntu:20.04
     steps:
       - name: Install Dependencies
         run: |
@@ -20,9 +20,15 @@ jobs:
           apt-get update
           apt-get -y install git libssl1.1 build-essential ninja-build linux-tools-common linux-tools-generic  binutils-dev g++-12 clang-14 clang-format-14 clang-tidy-14 cmake build-essential libc++-14-dev libc++abi-14-dev libclang-rt-14-dev libdwarf-dev libdw-dev 
       - uses: actions/checkout@v2
-      - name: Configure
+      - name: ConfigureDebug
         run:  cmake --no-warn-unused-cli -DCMAKE_BUILD_TYPE:STRING=Debug -DTSAN:STRING= -DASAN:STRING= -DTWIST_FIBERS:STRING= -DTWIST_FAST_FIBER_QUEUES:STRING= -DTWIST_PRINT_STACKS:STRING= -DTWIST_FAULTY:STRING= -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE -DCMAKE_C_COMPILER:FILEPATH=/usr/bin/clang-14 -DCMAKE_CXX_COMPILER:FILEPATH=/usr/bin/clang++-14 -S. -B./build -G "Unix Makefiles"
-      - name: Build
+      - name: BuildDebug
         run:  cmake --build ./build --config Debug --target chime chime_tests -j 10 --
-      - name: Run
+      - name: RunDebug
+        run: ./build/tests/chime_tests
+      - name: ConfigureDebugASan
+        run:  cmake --no-warn-unused-cli -DCMAKE_BUILD_TYPE:STRING=Debug -DTSAN:STRING= -DASAN:STRING=ON -DTWIST_FIBERS:STRING= -DTWIST_FAST_FIBER_QUEUES:STRING= -DTWIST_PRINT_STACKS:STRING= -DTWIST_FAULTY:STRING= -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE -DCMAKE_C_COMPILER:FILEPATH=/usr/bin/clang-14 -DCMAKE_CXX_COMPILER:FILEPATH=/usr/bin/clang++-14 -S. -B./build -G "Unix Makefiles"
+      - name: BuildDebugASan
+        run:  cmake --build ./build --config Debug --target chime chime_tests -j 10 --
+      - name: RunDebugASan
         run: ./build/tests/chime_tests
