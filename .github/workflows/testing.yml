@@ -3,7 +3,7 @@ name: Chime
 on: [push, pull_request]
 
 jobs:
- Prepare:
+ Testing:
     runs-on: ubuntu-latest
     container: ubuntu:20.04
     steps:
