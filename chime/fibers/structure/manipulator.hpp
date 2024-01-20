@@ -2,7 +2,7 @@
 
 #include <chime/fibers/handle.hpp>
 
-namespace fibers::structure {
+namespace fibers {
 
 struct IManipulator {
   virtual ~IManipulator() = default;

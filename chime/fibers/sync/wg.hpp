@@ -3,7 +3,7 @@
 #include <chime/fibers/sync/event.hpp>
 #include <twist/ed/stdlike/atomic.hpp>
 
-namespace fibers::sync {
+namespace fibers {
 
 class WaitGroup {
 public:

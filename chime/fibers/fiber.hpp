@@ -20,6 +20,8 @@ public:
 
   void SetScheduler(executors::IExecutor *scheduler);
 
+  executors::IExecutor *GetScheduler();
+
   void Suspend(IAwaiter *awaiter);
 
   void Schedule();
@@ -44,7 +46,7 @@ private:
 
 private:
   // manupulator_
-  coro::Coroutine coro_;
+  Coroutine coro_;
   executors::IExecutor *sched_;
   IAwaiter *awaiter_;
 };

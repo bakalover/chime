@@ -1,5 +1,5 @@
 #pragma once
 
-namespace fibers::sched {
+namespace fibers {
 void Yield();
 }

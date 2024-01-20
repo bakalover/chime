@@ -1,8 +1,11 @@
 #pragma once
+
 #include <twist/rt/run.hpp>
 #include <twist/rt/run/env.hpp>
 #include <wheels/test/framework.hpp>
+
 struct TestEnv : twist::rt::IEnv {
+
   size_t Seed() const override { return wheels::test::TestHash(); }
 
   bool KeepRunning() const override {
@@ -38,7 +41,7 @@ inline twist::rt::IEnv *TestEnv() {
 #define TWIST_STRESS_TEST(name, budget)                                        \
   _TWIST_STRESS_TEST_IMPL(name, ::wheels::test::TestOptions().TimeLimit(budget))
 
-#define _TWIST_UNIT_TEST_IMPL(name, options)                                 \
+#define _TWIST_UNIT_TEST_IMPL(name, options)                                   \
   void TwistTestRoutine##name();                                               \
   TEST(name, options) {                                                        \
     ::twist::rt::Run(TestEnv(), [] { TwistTestRoutine##name(); });             \
@@ -47,5 +50,5 @@ inline twist::rt::IEnv *TestEnv() {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-#define TWIST_UNIT_TEST(name)                                        \
+#define TWIST_UNIT_TEST(name)                                                  \
   _TWIST_UNIT_TEST_IMPL(name, ::wheels::test::TestOptions())

@@ -7,7 +7,7 @@
 #include <chime/support/spinlock.hpp>
 #include <chime/support/queues/await.hpp>
 
-namespace fibers::sync {
+namespace fibers {
 
 // One-shot
 

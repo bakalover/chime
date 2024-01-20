@@ -2,6 +2,6 @@
 
 #include <chime/executors/executor.hpp>
 
-namespace fibers::sched {
+namespace fibers {
 void TeleportTo(executors::IExecutor *to);
 }

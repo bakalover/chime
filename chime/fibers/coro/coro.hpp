@@ -6,7 +6,7 @@
 #include <sure/stack.hpp>
 #include <sure/trampoline.hpp>
 
-namespace fibers::coro {
+namespace fibers {
 class Coroutine : private sure::ITrampoline {
 public:
   explicit Coroutine(IRoutine *routine);

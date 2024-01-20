@@ -4,4 +4,4 @@
 #include <chime/fibers/sync/mutex.hpp>
 #include <chime/fibers/sync/wg.hpp>
 
-using namespace fibers::sync;
+using namespace fibers;

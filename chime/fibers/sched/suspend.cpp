@@ -1,7 +1,7 @@
 #include <chime/fibers/sched/suspend.hpp>
 #include <chime/fibers/fiber.hpp>
 
-namespace fibers::sched {
+namespace fibers {
 
 void Suspend(IAwaiter* awaiter) {
   if (Fiber::InContext()) {

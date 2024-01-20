@@ -7,7 +7,7 @@
 #include <cstddef>
 #include <twist/ed/stdlike/atomic.hpp>
 
-namespace fibers::sync {
+namespace fibers{
 
 class Mutex {
 private:

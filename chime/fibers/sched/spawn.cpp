@@ -6,7 +6,7 @@
 #include <chime/fibers/sched/spawn.hpp>
 #include <utility>
 
-namespace fibers::sched {
+namespace fibers {
 
 namespace internal {
 void Spawn(executors::IExecutor *scheduler, IRoutine *task) {

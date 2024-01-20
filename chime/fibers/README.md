@@ -3,15 +3,13 @@
 `namespace fibers`
 
 ## Synchronization:
-`namespace fibers::sync`
-+ Lock-free Mutex
-+ Lock-free One-Shot Event
-+ Lock-free WaitGroup [Link](https://gobyexample.com/waitgroups) 
++ Lock-free `Mutex`
++ Lock-free One-Shot `Event`
++ Lock-free `WaitGroup` [Link](https://gobyexample.com/waitgroups) 
 (represented as certain Event)
 
 ## Scheduling:
-`namespace fibers::sched`
-- `Spawn` (Spawn via certain executor)
+- `Spawn` (Spawn via executor | Spawn in Context)
 - `Yield` (Suspend with rescheduling)
 - `TeleportTo` (Switch scheduler after next stop)
 

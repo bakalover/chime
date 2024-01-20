@@ -4,4 +4,4 @@
 #include <chime/fibers/sched/teleport.hpp>
 #include <chime/fibers/sched/yield.hpp>
 
-using namespace fibers::sched;
+using namespace fibers;

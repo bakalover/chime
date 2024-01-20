@@ -6,7 +6,7 @@
 #include <chime/fibers/fwd.hpp>
 #include <chime/fibers/routine.hpp>
 
-namespace fibers::sched {
+namespace fibers {
 
 namespace internal {
 void Spawn(executors::IExecutor *scheduler, IRoutine *task);
@@ -16,6 +16,11 @@ template <typename L> void Spawn(executors::IExecutor &scheduler, L &&lambda) {
   internal::Spawn(&scheduler, MakeRoutine(std::move(lambda)));
 };
 
-// TODO some kind of context to store cuurent executor -> Spawn(IRoutine*)
+template <typename L> void Spawn(L &&lambda) {
+  if (Fiber::InContext()) {
+    internal::Spawn(Fiber::Self()->GetScheduler(),
+                    MakeRoutine(std::move(lambda)));
+  }
+};
 
-} // namespace fibers::sched
+} // namespace fibers

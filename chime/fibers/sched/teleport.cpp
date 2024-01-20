@@ -3,7 +3,7 @@
 #include <chime/fibers/sched/suspend.hpp>
 #include <chime/fibers/sched/teleport.hpp>
 
-namespace fibers::sched {
+namespace fibers {
 struct TeleportAwaiter : IAwaiter {
 
   explicit TeleportAwaiter(executors::IExecutor *scheduler)

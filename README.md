@@ -8,13 +8,10 @@ Doing concurrency for fun (or not...)
 ## Intrusive Executors
 [Link](./chime/executors/README.md)
 
-## Fibers
+## Runtime
 [Link](./chime/fibers/README.md)
 
 ## Futures
 [Link](./chime/futures/README.md)
-
-## TODO
-+ Simple namespaces
 
 

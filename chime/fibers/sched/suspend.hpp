@@ -2,7 +2,7 @@
 
 #include <chime/fibers/awaiter.hpp>
 
-namespace fibers::sched {
+namespace fibers {
 
 void Suspend(IAwaiter *awaiter);
 

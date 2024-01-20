@@ -1,3 +1,4 @@
+#include "chime/executors/executor.hpp"
 #include <cassert>
 #include <chime/executors/task.hpp>
 #include <chime/fibers/fiber.hpp>
@@ -11,8 +12,11 @@ Fiber::Fiber(executors::IExecutor *sched, IRoutine *routine)
     : coro_{routine}, sched_{sched} {}
 
 void Fiber::SetScheduler(executors::IExecutor *scheduler) {
+  assert(scheduler != nullptr);
   sched_ = scheduler;
 }
+
+executors::IExecutor *Fiber::GetScheduler() { return sched_; }
 
 void Fiber::Suspend(IAwaiter *awaiter) {
   assert(awaiter != nullptr);

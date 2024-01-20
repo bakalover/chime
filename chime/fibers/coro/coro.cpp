@@ -2,7 +2,7 @@
 #include <chime/fibers/coro/coro.hpp>
 #include <chime/fibers/routine.hpp>
 
-namespace fibers::coro {
+namespace fibers {
 
 Coroutine::Coroutine(IRoutine *routine)
     : stack_{sure::Stack::AllocateBytes(65536)}, routine_{routine} {
