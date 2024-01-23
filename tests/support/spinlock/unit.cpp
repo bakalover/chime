@@ -5,12 +5,12 @@
 #include <wheels/test/framework.hpp>
 
 TEST_SUITE(ScalableSpinLock) {
-  TWIST_UNIT_TEST(LockUnlock) {
+  SIMPLE_TEST(LockUnlock) {
     support::SpinLock spinlock;
     { support::SpinLock::Guard guard{spinlock}; }
   }
 
-  TWIST_UNIT_TEST(Sequential) {
+  SIMPLE_TEST(Sequential) {
     support::SpinLock spinlock;
 
     { support::SpinLock::Guard guard{spinlock}; }
@@ -18,7 +18,7 @@ TEST_SUITE(ScalableSpinLock) {
     { support::SpinLock::Guard guard{spinlock}; }
   }
 
-  TWIST_UNIT_TEST(ConcurrentIncrements) {
+  SIMPLE_TEST(ConcurrentIncrements) {
     support::SpinLock spinlock;
 
     size_t counter = 0;
