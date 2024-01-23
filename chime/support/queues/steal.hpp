@@ -1,4 +1,5 @@
 #pragma once
+#include <atomic>
 #include <cstddef>
 #include <cstdlib>
 #include <span>
@@ -25,11 +26,6 @@ private:
     return (out_buffer.size() < having) ? out_buffer.size() : having;
   }
 
-  std::tuple<size_t, size_t> QueueSnapshot(std::memory_order head_order,
-                                           std::memory_order tail_order) {
-    return {head_.load(head_order), tail_.load(tail_order)};
-  }
-
   void TransferData(std::span<T *> destination, size_t start_pos,
                     size_t amount) {
     for (size_t i = 0; i < amount; ++i) {
@@ -39,9 +35,11 @@ private:
   }
 
 public:
+  size_t Size() { return tail_.load() - head_.load(); } // Orderings !!
+
   bool TryPush(T *item) {
-    auto [curr_head, curr_tail] =
-        QueueSnapshot(std::memory_order_acquire, std::memory_order_relaxed);
+    size_t curr_head = head_.load(std::memory_order_acquire);
+    size_t curr_tail = tail_.load(std::memory_order_relaxed);
 
     if (IsFull(curr_head, curr_tail)) {
       return false;
@@ -52,12 +50,23 @@ public:
     return true;
   };
 
+  void PushMany(std::span<T *> buffer) {
+    size_t curr_head = head_.load(); // Ordering !!
+    size_t curr_tail = tail_.load(); // Ordering !!
+
+    for (size_t i = 0; i < buffer.size(); ++i) {
+      buffer[GetIndex(curr_tail + i)].item.store(buffer[i]); // Ordering !!
+    }
+
+    tail_.store(curr_tail + buffer.size(), std::memory_order::release);
+  }
+
   // Returns nullptr if queue is empty
   // TODO: nullptr -> Option<T>
   T *TryPop() {
     while (true) {
-      auto [curr_head, curr_tail] =
-          QueueSnapshot(std::memory_order_acquire, std::memory_order_relaxed);
+      size_t curr_head = head_.load(std::memory_order_acquire);
+      size_t curr_tail = tail_.load(std::memory_order_relaxed);
 
       if (IsEmpty(curr_head, curr_tail)) {
         return nullptr;
@@ -73,8 +82,8 @@ public:
   // Returns number of tasks
   size_t Grab(std::span<T *> out_buffer) {
     while (true) {
-      auto [curr_head, curr_tail] =
-          QueueSnapshot(std::memory_order_acquire, std::memory_order_acquire);
+      size_t curr_head = head_.load(std::memory_order_acquire);
+      size_t curr_tail = tail_.load(std::memory_order_acquire);
 
       size_t size = curr_tail - curr_head;
 

@@ -24,7 +24,6 @@ template <typename Fun> struct LambdaContainer : TaskBase {
   Fun lambda_;
 };
 
-// TODO get rid of TaskBase, also separate in executors
 template <typename Fun> TaskBase *MakeContainer(Fun &&fun) {
   return new LambdaContainer(std::move(fun));
 }
