@@ -1,0 +1,1 @@
+// Inspired by: https://docs.rs/tokio-macros/latest/tokio_macros/attr.main.html#using-the-multi-thread-runtime
