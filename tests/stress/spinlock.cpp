@@ -1,5 +1,5 @@
+#include "macro.hpp"
 #include <chime/executors/full_pack.hpp>
-#include <chime/support/test/macro.hpp>
 #include <twist/test/budget.hpp>
 
 using namespace std::chrono_literals;
