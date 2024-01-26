@@ -1,20 +1,22 @@
 #include "macro.hpp"
-#include <chime/executors/full_pack.hpp>
+#include "twist/ed/stdlike/thread.hpp"
+#include "twist/rt/run.hpp"
+#include <chime/support/spinlock.hpp>
 #include <twist/test/budget.hpp>
+#include <vector>
 
 using namespace std::chrono_literals;
 
 TEST_SUITE(MutexLike) {
   void Test(size_t threads) {
 
-    Pool pool{threads};
     support::SpinLock spinlock;
     size_t counter = 0;
 
-    pool.Start();
+    std::vector<twist::ed::stdlike::thread> contenders;
 
     for (size_t i = 0; i < threads; ++i) {
-      Submit(pool, [&] {
+      contenders.emplace_back([&] {
         while (twist::test::KeepRunning()) {
           {
             {
@@ -26,12 +28,14 @@ TEST_SUITE(MutexLike) {
       });
     }
 
-    pool.WaitIdle();
-    pool.Stop();
+    for (auto &t : contenders) {
+      t.join();
+    }
+    
     std::cout << "Critical sections: " << counter << std::endl;
   }
 
-  TWIST_STRESS_TEST(Stress2, 5s) { Test(2); }
-
   TWIST_STRESS_TEST(Stress3, 5s) { Test(3); }
+
+  TWIST_STRESS_TEST(Stress5, 5s) { Test(5); }
 }
