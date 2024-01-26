@@ -18,7 +18,7 @@ jobs:
           wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc | apt-key add -
           apt-add-repository 'deb https://apt.kitware.com/ubuntu/ focal main'
           apt-get update
-          apt-get -y install git libssl1.1 build-essential ninja-build linux-tools-common linux-tools-generic binutils-dev g++-12 clang-15 clang-format-15 clang-tidy-15 make cmake build-essential libc++-15-dev libc++abi-15-dev libclang-rt-15-dev libdwarf-dev libdw-dev autoconf
+          apt-get install -y make cmake build-essential ninja-build git linux-tools-common linux-tools-generic g++-12 clang-14 clang-format-14 clang-tidy-14 libclang-rt-14-dev libc++-14-dev libc++abi-14-dev clangd-14 lldb-14 binutils-dev libdwarf-dev libdw-dev autoconf
       - name: Set Variables
         run: | 
           export CXX="/usr/bin/clang++-15"
