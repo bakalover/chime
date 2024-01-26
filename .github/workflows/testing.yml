@@ -1,72 +1,56 @@
-# name: Chime
+name: Chime
 
-# on: [push, pull_request]
+on: [push, pull_request]
 
-# jobs:
-#  Testing:
-#     runs-on: ubuntu-latest
-#     container: ubuntu:20.04
-#     steps:
-#       - name: Install Dependencies
-#         run: |
-#           apt-get update
-#           apt-get install -y software-properties-common
-#           add-apt-repository -y ppa:ubuntu-toolchain-r/test
-#           apt-get install -y wget rsync
-#           wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add -
-#           add-apt-repository -y "deb http://apt.llvm.org/focal/ llvm-toolchain-focal-15 main"
-#           wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc | apt-key add -
-#           apt-add-repository 'deb https://apt.kitware.com/ubuntu/ focal main'
-#           apt-get update
-#           apt-get -y install git libssl1.1 build-essential ninja-build linux-tools-common linux-tools-generic binutils-dev g++-12 clang-15 clang-format-15 clang-tidy-15 make cmake build-essential libc++-15-dev libc++abi-15-dev libclang-rt-15-dev libdwarf-dev libdw-dev autoconf
-#       - name: Set Variables
-#         run: | 
-#           export CXX="/usr/bin/clang++-15"
-#           export CC="/usr/bin/clang-15"
-#       - uses: actions/checkout@v2
-#       - name: ConfigureDebug
-#         run:  cmake --no-warn-unused-cli -DCMAKE_BUILD_TYPE:STRING=Debug -DTSAN:STRING= -DASAN:STRING= -DTWIST_FIBERS:STRING= -DTWIST_FAST_FIBER_QUEUES:STRING= -DTWIST_PRINT_STACKS:STRING= -DTWIST_FAULTY:STRING= -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE -DCMAKE_C_COMPILER:FILEPATH=/usr/bin/clang-15 -DCMAKE_CXX_COMPILER:FILEPATH=/usr/bin/clang++-15 -S. -B./build -G "Unix Makefiles"
-#       - name: BuildDebug
-#         run:  cmake --build ./build --config Debug --target chime chime_tests -j 10 --
-#       - name: RunDebug
-#         run: ./build/tests/chime_tests
-#       - name: ClearBuild
-#         run:  rm -rf ./build
-#       - name: ConfigureDebugASan
-#         run:  cmake --no-warn-unused-cli -DCMAKE_BUILD_TYPE:STRING=Debug -DTSAN:STRING= -DASAN:STRING=ON -DTWIST_FIBERS:STRING= -DTWIST_FAST_FIBER_QUEUES:STRING= -DTWIST_PRINT_STACKS:STRING= -DTWIST_FAULTY:STRING= -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE -DCMAKE_C_COMPILER:FILEPATH=/usr/bin/clang-15 -DCMAKE_CXX_COMPILER:FILEPATH=/usr/bin/clang++-15 -S. -B./build -G "Unix Makefiles"
-#       - name: BuildDebugASan
-#         run:  cmake --build ./build --config Debug --target chime chime_tests -j 10 --
-#       - name: RunDebugASan
-#         run: ./build/tests/chime_tests
-#       - name: ClearBuild
-#         run:  rm -rf ./build
-#       - name: ConfigureFaultyFibers
-#         run:  cmake --no-warn-unused-cli -DCMAKE_BUILD_TYPE:STRING=Debug -DTSAN:STRING= -DASAN:STRING= -DTWIST_FIBERS:STRING=ON -DTWIST_FAST_FIBER_QUEUES:STRING= -DTWIST_PRINT_STACKS:STRING=ON -DTWIST_FAULTY:STRING=ON -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE -DCMAKE_C_COMPILER:FILEPATH=/usr/bin/clang-15 -DCMAKE_CXX_COMPILER:FILEPATH=/usr/bin/clang++-15 -S. -B./build -G "Unix Makefiles"
-#       - name: BuildFaultyFibers
-#         run:  cmake --build ./build --config Debug --target chime chime_tests -j 10 --
-#       - name: RunFaultyFibers
-#         run: ./build/tests/chime_tests
-#       - name: ClearBuild
-#         run:  rm -rf ./build
-#       - name: ConfigureFaultyFibersASan
-#         run:  cmake --no-warn-unused-cli -DCMAKE_BUILD_TYPE:STRING=Debug -DTSAN:STRING= -DASAN:STRING=ON -DTWIST_FIBERS:STRING=ON -DTWIST_FAST_FIBER_QUEUES:STRING= -DTWIST_PRINT_STACKS:STRING=ON -DTWIST_FAULTY:STRING=ON -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE -DCMAKE_C_COMPILER:FILEPATH=/usr/bin/clang-15 -DCMAKE_CXX_COMPILER:FILEPATH=/usr/bin/clang++-15 -S. -B./build -G "Unix Makefiles"
-#       - name: BuildFaultyFibersASan
-#         run:  cmake --build ./build --config Debug --target chime chime_tests -j 10 --
-#       - name: RunFaultyFibersASan
-#         run: ./build/tests/chime_tests
-#       - name: ClearBuild
-#         run:  rm -rf ./build
-#       - name: ConfigureFaultyThreadsTSan
-#         run:  cmake --no-warn-unused-cli -DCMAKE_BUILD_TYPE:STRING=Debug -DTSAN:STRING=ON -DASAN:STRING= -DTWIST_FIBERS:STRING= -DTWIST_FAST_FIBER_QUEUES:STRING= -DTWIST_PRINT_STACKS:STRING= -DTWIST_FAULTY:STRING=ON -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE -DCMAKE_C_COMPILER:FILEPATH=/usr/bin/clang-15 -DCMAKE_CXX_COMPILER:FILEPATH=/usr/bin/clang++-15 -S. -B./build -G "Unix Makefiles"
-#       - name: BuildFaultyThreadsTSan
-#         run:  cmake --build ./build --config Debug --target chime chime_tests -j 10 --
-#       - name: RunFaultyThreadsTSan
-#         run: ./build/tests/chime_tests
-#       - name: ClearBuild
-#         run:  rm -rf ./build
-#       - name: ConfigureFaultyThreadsASan
-#         run:  cmake --no-warn-unused-cli -DCMAKE_BUILD_TYPE:STRING=Debug -DTSAN:STRING= -DASAN:STRING=ON -DTWIST_FIBERS:STRING= -DTWIST_FAST_FIBER_QUEUES:STRING= -DTWIST_PRINT_STACKS:STRING= -DTWIST_FAULTY:STRING=ON -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE -DCMAKE_C_COMPILER:FILEPATH=/usr/bin/clang-15 -DCMAKE_CXX_COMPILER:FILEPATH=/usr/bin/clang++-15 -S. -B./build -G "Unix Makefiles"
-#       - name: BuildFaultyThreadsASan
-#         run:  cmake --build ./build --config Debug --target chime chime_tests -j 10 --
-#       - name: RunFaultyThreadsASan
-#         run: ./build/tests/chime_tests
+jobs:
+ Testing:
+    runs-on: ubuntu-latest
+    container: ubuntu:20.04
+    steps:
+      - name: Install Dependencies
+        run: |
+          apt-get update
+          apt-get install -y software-properties-common
+          add-apt-repository -y ppa:ubuntu-toolchain-r/test
+          apt-get install -y wget rsync
+          wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add -
+          add-apt-repository -y "deb http://apt.llvm.org/focal/ llvm-toolchain-focal-15 main"
+          wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc | apt-key add -
+          apt-add-repository 'deb https://apt.kitware.com/ubuntu/ focal main'
+          apt-get update
+          apt-get -y install git libssl1.1 build-essential ninja-build linux-tools-common linux-tools-generic binutils-dev g++-12 clang-15 clang-format-15 clang-tidy-15 make cmake build-essential libc++-15-dev libc++abi-15-dev libclang-rt-15-dev libdwarf-dev libdw-dev autoconf
+      - name: Set Variables
+        run: | 
+          export CXX="/usr/bin/clang++-15"
+          export CC="/usr/bin/clang-15"
+      - uses: actions/checkout@v2
+      - name: ConfigureUnitDebug
+        run:  cmake --no-warn-unused-cli -DCMAKE_BUILD_TYPE:STRING=Debug -DTSAN:STRING= -DASAN:STRING= -DTWIST_FIBERS:STRING= -DTWIST_FAST_FIBER_QUEUES:STRING= -DTWIST_PRINT_STACKS:STRING= -DTWIST_FAULTY:STRING= -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE -DCMAKE_C_COMPILER:FILEPATH=/usr/bin/clang-15 -DCMAKE_CXX_COMPILER:FILEPATH=/usr/bin/clang++-15 -S. -B./build -G "Unix Makefiles"
+      - name: BuildUnitDebug
+        run:  cmake --build ./build --config Debug --target chime chime_unit_tests -j 10 --
+      - name: RunUnitDebug
+        run: ./build/tests/chime_unit_tests
+      - name: ConfigureUnitDebugASan
+        run:  cmake --no-warn-unused-cli -DCMAKE_BUILD_TYPE:STRING=Debug -DTSAN:STRING= -DASAN:STRING=ON -DTWIST_FIBERS:STRING= -DTWIST_FAST_FIBER_QUEUES:STRING= -DTWIST_PRINT_STACKS:STRING= -DTWIST_FAULTY:STRING= -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE -DCMAKE_C_COMPILER:FILEPATH=/usr/bin/clang-15 -DCMAKE_CXX_COMPILER:FILEPATH=/usr/bin/clang++-15 -S. -B./build -G "Unix Makefiles"
+      - name: BuildUnitDebugASan
+        run:  cmake --build ./build --config Debug --target chime chime_unit_tests -j 10 --
+      - name: RunUnitDebugASan
+        run: ./build/tests/chime_unit_tests
+      - name: ConfigureStressThreadsASan
+        run:  cmake --no-warn-unused-cli -DCMAKE_BUILD_TYPE:STRING=Debug -DTSAN:STRING= -DASAN:STRING=ON -DTWIST_FIBERS:STRING= -DTWIST_FAST_FIBER_QUEUES:STRING= -DTWIST_PRINT_STACKS:STRING= -DTWIST_FAULTY:STRING=ON -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE -DCMAKE_C_COMPILER:FILEPATH=/usr/bin/clang-15 -DCMAKE_CXX_COMPILER:FILEPATH=/usr/bin/clang++-15 -S. -B./build -G "Unix Makefiles"
+      - name: BuildStressThreadsASan
+        run:  cmake --build ./build --config Debug --target chime chime_stress_tests -j 10 --
+      - name: RunStressThreadsASan
+        run: ./build/tests/chime_stress_tests 
+      - name: ConfigureStressThreadsTSan
+        run:  cmake --no-warn-unused-cli -DCMAKE_BUILD_TYPE:STRING=Debug -DTSAN:STRING=ON -DASAN:STRING= -DTWIST_FIBERS:STRING= -DTWIST_FAST_FIBER_QUEUES:STRING= -DTWIST_PRINT_STACKS:STRING= -DTWIST_FAULTY:STRING=ON -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE -DCMAKE_C_COMPILER:FILEPATH=/usr/bin/clang-15 -DCMAKE_CXX_COMPILER:FILEPATH=/usr/bin/clang++-15 -S. -B./build -G "Unix Makefiles"
+      - name: BuildStressThreadsTSan
+        run:  cmake --build ./build --config Debug --target chime chime_stress_tests -j 10 --
+      - name: RunStressThreadsTSan
+        run: ./build/tests/chime_stress_tests 
+      - name: ConfigureStressFibersASan
+        run:  cmake --no-warn-unused-cli -DCMAKE_BUILD_TYPE:STRING=Debug -DTSAN:STRING= -DASAN:STRING=ON -DTWIST_FIBERS:STRING=ON -DTWIST_FAST_FIBER_QUEUES:STRING= -DTWIST_PRINT_STACKS:STRING=ON -DTWIST_FAULTY:STRING=ON -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE -DCMAKE_C_COMPILER:FILEPATH=/usr/bin/clang-15 -DCMAKE_CXX_COMPILER:FILEPATH=/usr/bin/clang++-15 -S. -B./build -G "Unix Makefiles"
+      - name: BuildStressFibersASan
+        run:  cmake --build ./build --config Debug --target chime chime_stress_tests -j 10 --
+      - name: RunStressFibersASan
+        run: ./build/tests/chime_stress_tests 
