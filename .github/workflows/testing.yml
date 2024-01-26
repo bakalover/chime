@@ -25,31 +25,31 @@ jobs:
           export CC="/usr/bin/clang-14"
       - uses: actions/checkout@v2
       - name: ConfigureUnitDebug
-        run:  cmake --no-warn-unused-cli -DCMAKE_BUILD_TYPE:STRING=Debug -DTSAN:STRING= -DASAN:STRING= -DTWIST_FIBERS:STRING= -DTWIST_FAST_FIBER_QUEUES:STRING= -DTWIST_PRINT_STACKS:STRING= -DTWIST_FAULTY:STRING= -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE -DCMAKE_C_COMPILER:FILEPATH=/usr/bin/clang-15 -DCMAKE_CXX_COMPILER:FILEPATH=/usr/bin/clang++-15 -S. -B./build -G "Unix Makefiles"
+        run:  cmake --no-warn-unused-cli -DCMAKE_BUILD_TYPE:STRING=Debug -DTSAN:STRING= -DASAN:STRING= -DTWIST_FIBERS:STRING= -DTWIST_FAST_FIBER_QUEUES:STRING= -DTWIST_PRINT_STACKS:STRING= -DTWIST_FAULTY:STRING= -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE -DCMAKE_C_COMPILER:FILEPATH=/usr/bin/clang-14 -DCMAKE_CXX_COMPILER:FILEPATH=/usr/bin/clang++-14 -S. -B./build -G "Unix Makefiles"
       - name: BuildUnitDebug
         run:  cmake --build ./build --config Debug --target chime chime_unit_tests -j 10 --
       - name: RunUnitDebug
         run: ./build/tests/chime_unit_tests
       - name: ConfigureUnitDebugASan
-        run:  cmake --no-warn-unused-cli -DCMAKE_BUILD_TYPE:STRING=Debug -DTSAN:STRING= -DASAN:STRING=ON -DTWIST_FIBERS:STRING= -DTWIST_FAST_FIBER_QUEUES:STRING= -DTWIST_PRINT_STACKS:STRING= -DTWIST_FAULTY:STRING= -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE -DCMAKE_C_COMPILER:FILEPATH=/usr/bin/clang-15 -DCMAKE_CXX_COMPILER:FILEPATH=/usr/bin/clang++-15 -S. -B./build -G "Unix Makefiles"
+        run:  cmake --no-warn-unused-cli -DCMAKE_BUILD_TYPE:STRING=Debug -DTSAN:STRING= -DASAN:STRING=ON -DTWIST_FIBERS:STRING= -DTWIST_FAST_FIBER_QUEUES:STRING= -DTWIST_PRINT_STACKS:STRING= -DTWIST_FAULTY:STRING= -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE -DCMAKE_C_COMPILER:FILEPATH=/usr/bin/clang-14 -DCMAKE_CXX_COMPILER:FILEPATH=/usr/bin/clang++-14 -S. -B./build -G "Unix Makefiles"
       - name: BuildUnitDebugASan
         run:  cmake --build ./build --config Debug --target chime chime_unit_tests -j 10 --
       - name: RunUnitDebugASan
         run: ./build/tests/chime_unit_tests
       - name: ConfigureStressThreadsASan
-        run:  cmake --no-warn-unused-cli -DCMAKE_BUILD_TYPE:STRING=Debug -DTSAN:STRING= -DASAN:STRING=ON -DTWIST_FIBERS:STRING= -DTWIST_FAST_FIBER_QUEUES:STRING= -DTWIST_PRINT_STACKS:STRING= -DTWIST_FAULTY:STRING=ON -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE -DCMAKE_C_COMPILER:FILEPATH=/usr/bin/clang-15 -DCMAKE_CXX_COMPILER:FILEPATH=/usr/bin/clang++-15 -S. -B./build -G "Unix Makefiles"
+        run:  cmake --no-warn-unused-cli -DCMAKE_BUILD_TYPE:STRING=Debug -DTSAN:STRING= -DASAN:STRING=ON -DTWIST_FIBERS:STRING= -DTWIST_FAST_FIBER_QUEUES:STRING= -DTWIST_PRINT_STACKS:STRING= -DTWIST_FAULTY:STRING=ON -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE -DCMAKE_C_COMPILER:FILEPATH=/usr/bin/clang-14 -DCMAKE_CXX_COMPILER:FILEPATH=/usr/bin/clang++-14 -S. -B./build -G "Unix Makefiles"
       - name: BuildStressThreadsASan
         run:  cmake --build ./build --config Debug --target chime chime_stress_tests -j 10 --
       - name: RunStressThreadsASan
         run: ./build/tests/chime_stress_tests 
       - name: ConfigureStressThreadsTSan
-        run:  cmake --no-warn-unused-cli -DCMAKE_BUILD_TYPE:STRING=Debug -DTSAN:STRING=ON -DASAN:STRING= -DTWIST_FIBERS:STRING= -DTWIST_FAST_FIBER_QUEUES:STRING= -DTWIST_PRINT_STACKS:STRING= -DTWIST_FAULTY:STRING=ON -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE -DCMAKE_C_COMPILER:FILEPATH=/usr/bin/clang-15 -DCMAKE_CXX_COMPILER:FILEPATH=/usr/bin/clang++-15 -S. -B./build -G "Unix Makefiles"
+        run:  cmake --no-warn-unused-cli -DCMAKE_BUILD_TYPE:STRING=Debug -DTSAN:STRING=ON -DASAN:STRING= -DTWIST_FIBERS:STRING= -DTWIST_FAST_FIBER_QUEUES:STRING= -DTWIST_PRINT_STACKS:STRING= -DTWIST_FAULTY:STRING=ON -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE -DCMAKE_C_COMPILER:FILEPATH=/usr/bin/clang-14 -DCMAKE_CXX_COMPILER:FILEPATH=/usr/bin/clang++-14 -S. -B./build -G "Unix Makefiles"
       - name: BuildStressThreadsTSan
         run:  cmake --build ./build --config Debug --target chime chime_stress_tests -j 10 --
       - name: RunStressThreadsTSan
         run: ./build/tests/chime_stress_tests 
       - name: ConfigureStressFibersASan
-        run:  cmake --no-warn-unused-cli -DCMAKE_BUILD_TYPE:STRING=Debug -DTSAN:STRING= -DASAN:STRING=ON -DTWIST_FIBERS:STRING=ON -DTWIST_FAST_FIBER_QUEUES:STRING= -DTWIST_PRINT_STACKS:STRING=ON -DTWIST_FAULTY:STRING=ON -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE -DCMAKE_C_COMPILER:FILEPATH=/usr/bin/clang-15 -DCMAKE_CXX_COMPILER:FILEPATH=/usr/bin/clang++-15 -S. -B./build -G "Unix Makefiles"
+        run:  cmake --no-warn-unused-cli -DCMAKE_BUILD_TYPE:STRING=Debug -DTSAN:STRING= -DASAN:STRING=ON -DTWIST_FIBERS:STRING=ON -DTWIST_FAST_FIBER_QUEUES:STRING= -DTWIST_PRINT_STACKS:STRING=ON -DTWIST_FAULTY:STRING=ON -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE -DCMAKE_C_COMPILER:FILEPATH=/usr/bin/clang-14 -DCMAKE_CXX_COMPILER:FILEPATH=/usr/bin/clang++-14 -S. -B./build -G "Unix Makefiles"
       - name: BuildStressFibersASan
         run:  cmake --build ./build --config Debug --target chime chime_stress_tests -j 10 --
       - name: RunStressFibersASan
