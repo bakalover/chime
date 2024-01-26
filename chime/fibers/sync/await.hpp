@@ -1,9 +1,10 @@
 #pragma once
+
 #include <chime/fibers/awaiter.hpp>
 #include <cstdint>
 #include <twist/ed/stdlike/atomic.hpp>
-namespace support::queue {
-using ChainAwaiterBase = fibers::ChainAwaiterBase;
+
+namespace fibers::internal {
 
 class AwaitersList {
 public:
@@ -27,7 +28,6 @@ public:
   bool IsClosed() { return CheckState(head_.load()); }
 
 private:
-  // Gratitude to Lipovsky Sealable Queue
   ChainAwaiterBase *ClosedState() { return (ChainAwaiterBase *)1; }
 
   bool CheckState(ChainAwaiterBase *state) { return (uintptr_t)state == 1; }
@@ -35,4 +35,4 @@ private:
 private:
   twist::ed::stdlike::atomic<ChainAwaiterBase *> head_{nullptr};
 };
-} // namespace support::queue
+} // namespace fibers::internal

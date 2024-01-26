@@ -48,7 +48,7 @@ private:
   bool IsChainLeader(Guard *prev) { return prev == nullptr; }
 
   bool HaveNextWaiter(Guard *owner) {
-    return !tail_.compare_exchange_strong(owner, nullptr);
+    return !tail_.compare_exchange_weak(owner, nullptr);
   }
 
   void WaitForLink(Guard *owner) {

@@ -5,7 +5,7 @@
 #include <twist/ed/stdlike/mutex.hpp>
 #include <wheels/intrusive/forward_list.hpp>
 
-namespace support::queue {
+namespace executors {
 template <typename T> class MPMCUnlimitedQueue {
 public:
   bool Put(T *val) {

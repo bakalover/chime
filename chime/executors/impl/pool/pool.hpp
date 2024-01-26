@@ -1,9 +1,9 @@
 #pragma once
 #include <cassert>
 #include <chime/executors/executor.hpp>
+#include <chime/executors/impl/pool/unlim.hpp>
 #include <chime/executors/task.hpp>
 #include <chime/support/group.hpp>
-#include <chime/support/queues/unlim.hpp>
 #include <chime/support/spinlock.hpp>
 #include <cstddef>
 #include <thread>
@@ -54,9 +54,9 @@ private:
   void PackWorkers();
 
 private:
-  support::queue::MPMCUnlimitedQueue<TaskBase> queue_;
+  MPMCUnlimitedQueue<TaskBase> queue_;
   std::vector<twist::ed::stdlike::thread> workers_;
-  support::Group group_;
+  support::WaitGroup group_;
   twist::ed::stdlike::atomic<bool> is_processing_{false};
   size_t threads_number_;
   support::SpinLock spin_;

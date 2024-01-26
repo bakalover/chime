@@ -1,5 +1,5 @@
 #include <cstddef>
-#include <chime/executors/impl/pool.hpp>
+#include <chime/executors/impl/pool/pool.hpp>
 #include <chime/executors/task.hpp>
 #include <thread>
 

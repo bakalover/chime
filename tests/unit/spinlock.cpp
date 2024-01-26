@@ -1,5 +1,4 @@
 #include <chime/support/spinlock.hpp>
-#include <chime/support/test/macro.hpp>
 #include <cstddef>
 #include <twist/ed/stdlike/thread.hpp>
 #include <wheels/test/framework.hpp>

@@ -1,10 +1,12 @@
 #pragma once
+
 #include <cstdlib>
 #include <twist/ed/stdlike/condition_variable.hpp>
 #include <twist/ed/stdlike/mutex.hpp>
+
 namespace support {
 // Group for wild threads
-class Group {
+class WaitGroup {
 public:
   void Add(size_t delta) {
     std::lock_guard<Mutex> guard{mutex_};
