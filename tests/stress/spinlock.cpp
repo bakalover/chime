@@ -9,7 +9,7 @@ TEST_SUITE(MutexLike) {
 
     Pool pool{threads};
     support::SpinLock spinlock;
-    size_t counter = 0, nIter = 17;
+    size_t counter = 0;
 
     pool.Start();
 
@@ -31,7 +31,7 @@ TEST_SUITE(MutexLike) {
     std::cout << "Critical sections: " << counter << std::endl;
   }
 
-  TWIST_STRESS_TEST(Stress3, 5s) { Test(3); }
+  TWIST_STRESS_TEST(Stress2, 5s) { Test(2); }
 
-  TWIST_STRESS_TEST(Stress4, 5s) { Test(4); }
+  TWIST_STRESS_TEST(Stress3, 5s) { Test(3); }
 }
