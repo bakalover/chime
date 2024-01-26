@@ -33,5 +33,5 @@ TEST_SUITE(MutexLike) {
 
   TWIST_STRESS_TEST(Stress2, 5s) { Test(2); }
 
-  TWIST_STRESS_TEST(Stress5, 5s) { Test(5); }
+  TWIST_STRESS_TEST(Stress5, 6s) { Test(5); }
 }
