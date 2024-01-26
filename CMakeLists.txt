@@ -1,7 +1,6 @@
 cmake_minimum_required(VERSION 3.20)
 project(chime)
-set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
+include(cmake_configuration/Compile.cmake)
 include(cmake_configuration/Sanitize.cmake)
 add_subdirectory(deps)
 add_subdirectory(chime)
