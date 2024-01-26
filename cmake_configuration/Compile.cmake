@@ -14,8 +14,10 @@ add_compile_options(-Wno-error=unused-command-line-argument)
 
 add_compile_options(-gdwarf-4)
 
-# libc++
-add_compile_options(-stdlib=libc++)
-add_link_options(-stdlib=libc++)
+# libc++ only for remote pipeline
+if(CONTAINER)
+    add_compile_options(-stdlib=libc++)
+    add_link_options(-stdlib=libc++)
+endif()
 
 message(STATUS "C++ standard: ${CMAKE_CXX_STANDARD}")
