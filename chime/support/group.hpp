@@ -5,7 +5,9 @@
 #include <twist/ed/stdlike/mutex.hpp>
 
 namespace support {
+
 // Group for wild threads
+
 class WaitGroup {
 public:
   void Add(size_t delta) {
