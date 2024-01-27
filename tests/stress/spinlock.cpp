@@ -35,7 +35,7 @@ TEST_SUITE(MutexLike) {
     std::cout << "Critical sections: " << counter << std::endl;
   }
 
-  TWIST_STRESS_TEST(Stress3, 5s) { Test(3); }
+  TWIST_STRESS_TEST(Stress2, 5s) { Test(2); }
 
-  TWIST_STRESS_TEST(Stress5, 5s) { Test(5); }
+  TWIST_STRESS_TEST(Stress3, 5s) { Test(3); }
 }

@@ -9,7 +9,7 @@ struct TestEnv : twist::rt::IEnv {
   size_t Seed() const override { return wheels::test::TestHash(); }
 
   bool KeepRunning() const override {
-    static const auto kSafeMargin = 1500ms;
+    static const auto kSafeMargin = 1000ms;
     return wheels::test::TestTimeLeft() > kSafeMargin;
   }
 
