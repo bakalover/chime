@@ -1,5 +1,7 @@
 #pragma once
+
 #include <twist/ed/stdlike/atomic.hpp>
+
 namespace support {
 class SpinLock {
 public:
@@ -7,7 +9,7 @@ public:
     friend class SpinLock;
 
   public:
-    explicit Guard(SpinLock &host) : host_(host) { host_.Acquire(this); }
+    explicit Guard(SpinLock &host) : host_{host} { host_.Acquire(this); }
 
     ~Guard() { host_.Release(this); }
 

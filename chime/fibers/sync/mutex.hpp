@@ -7,7 +7,7 @@
 #include <cstddef>
 #include <twist/ed/stdlike/atomic.hpp>
 
-namespace fibers{
+namespace fibers {
 
 class Mutex {
 private:
@@ -37,7 +37,7 @@ public:
   void Unlock() {
     while (true) {
       // Prerequisite: head_ != Unlocked =>
-      // => head_ ->  SingleLocked or Queue
+      // => head_ \in {SingleLocked; Queue}
       State current_head = GetCurrent();
 
       assert(!IsUnlocked(current_head));
@@ -103,4 +103,4 @@ private:
   twist::ed::stdlike::atomic<State> head_{nullptr};
 };
 
-} // namespace fibers::sync
+} // namespace fibers

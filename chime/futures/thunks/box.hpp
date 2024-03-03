@@ -1,5 +1,6 @@
 #pragma once
 
+#include "chime/support/life/ptr.hpp"
 #include <chime/futures/model/consumer.hpp>
 #include <chime/futures/model/thunk.hpp>
 #include <chime/futures/traits/value_of.hpp>
@@ -18,7 +19,7 @@ template <typename T> struct IBox : support::LifeManagableBase<IBox<T>> {
   virtual void Start(IConsumer<T> *consumer) = 0;
 };
 
-template <typename T> using ThunkPtr = IBox<T> *;
+template <typename T> using ThunkPtr = support::Ptr<IBox<T>> *;
 
 //=========================================================
 

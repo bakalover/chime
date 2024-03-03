@@ -9,7 +9,7 @@ struct TestEnv : twist::rt::IEnv {
   size_t Seed() const override { return wheels::test::TestHash(); }
 
   bool KeepRunning() const override {
-    static const auto kSafeMargin = 1500ms;
+    static const auto kSafeMargin = 500ms;
     return wheels::test::TestTimeLeft() > kSafeMargin;
   }
 
@@ -49,3 +49,19 @@ inline twist::rt::IEnv *TestEnv() {
     ::twist::rt::Run(TestEnv(), [] { TwistTestRoutine##name(); });             \
   }                                                                            \
   void TwistTestRoutine##name()
+
+//================================================================================
+
+#define TWIST_TEST_REPEAT(name, budget)                                        \
+  void TwistIteratedTestRoutine##name();                                       \
+  TEST(name, wheels::test::TestOptions().TimeLimit(budget)) {                  \
+    auto *env = TestEnv();                                                     \
+                                                                               \
+    twist::rt::Run(env, [env] {                                                \
+      twist::test::Repeat repeat{};                                            \
+      while (repeat()) {                                                       \
+        TwistIteratedTestRoutine##name();                                      \
+      }                                                                        \
+    });                                                                        \
+  }                                                                            \
+  void TwistIteratedTestRoutine##name()

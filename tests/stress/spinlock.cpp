@@ -1,8 +1,9 @@
-#include "macro.hpp"
-#include "twist/ed/stdlike/thread.hpp"
-#include "twist/rt/run.hpp"
 #include <chime/support/spinlock.hpp>
+#include <tests/stress/macro.hpp>
+#include <twist/ed/stdlike/thread.hpp>
+#include <twist/rt/run.hpp>
 #include <twist/test/budget.hpp>
+#include <twist/test/executor.hpp>
 #include <vector>
 
 using namespace std::chrono_literals;
@@ -31,7 +32,7 @@ TEST_SUITE(MutexLike) {
     for (auto &t : contenders) {
       t.join();
     }
-    
+
     std::cout << "Critical sections: " << counter << std::endl;
   }
 

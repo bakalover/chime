@@ -4,7 +4,7 @@
 #include <chime/fibers/awaiter.hpp>
 #include <chime/fibers/fiber.hpp>
 #include <chime/fibers/handle.hpp>
-#include <chime/fibers/sync/await.hpp>
+#include <chime/fibers/sync/await_list.hpp>
 #include <chime/support/spinlock.hpp>
 
 namespace fibers {
@@ -63,7 +63,7 @@ private:
   void WakeUpFiber(FiberHandle handle) { handle.Schedule(); }
 
 private:
-  internal::AwaitersList wait_queue_;
+  internal::AwaitList wait_queue_;
   support::SpinLock spinlock_;
 };
 

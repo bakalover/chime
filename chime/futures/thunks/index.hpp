@@ -5,6 +5,7 @@
 #include <chime/futures/types/future.hpp>
 #include <chime/result/make/err.hpp>
 #include <chime/result/make/ok.hpp>
+#include <cstddef>
 #include <tuple>
 
 namespace futures::thunks {
@@ -12,8 +13,7 @@ namespace futures::thunks {
 template <SomeFuture Producer>
 struct [[nodiscard]] Index final
     : private IConsumer<traits::ValueOf<Producer>> {
-  explicit Index(size_t index, Producer &&producer)
-      : index_{index}, producer_{std::move(producer)} {}
+  explicit Index(Producer &&producer) : producer_{std::move(producer)} {}
 
   using ProducerType = traits::ValueOf<Producer>;
 
@@ -27,6 +27,9 @@ struct [[nodiscard]] Index final
     consumer_ = consumer;
     producer_.Start(this);
   }
+
+  // Before Start()!!!!
+  void SetIndex(size_t index) { index_ = index; }
 
 private:
   void Consume(Output<ProducerType> output) noexcept override {

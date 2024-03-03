@@ -24,4 +24,4 @@ private:
   Event event_;
 };
 
-} // namespace fibers::sync
+} // namespace fibers

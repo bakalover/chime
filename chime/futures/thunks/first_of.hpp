@@ -2,6 +2,7 @@
 #include <chime/executors/impl/inline.hpp>
 #include <chime/futures/model/consumer.hpp>
 #include <chime/futures/model/output.hpp>
+#include <chime/futures/pack/pack.hpp>
 #include <chime/futures/thunks/box.hpp>
 #include <chime/futures/thunks/index.hpp>
 #include <chime/futures/traits/value_of.hpp>
@@ -11,34 +12,32 @@
 #include <cstdint>
 #include <exception>
 #include <optional>
+#include <tuple>
 #include <twist/ed/stdlike/atomic.hpp>
+#include <utility>
 
 namespace futures::thunks {
 
-template <SomeFuture LeftProducer, SomeFuture RightProducer>
+template <typename ParamPack>
 struct [[nodiscard]] First final
-    : private IConsumer<traits::ValueOf<LeftProducer>>,
-      public internal::IBox<traits::ValueOf<LeftProducer>> {
-  explicit First(LeftProducer &&left, RightProducer &&right)
-      : left_{std::move(left)}, right_{std::move(right)} {}
+    : private IConsumer<typename ParamPack::ValueType>,
+      public internal::IBox<typename ParamPack::ValueType> {
+  explicit First(ParamPack pack) : pack_{std::move(pack)} {}
 
-  using ValueType = traits::ValueOf<LeftProducer>;
+  using ValueType = typename ParamPack::ValueType;
 
   // Non-copyable
   First(const First &) = delete;
   First &operator=(const First &) = delete;
 
   // Movable
-  First(First &&other)
-      : left_(std::move(other.left_)), right_(std::move(other.right_)) {}
+  First(First &&other) : pack_{std::move(other.pack_)} {}
   First &operator=(First &&other) = default;
 
   void Start(IConsumer<ValueType> *consumer) override {
     consumer_ = consumer;
-    this->ExtendLife();
-    this->ExtendLife();
-    left_.Start(this);
-    right_.Start(this);
+    this->ExtendLife(pack_.Size());
+    pack_.Start(this);
   }
 
 private:
@@ -46,16 +45,16 @@ private:
     {
       support::SpinLock::Guard guard{spin_};
       if (output.result.has_value()) {
-        if (state_ % 2 == 0) {
+        if (!state_.second) {
+          state_.second = true;
           Complete(std::move(output));
         }
-        ++state_;
       } else {
-        if (state_ == 2) { // 2 + 2 = 4 aka last Error
+        if (state_.first == pack_.Size() - 1) {
           Complete(std::move(output));
         }
-        state_ += 2;
       }
+      state_.first++;
     }
     this->ShortenLife();
   }
@@ -65,10 +64,9 @@ private:
     consumer_->Complete(std::move(output));
   }
 
-  LeftProducer left_;
-  RightProducer right_;
+  ParamPack pack_;
   IConsumer<ValueType> *consumer_;
-  uint8_t state_{0};
+  std::pair<int64_t, bool> state_{0, false};
   support::SpinLock spin_;
 };
 } // namespace futures::thunks

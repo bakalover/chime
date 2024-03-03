@@ -1,4 +1,5 @@
 
+#include <wheels/core/panic.hpp>
 #include <chime/fibers/coro/coro.hpp>
 #include <chime/fibers/routine.hpp>
 
@@ -23,6 +24,6 @@ void Coroutine::Suspend() { me_.SwitchTo(caller_); }
 void Coroutine::Complete() {
   is_complete_ = true;
   me_.SwitchTo(caller_);
-  std::abort();
+  WHEELS_PANIC("Violation coroutine lifecycle!");
 }
-} // namespace fibers::coro
+} // namespace fibers

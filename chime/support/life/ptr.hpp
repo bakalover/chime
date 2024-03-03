@@ -14,7 +14,7 @@ template <typename T> class Ptr {
     static_assert(std::is_base_of_v<T, U>);
     base_->ExtendLife();
   }
-  
+
   Ptr &operator=(const Ptr &other) {
     base_ = other.base_;
     base_->ExtendLife();

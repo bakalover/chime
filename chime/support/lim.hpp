@@ -1,13 +1,14 @@
 #pragma once
-#include <cstdlib>
-#include <deque>
-#include <chime/support/spinlock.hpp>
+
 #include <chime/support/semaphore.hpp>
+#include <chime/support/spinlock.hpp>
+#include <cstdlib>
 #include <wheels/intrusive/forward_list.hpp>
+
 namespace support::queue {
 template <typename T> class MPMCLimitedQueue {
 public:
-  explicit MPMCLimitedQueue(size_t cap) : produce_(cap), consume_(0) {}
+  explicit MPMCLimitedQueue(size_t cap) : produce_{cap}, consume_{0} {}
 
   void Put(T *obj) {
     Token t(std::move(produce_.Acquire()));

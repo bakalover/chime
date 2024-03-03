@@ -6,7 +6,7 @@
 
 namespace fibers::internal {
 
-class AwaitersList {
+class AwaitList {
 public:
   bool TryAdd(ChainAwaiterBase *waiter) {
     while (true) {
