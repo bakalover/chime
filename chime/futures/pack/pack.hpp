@@ -4,6 +4,8 @@
 #include <chime/futures/thunks/index.hpp>
 #include <chime/futures/traits/value_of.hpp>
 #include <chime/futures/types/future.hpp>
+#include <cstddef>
+#include <utility>
 
 namespace futures {
 template <typename... Producers> class ParamPack {
@@ -13,11 +15,11 @@ template <typename... Producers> class ParamPack {
   using First = std::tuple_element_t<0, Pack>;
 
 public:
-  using ValueType = traits::ValueOf<First>;
+  using ValueType = std::tuple<size_t, traits::ValueOf<First>>;
 
 public:
   ParamPack(Producers &&...prods)
-      : futures_{std::forward<Producers>(prods)...} {
+      : producers_{std::forward<Producers>(prods)...} {
     SetIndices();
   }
 
@@ -28,7 +30,7 @@ public:
       (..., std::move(prods).Start(consumer));
     };
 
-    std::apply(consume_set, futures_);
+    std::apply(consume_set, producers_);
   }
 
   size_t Size() { return sizeof...(Producers); }
@@ -39,14 +41,14 @@ private:
     auto index_set = [&index](auto &&...prods) {
       (..., std::move(prods).SetIndex(index++));
     };
-    std::apply(index_set, futures_);
+    std::apply(index_set, producers_);
   }
 
 private:
-  std::tuple<Producers...> futures_;
+  std::tuple<Producers...> producers_;
 };
 
 template <SomeFuture... Producers> auto FormPack(Producers &&...prods) {
-  return FormPack(thunks::Index{std::forward<Producers>(prods)}...);
+  return ParamPack{thunks::Index{std::forward<Producers>(prods)}...};
 }
 } // namespace futures

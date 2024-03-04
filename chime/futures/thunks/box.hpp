@@ -19,7 +19,7 @@ template <typename T> struct IBox : support::LifeManagableBase<IBox<T>> {
   virtual void Start(IConsumer<T> *consumer) = 0;
 };
 
-template <typename T> using ThunkPtr = support::Ptr<IBox<T>> *;
+template <typename T> using ThunkPtr = support::Ptr<IBox<T>>;
 
 //=========================================================
 
@@ -57,7 +57,7 @@ ThunkPtr<traits::ValueOf<Thunk>> WrapThunk(Thunk &&thunk) {
 template <typename T> struct [[nodiscard]] Boxed final : private IConsumer<T> {
   using ValueType = T;
 
-  explicit Boxed(internal::ThunkPtr<T> wrapped_ptr) : wrapped_{wrapped_ptr} {}
+  explicit Boxed(internal::ThunkPtr<T> wrapped_ptr) : wrapped_{std::move(wrapped_ptr)} {}
 
   // Auto-boxing
   template <Thunk Thunk>
@@ -79,7 +79,6 @@ template <typename T> struct [[nodiscard]] Boxed final : private IConsumer<T> {
 
 private:
   void Consume(Output<ValueType> output) noexcept override {
-    wrapped_->ShortenLife();
     consumer_->Complete(std::move(output));
   }
 

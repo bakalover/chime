@@ -5,6 +5,7 @@
 
 namespace support {
 template <typename T> class Ptr {
+public:
   explicit Ptr(T *base) : base_{base} { base->ExtendLife(); }
 
   Ptr(Ptr &&) = default;

@@ -66,7 +66,7 @@ private:
 
   ParamPack pack_;
   IConsumer<ValueType> *consumer_;
-  std::pair<int64_t, bool> state_{0, false};
+  std::pair<size_t, bool> state_{0, false};
   support::SpinLock spin_;
 };
 } // namespace futures::thunks
