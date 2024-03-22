@@ -94,15 +94,6 @@ TaskBase *Worker::TryPickTask() {
   return nullptr;
 }
 
-void Worker::Work() {
-
-  twister_.seed(host_.random_());
-
-  while (TaskBase *next = PickTask()) {
-    next->Run();
-  }
-}
-
 void Worker::PushToLifoSlot(TaskBase *task) {
   TaskBase *some = lifo_slot_.exchange(task, std::memory_order_release);
   if (some != nullptr) {
@@ -118,10 +109,17 @@ void Worker::PushToLocalQueue(TaskBase *task) {
 
 void Worker::OffloadTasksToGlobalQueue(TaskBase *overflow) {
   size_t offload_size = local_tasks_.Size() / 2 + 1;
-  TaskBase *offload_buffer[kLocalQueueCapacity];
-
-  local_tasks_.Grab({offload_buffer, offload_size});
-  host_.global_tasks_.Offload(offload_buffer);
+  size_t grab_batch_size = local_tasks_.Grab({tranfer_buffer_, offload_size});
+  tranfer_buffer_[grab_batch_size++] = overflow;
+  host_.global_tasks_.Offload({tranfer_buffer_, grab_batch_size});
 }
 
+void Worker::Work() {
+
+  twister_.seed(host_.random_());
+
+  while (TaskBase *next = PickTask()) {
+    next->Run();
+  }
+}
 } // namespace executors

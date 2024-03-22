@@ -47,19 +47,19 @@ public:
   Scheduler &Host() const { return host_; }
 
 private:
-  // Use in Push
+  // Push
   void PushToLifoSlot(TaskBase *task);
   void PushToLocalQueue(TaskBase *task);
   void OffloadTasksToGlobalQueue(TaskBase *overflow);
 
-  // Use in TryPickTask
+  // TryPickTask
   TaskBase *TryPickTaskFromLifoSlot();
   TaskBase *TryStealTasks(size_t series);
   TaskBase *TryGrabTasksFromGlobalQueue();
   TaskBase *TryPickTaskFromGlobalQueue();
   TaskBase *TryPickTaskFromLocalQueue();
 
-  // Use in PickTask
+  // PickTask
   TaskBase *TryPickTask();
   TaskBase *TryPickTaskBeforePark();
 
