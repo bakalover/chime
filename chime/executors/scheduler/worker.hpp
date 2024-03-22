@@ -1,9 +1,9 @@
 #pragma once
 
 #include <chime/executors/scheduler/hint.hpp>
-#include <chime/executors/task.hpp>
-#include <chime/executors/scheduler/queues/work_stealing_queue.hpp>
 #include <chime/executors/scheduler/metrics.hpp>
+#include <chime/executors/scheduler/queues/work_stealing_queue.hpp>
+#include <chime/executors/task.hpp>
 
 #include <twist/ed/stdlike/atomic.hpp>
 #include <twist/ed/stdlike/thread.hpp>
@@ -56,6 +56,8 @@ private:
   TaskBase *TryPickTaskFromLifoSlot();
   TaskBase *TryStealTasks(size_t series);
   TaskBase *TryGrabTasksFromGlobalQueue();
+  TaskBase *TryPickTaskFromGlobalQueue();
+  TaskBase *TryPickTaskFromLocalQueue();
 
   // Use in PickTask
   TaskBase *TryPickTask();
@@ -66,6 +68,7 @@ private:
 
   // Run Loop
   void Work();
+  bool NextIter(); // true <=> (iter_ % 61) == 0
 
 private:
   Scheduler &host_;
@@ -79,6 +82,9 @@ private:
 
   // Local queue
   WorkStealingQueue<TaskBase, kLocalQueueCapacity> local_tasks_;
+
+  // Buffer for transfer tasks between queues
+  TaskBase *tranfer_buffer_[kLocalQueueCapacity];
 
   // LIFO slot
   twist::ed::stdlike::atomic<TaskBase *> lifo_slot_{nullptr};

@@ -20,10 +20,8 @@ TEST_SUITE(MutexLike) {
       contenders.emplace_back([&] {
         while (twist::test::KeepRunning()) {
           {
-            {
-              support::SpinLock::Guard guard{spinlock};
-              ++counter;
-            }
+            support::SpinLock::Guard guard{spinlock};
+            ++counter;
           }
         }
       });

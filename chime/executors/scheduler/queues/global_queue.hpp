@@ -59,7 +59,7 @@ public:
 
 private:
   wheels::IntrusiveForwardList<TaskBase> queue_;
-  support::SpinLock spinlock_;
+  support::SpinLock spinlock_; // Need Lock-free!!
 };
 
 } // namespace executors
