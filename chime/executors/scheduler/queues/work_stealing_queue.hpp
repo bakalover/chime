@@ -53,18 +53,17 @@ public:
   };
 
   void PushMany(std::span<T *> buffer) {
-    size_t curr_head = head_.load(); // Ordering !!
-    size_t curr_tail = tail_.load(); // Ordering !!
+    // size_t curr_head = head_.load(); // Ordering !!
+    size_t curr_tail = tail_.load(std::memory_order_relaxed); 
 
     for (size_t i = 0; i < buffer.size(); ++i) {
-      buffer[GetIndex(curr_tail + i)].item.store(buffer[i]); // Ordering !!
+      buffer[GetIndex(curr_tail + i)].item.store(buffer[i], std::memory_order_release);
     }
 
     tail_.store(curr_tail + buffer.size(), std::memory_order::release);
   }
 
   // Returns nullptr if queue is empty
-  // TODO: nullptr -> Option<T>
   T *TryPop() {
     while (true) {
       size_t curr_head = head_.load(std::memory_order_acquire);
@@ -109,4 +108,4 @@ private:
   // Circle buffer
   std::array<Slot, Cap> buffer_;
 };
-} // namespace support::queue
+} // namespace executors
