@@ -1,9 +1,11 @@
+#include "chime/executors/scheduler/coordinator.hpp"
 #include "chime/executors/scheduler/worker.hpp"
 #include <chime/executors/scheduler/scheduler.hpp>
 
 namespace executors {
 
-Scheduler::Scheduler(size_t threads) : threads_{threads} {
+Scheduler::Scheduler(size_t threads)
+    : threads_{threads}, coordinator_{threads} {
   // Not implemented
 }
 
