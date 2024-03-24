@@ -1,5 +1,5 @@
 #pragma once
-#include <chime/executors/impl/inline.hpp>
+#include <chime/executors/inline.hpp>
 #include <chime/futures/model/consumer.hpp>
 #include <chime/futures/model/output.hpp>
 #include <chime/futures/pack/pack.hpp>

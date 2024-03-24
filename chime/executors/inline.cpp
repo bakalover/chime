@@ -1,4 +1,4 @@
-#include <chime/executors/impl/inline.hpp>
+#include <chime/executors/inline.hpp>
 namespace executors {
 
 class InlineExecutor : public IExecutor {

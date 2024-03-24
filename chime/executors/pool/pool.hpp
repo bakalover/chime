@@ -1,7 +1,7 @@
 #pragma once
 #include <cassert>
 #include <chime/executors/executor.hpp>
-#include <chime/executors/impl/pool/unlim.hpp>
+#include <chime/executors/pool/unlim.hpp>
 #include <chime/executors/task.hpp>
 #include <chime/support/group.hpp>
 #include <chime/support/spinlock.hpp>

@@ -19,10 +19,10 @@ class Scheduler;
 
 class Worker {
 private:
-#if !defined(TWIST_FAULTY)
-  static const size_t kLocalQueueCapacity = 256;
-#else
+#if defined(TWIST_FAULTY)
   static const size_t kLocalQueueCapacity = 17;
+#else
+  static const size_t kLocalQueueCapacity = 256;
 #endif
 
 public:

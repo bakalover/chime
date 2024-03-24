@@ -1,6 +1,6 @@
 
 #include <cstddef>
-#include <chime/executors/impl/strand.hpp>
+#include <chime/executors/strand.hpp>
 
 namespace executors {
 namespace internal {

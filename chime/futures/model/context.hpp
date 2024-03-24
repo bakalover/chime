@@ -1,7 +1,7 @@
 #pragma once
 
 #include <chime/executors/executor.hpp>
-#include <chime/executors/impl/inline.hpp>
+#include <chime/executors/inline.hpp>
 
 namespace futures {
 

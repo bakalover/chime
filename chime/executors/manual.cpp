@@ -1,4 +1,4 @@
-#include <chime/executors/impl/manual.hpp>
+#include <chime/executors/manual.hpp>
 
 namespace executors {
 void ManualExecutor::Submit(TaskBase *task) { queue_.PushBack(task); }
