@@ -2,7 +2,7 @@
 
 #include <cstdlib>
 
-namespace executors {
+namespace executors::scheduler {
 
 struct WorkerMetrics {
 };
@@ -10,4 +10,4 @@ struct WorkerMetrics {
 struct PoolMetrics : WorkerMetrics {
 };
 
-} // namespace executors
+} // namespace executors::scheduler

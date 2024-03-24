@@ -12,7 +12,7 @@
 
 #include <deque>
 
-namespace executors {
+namespace executors::scheduler {
 
 // Scalable work-stealing scheduler for short-lived tasks
 
@@ -48,4 +48,4 @@ class Scheduler : public IExecutor {
   // ???
 };
 
-} // namespace executors
+} // namespace executors::scheduler

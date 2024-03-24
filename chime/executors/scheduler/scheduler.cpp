@@ -2,7 +2,7 @@
 #include "chime/executors/scheduler/worker.hpp"
 #include <chime/executors/scheduler/scheduler.hpp>
 
-namespace executors {
+namespace executors::scheduler {
 
 Scheduler::Scheduler(size_t threads)
     : threads_{threads}, coordinator_{threads} {
@@ -38,4 +38,4 @@ Scheduler *Scheduler::Current() {
   }
 }
 
-} // namespace executors
+} // namespace executors::scheduler

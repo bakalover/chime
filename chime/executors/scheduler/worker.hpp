@@ -2,8 +2,10 @@
 
 #include <chime/executors/scheduler/hint.hpp>
 #include <chime/executors/scheduler/metrics.hpp>
+#include <chime/executors/scheduler/park.hpp>
 #include <chime/executors/scheduler/queues/work_stealing_queue.hpp>
 #include <chime/executors/task.hpp>
+#include <wheels/intrusive/forward_list.hpp>
 
 #include <twist/ed/stdlike/atomic.hpp>
 #include <twist/ed/stdlike/thread.hpp>
@@ -13,11 +15,11 @@
 #include <random>
 #include <span>
 
-namespace executors {
+namespace executors::scheduler {
 
 class Scheduler;
 
-class Worker {
+class Worker : public wheels::IntrusiveForwardListNode<Worker> {
 private:
 #if defined(TWIST_FAULTY)
   static const size_t kLocalQueueCapacity = 17;
@@ -80,22 +82,19 @@ private:
   // Scheduling iteration
   size_t iter_ = 0;
 
-  // Local queue
   WorkStealingQueue<TaskBase, kLocalQueueCapacity> local_tasks_;
 
   // Buffer for transfer tasks between queues
   TaskBase *tranfer_buffer_[kLocalQueueCapacity];
 
-  // LIFO slot
   twist::ed::stdlike::atomic<TaskBase *> lifo_slot_{nullptr};
 
   // Deterministic pseudo-randomness for work stealing
   std::mt19937_64 twister_;
 
-  // Parking lot
-  twist::ed::stdlike::atomic<uint32_t> wakeups_{0};
+  ParkingLot parking_lot_;
 
   WorkerMetrics metrics_;
 };
 
-} // namespace executors
+} // namespace executors::scheduler

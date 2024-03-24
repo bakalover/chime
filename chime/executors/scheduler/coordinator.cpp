@@ -1,9 +1,8 @@
 #include <chime/executors/scheduler/coordinator.hpp>
+#include <chime/support/spinlock.hpp>
 #include <cstdint>
 
-namespace executors {
-
-uint64_t Coordinator::NumSearch() { return state_.load() & search_mask_; }
+namespace executors::scheduler {
 
 bool Coordinator::TrySpin() {
   auto state = state_.load();
@@ -16,7 +15,28 @@ bool Coordinator::TrySpin() {
 
 bool Coordinator::StopSpin() {
   auto state = state_.fetch_sub(1);
-  return (state & search_mask_) == 1;
+  return (state & search_mask_) == 1; // Last spinner
 }
 
-} // namespace executors
+void Coordinator::BecomeIdle(Worker *worker) {
+  support::SpinLock::Guard guard{spinlock_};
+  idle_workers_.PushBack(worker);
+  state_.fetch_add(idle_inc_);
+}
+
+void Coordinator::BecomeActive() { state_.fetch_sub(idle_inc_); }
+
+bool Coordinator::IsAllAsleep() {
+  auto state = state_.load();
+  return ((state & idle_mask_) > 0) && ((state & search_mask_) == 0);
+}
+
+void Coordinator::WakeOne() {
+  support::SpinLock::Guard guard{spinlock_};
+  if (Worker *worker = idle_workers_.PopFront()) {
+    state_.fetch_sub(idle_inc_);
+    worker->Wake(); // Maybe wake or not (cause not parked in 2-phase parking)
+  }
+}
+
+} // namespace executors::scheduler

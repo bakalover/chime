@@ -1,12 +1,12 @@
-#include "chime/executors/task.hpp"
 #include <atomic>
 #include <chime/executors/scheduler/scheduler.hpp>
 #include <chime/executors/scheduler/worker.hpp>
+#include <chime/executors/task.hpp>
 #include <cstddef>
 #include <twist/ed/local/ptr.hpp>
 #include <twist/rt/layer/strand/local/ptr.hpp>
 
-namespace executors {
+namespace executors::scheduler {
 
 TWISTED_THREAD_LOCAL_PTR(Worker, curr_worker)
 
@@ -62,6 +62,11 @@ TaskBase *Worker::TryGrabTasksFromGlobalQueue() {
   return nullptr;
 }
 
+TaskBase *Worker::TryStealTasks(size_t series) {
+  // TODO
+  return nullptr;
+}
+
 TaskBase *Worker::TryPickTask() {
   TaskBase *next;
 
@@ -87,9 +92,14 @@ TaskBase *Worker::TryPickTask() {
     return next;
   }
 
-  // * Work stealing
-  // Then
-  //   Park worker
+  if (host_.coordinator_.TrySpin()) {
+    TaskBase *next = TryStealTasks(3);
+    bool is_last = host_.coordinator_.StopSpin();
+    if (next != nullptr && is_last) {
+      host_.coordinator_.WakeOne();
+    }
+    return next;
+  }
 
   return nullptr;
 }
@@ -114,6 +124,8 @@ void Worker::OffloadTasksToGlobalQueue(TaskBase *overflow) {
   host_.global_tasks_.Offload({tranfer_buffer_, grab_batch_size});
 }
 
+void Worker::Wake() { parking_lot_.Unpark(); }
+
 void Worker::Work() {
 
   twister_.seed(host_.random_());
@@ -122,4 +134,4 @@ void Worker::Work() {
     next->Run();
   }
 }
-} // namespace executors
+} // namespace executors::scheduler
