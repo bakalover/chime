@@ -63,8 +63,36 @@ TaskBase *Worker::TryGrabTasksFromGlobalQueue() {
 }
 
 TaskBase *Worker::TryStealTasks(size_t series) {
-  // TODO
-  return nullptr;
+  TaskBase **buff_addr = &tranfer_buffer_[0];
+
+  size_t steal_count = 5;
+  size_t actually_stolen = 0;
+
+  for (size_t i = 0; i < series; ++i) {
+    if (steal_count == 0) {
+      break;
+    } else {
+      for (size_t j = 0; j < host_.threads_; ++j) {
+        if (steal_count == 0) {
+          break;
+        } else {
+          size_t target = (twister_() + i) % host_.threads_;
+          size_t stolen =
+              host_.workers_[target].StealTasks({buff_addr, steal_count});
+          steal_count -= stolen;
+          buff_addr += stolen;
+          actually_stolen += stolen;
+        }
+      }
+    }
+  }
+  if (actually_stolen == 0) {
+    return nullptr;
+  }
+  if (actually_stolen != 1) {
+    local_tasks_.PushMany({&tranfer_buffer_[0] + 1, actually_stolen - 1});
+  }
+  return buff_addr[0];
 }
 
 TaskBase *Worker::TryPickTask() {
