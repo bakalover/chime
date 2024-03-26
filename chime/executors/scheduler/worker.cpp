@@ -1,4 +1,4 @@
-#include "chime/executors/scheduler/park.hpp"
+#include <chime/executors/scheduler/park.hpp>
 #include <atomic>
 #include <chime/executors/scheduler/scheduler.hpp>
 #include <chime/executors/scheduler/worker.hpp>
@@ -162,7 +162,10 @@ TaskBase *Worker::PickTask() {
 
   ParkingLot::Epoch epoch = parking_lot_.AnnounceEpoch();
 
+  host_.coordinator_.BecomeIdle(this);
+
   if ((next = TryPickTaskBeforePark()) != nullptr) {
+    host_.coordinator_.BecomeActive();
     return next;
   }
 

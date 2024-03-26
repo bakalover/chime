@@ -14,8 +14,8 @@ namespace executors::scheduler {
 
 static const uint64_t idle_shift_ = 32;
 static const uint64_t idle_inc_ = (uint64_t)1 << idle_shift_;
-static const uint64_t search_mask_ = ((uint64_t)1 << idle_shift_) - 1;
-static const uint64_t idle_mask_ = !search_mask_;
+static const uint64_t spin_mask_ = ((uint64_t)1 << idle_shift_) - 1;
+static const uint64_t idle_mask_ = !spin_mask_;
 
 class Coordinator {
 
@@ -31,12 +31,8 @@ public:
   void WakeOne();
 
 private:
-  uint64_t NumSearch();
-
-private:
   support::SpinLock spinlock_;                        //  -> LockFree Intrusive
   wheels::IntrusiveForwardList<Worker> idle_workers_; //  -> LockFree Intrusive
-
   twist::ed::stdlike::atomic<std::uint64_t> state_{0};
   const size_t threads_;
 };

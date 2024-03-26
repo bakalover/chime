@@ -6,7 +6,7 @@ namespace executors::scheduler {
 
 bool Coordinator::TrySpin() {
   auto state = state_.load();
-  if ((state & search_mask_) * 2 >= threads_) {
+  if ((state & spin_mask_) * 2 >= threads_) {
     return false;
   }
   state_.fetch_add(1);
@@ -15,7 +15,7 @@ bool Coordinator::TrySpin() {
 
 bool Coordinator::StopSpin() {
   auto state = state_.fetch_sub(1);
-  return (state & search_mask_) == 1; // Last spinner
+  return (state & spin_mask_) == 1; // Last spinner
 }
 
 void Coordinator::BecomeIdle(Worker *worker) {
@@ -28,7 +28,7 @@ void Coordinator::BecomeActive() { state_.fetch_sub(idle_inc_); }
 
 bool Coordinator::IsAllAsleep() {
   auto state = state_.load();
-  return ((state & idle_mask_) > 0) && ((state & search_mask_) == 0);
+  return ((state & idle_mask_) > 0) && ((state & spin_mask_) == 0);
 }
 
 void Coordinator::WakeOne() {
