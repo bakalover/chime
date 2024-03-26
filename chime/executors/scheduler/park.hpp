@@ -10,7 +10,7 @@ class ParkingLot {
 public:
   using Epoch = uint32_t;
 
-  Epoch AnounceEpoch();
+  Epoch AnnounceEpoch();
   void ParkIfInEpoch(Epoch epoch);
   void Unpark();
 

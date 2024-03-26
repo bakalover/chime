@@ -4,7 +4,7 @@
 
 namespace executors::scheduler {
 
-uint32_t ParkingLot::AnounceEpoch() { return epoch_.load(); } // ~~Begin
+uint32_t ParkingLot::AnnounceEpoch() { return epoch_.load(); } // ~~Begin
 
 void ParkingLot::ParkIfInEpoch(uint32_t epoch) { // ~~Commit
   twist::ed::futex::Wait(epoch_, epoch);

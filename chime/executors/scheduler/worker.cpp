@@ -1,3 +1,4 @@
+#include "chime/executors/scheduler/park.hpp"
 #include <atomic>
 #include <chime/executors/scheduler/scheduler.hpp>
 #include <chime/executors/scheduler/worker.hpp>
@@ -120,8 +121,12 @@ TaskBase *Worker::TryPickTask() {
     return next;
   }
 
+  // Stealing (we are STARVING)
   if (host_.coordinator_.TrySpin()) {
-    TaskBase *next = TryStealTasks(3);
+
+    static const size_t series = 4;
+    TaskBase *next = TryStealTasks(series);
+
     bool is_last = host_.coordinator_.StopSpin();
     if (next != nullptr && is_last) {
       host_.coordinator_.WakeOne();
@@ -130,6 +135,38 @@ TaskBase *Worker::TryPickTask() {
   }
 
   return nullptr;
+}
+
+TaskBase *Worker::TryPickTaskBeforePark() {
+  TaskBase *next;
+
+  if ((next = TryPickTaskFromGlobalQueue()) != nullptr) {
+    return next;
+  }
+
+  static const size_t beforeParkSeries = 1;
+
+  if ((next = TryStealTasks(beforeParkSeries)) != nullptr) {
+    return next;
+  }
+
+  return nullptr;
+}
+
+TaskBase *Worker::PickTask() {
+  TaskBase *next;
+
+  if ((next = TryPickTask()) != nullptr) {
+    return next;
+  }
+
+  ParkingLot::Epoch epoch = parking_lot_.AnnounceEpoch();
+
+  if ((next = TryPickTaskBeforePark()) != nullptr) {
+    return next;
+  }
+
+  parking_lot_.ParkIfInEpoch(epoch);
 }
 
 void Worker::PushToLifoSlot(TaskBase *task) {
