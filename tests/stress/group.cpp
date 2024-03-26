@@ -16,11 +16,13 @@ void Test() {
   std::array<bool, nProducers> check;
   check.fill(false);
 
+  wg.Add(nProducers);
+
   for (size_t i = 0; i < nProducers; ++i) {
     producers.emplace_back([&, i] {
       check[i] = true;
       wg.Done();
-    });
+    }).detach();
   }
 
   wg.Wait();

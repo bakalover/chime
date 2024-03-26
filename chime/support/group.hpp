@@ -1,6 +1,8 @@
 #pragma once
 
+#include "twist/ed/stdlike/atomic.hpp"
 #include <cstdlib>
+#include <mutex>
 #include <twist/ed/stdlike/condition_variable.hpp>
 #include <twist/ed/stdlike/mutex.hpp>
 
@@ -10,32 +12,22 @@ namespace support {
 
 class WaitGroup {
 public:
-  void Add(size_t delta) {
-    std::lock_guard<Mutex> guard{mutex_};
-    counter_ += delta;
+  void Add(size_t delta = 1) {
+    // Fast
+    counter_.fetch_add(delta);
   }
 
-  void Done() {
-    std::lock_guard<Mutex> guard{mutex_};
-    --counter_;
-    if (counter_ == 0) {
-      if (sleeps_ > 1) {
-        cond_.notify_all();
-      }
-      if (sleeps_ == 1) {
-        cond_.notify_one();
-      }
+  void Done(size_t delta = 1) {
+    if (counter_.fetch_sub(delta) == delta) {
+      std::lock_guard<Mutex> guard{mutex_};
+      cond_.notify_all();
     }
   }
 
   void Wait() {
-    {
-      std::unique_lock<Mutex> guard{mutex_};
-      ++sleeps_;
-
-      cond_.wait(guard, [&]() { return counter_ == 0; });
-
-      --sleeps_;
+    std::unique_lock guard{mutex_};
+    while (counter_.load() > 0) {
+      cond_.wait(guard);
     }
   }
 
@@ -43,6 +35,6 @@ private:
   using Mutex = twist::ed::stdlike::mutex;
   Mutex mutex_;
   twist::ed::stdlike::condition_variable cond_;
-  size_t counter_{0}, sleeps_{0};
+  twist::ed::stdlike::atomic<size_t> counter_{0};
 };
 } // namespace support

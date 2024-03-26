@@ -57,7 +57,7 @@ public:
     size_t curr_tail = tail_.load(std::memory_order_relaxed); 
 
     for (size_t i = 0; i < buffer.size(); ++i) {
-      buffer[GetIndex(curr_tail + i)].item.store(buffer[i], std::memory_order_release);
+      buffer_[GetIndex(curr_tail + i)].item.store(buffer[i], std::memory_order_release);
     }
 
     tail_.store(curr_tail + buffer.size(), std::memory_order::release);

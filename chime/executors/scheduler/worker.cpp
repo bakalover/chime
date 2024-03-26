@@ -156,6 +156,7 @@ TaskBase *Worker::TryPickTaskBeforePark() {
 TaskBase *Worker::PickTask() {
   TaskBase *next;
 
+  
   if ((next = TryPickTask()) != nullptr) {
     return next;
   }
