@@ -42,7 +42,7 @@ TaskBase *Worker::TryPickTaskFromGlobalQueue() {
 }
 
 TaskBase *Worker::TryPickTaskFromLifoSlot() {
-  return lifo_slot_.exchange(nullptr, std::memory_order_release);
+  return lifo_slot_.exchange(nullptr, std::memory_order_acquire);
 }
 
 TaskBase *Worker::TryPickTaskFromLocalQueue() { return local_tasks_.TryPop(); }
