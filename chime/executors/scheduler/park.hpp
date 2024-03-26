@@ -6,16 +6,19 @@
 namespace executors::scheduler {
 
 class ParkingLot {
+
 public:
-  uint32_t Prepare();
-  void ParkIfInEpoch(uint32_t epoch);
+  using Epoch = uint32_t;
+
+  Epoch AnounceEpoch();
+  void ParkIfInEpoch(Epoch epoch);
   void Unpark();
 
 private:
   void StepIntoNewEpoch();
 
 private:
-  twist::ed::stdlike::atomic<uint32_t> epoch_{0};
+  twist::ed::stdlike::atomic<Epoch> epoch_{0};
 };
 
 } // namespace executors::scheduler

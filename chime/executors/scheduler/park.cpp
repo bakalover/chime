@@ -4,13 +4,13 @@
 
 namespace executors::scheduler {
 
-uint32_t ParkingLot::Prepare() { return epoch_.load(); }
+uint32_t ParkingLot::AnounceEpoch() { return epoch_.load(); } // ~~Begin
 
-void ParkingLot::StepIntoNewEpoch() { epoch_.fetch_add(1); }
-
-void ParkingLot::ParkIfInEpoch(uint32_t epoch) {
+void ParkingLot::ParkIfInEpoch(uint32_t epoch) { // ~~Commit
   twist::ed::futex::Wait(epoch_, epoch);
 }
+
+void ParkingLot::StepIntoNewEpoch() { epoch_.fetch_add(1); }
 
 void ParkingLot::Unpark() {
   auto key = twist::ed::futex::PrepareWake(epoch_);
