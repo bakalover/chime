@@ -1,6 +1,6 @@
-#include "chime/executors/executor.hpp"
 #include <cassert>
-#include <chime/executors/task.hpp>
+#include <chime/executors/tasks/executor.hpp>
+#include <chime/executors/tasks/task.hpp>
 #include <chime/fibers/fiber.hpp>
 #include <chime/fibers/handle.hpp>
 #include <chime/fibers/routine.hpp>
@@ -24,7 +24,9 @@ void Fiber::Suspend(IAwaiter *awaiter) {
   coro_.Suspend();
 }
 
-void Fiber::Schedule() { sched_->Submit(this); }
+void Fiber::Schedule(executors::SchedulerHint hint) {
+  sched_->Submit(this, hint);
+}
 
 void Fiber::Step() noexcept {
   CURRENT_FIBER = this;

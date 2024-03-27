@@ -1,6 +1,5 @@
-#include <cstddef>
 #include <chime/executors/pool/pool.hpp>
-#include <chime/executors/task.hpp>
+#include <cstddef>
 #include <thread>
 
 namespace executors {
@@ -20,7 +19,7 @@ void Pool::Start() {
 
 Pool::~Pool() { assert(!is_processing_.load()); }
 
-void Pool::Submit(TaskBase *task) {
+void Pool::Submit(TaskBase *task, SchedulerHint) {
   group_.Add(1);
   queue_.Put(task);
 }

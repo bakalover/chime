@@ -1,6 +1,7 @@
 #pragma once
 
-#include <chime/executors/executor.hpp>
+#include <chime/executors/tasks/hint.hpp>
+#include <chime/executors/tasks/executor.hpp>
 #include <chime/fibers/fwd.hpp>
 
 namespace fibers {
@@ -16,7 +17,7 @@ public:
 
   bool IsValid() const { return fiber_ != nullptr; }
 
-  void Schedule();
+  void Schedule(executors::SchedulerHint hint);
 
   // Switch to this fiber immediately
   void Switch();

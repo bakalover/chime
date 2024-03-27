@@ -1,4 +1,3 @@
-#include <chime/executors/executor.hpp>
 #include <chime/fibers/awaiter.hpp>
 #include <chime/fibers/sched/suspend.hpp>
 #include <chime/fibers/sched/teleport.hpp>

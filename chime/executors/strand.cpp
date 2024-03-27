@@ -1,13 +1,14 @@
 
-#include <cstddef>
 #include <chime/executors/strand.hpp>
+#include <chime/executors/tasks/hint.hpp>
+#include <cstddef>
 
 namespace executors {
 namespace internal {
 
 ActualStrand::ActualStrand(IExecutor &underlying) : underlying_{underlying} {}
 
-void ActualStrand::Submit(TaskBase *task) {
+void ActualStrand::Submit(TaskBase *task, SchedulerHint) {
   {
     support::SpinLock::Guard guard{spinlock_};
     queue_.PushBack(task);
@@ -39,13 +40,13 @@ size_t ActualStrand::RunTasks() {
 }
 void ActualStrand::SubmitSelf() {
   this->ExtendLife();
-  underlying_.Submit(this);
+  underlying_.Submit(this, SchedulerHint::UpToYou);
 }
 } // namespace internal
 
 Strand::Strand(IExecutor &underlying)
     : strand_(new internal::ActualStrand{underlying}) {}
 
-void Strand::Submit(TaskBase *task) { strand_->Submit(task); }
+void Strand::Submit(TaskBase *task, SchedulerHint) { strand_->Submit(task, SchedulerHint::UpToYou); }
 
 } // namespace executors

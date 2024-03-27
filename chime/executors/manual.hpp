@@ -1,8 +1,9 @@
 #pragma once
-#include <wheels/intrusive/list.hpp>
-#include <chime/executors/executor.hpp>
-#include <chime/executors/task.hpp>
+#include <chime/executors/tasks/executor.hpp>
+#include <chime/executors/tasks/hint.hpp>
+#include <chime/executors/tasks/task.hpp>
 #include <queue>
+#include <wheels/intrusive/list.hpp>
 
 namespace executors {
 
@@ -18,7 +19,7 @@ public:
   ManualExecutor(ManualExecutor &&) = delete;
   ManualExecutor &operator=(ManualExecutor &&) = delete;
 
-  void Submit(TaskBase *task) override;
+  void Submit(TaskBase *task, SchedulerHint) override;
 
   size_t RunAtMost(size_t limit);
 

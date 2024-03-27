@@ -1,7 +1,8 @@
 #pragma once
 
-#include <chime/executors/executor.hpp>
-#include <chime/executors/task.hpp>
+#include <chime/executors/tasks/hint.hpp>
+#include <chime/executors/tasks/executor.hpp>
+#include <chime/executors/tasks/task.hpp>
 #include <chime/fibers/awaiter.hpp>
 #include <chime/fibers/coro/coro.hpp>
 #include <chime/fibers/routine.hpp>
@@ -24,7 +25,7 @@ public:
 
   void Suspend(IAwaiter *awaiter);
 
-  void Schedule();
+  void Schedule(executors::SchedulerHint hint);
 
   void Switch();
 

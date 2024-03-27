@@ -1,7 +1,7 @@
 #pragma once
 
 #include <algorithm>
-#include <chime/executors/task.hpp>
+#include <chime/executors/tasks/task.hpp>
 #include <chime/support/spinlock.hpp>
 #include <cmath>
 #include <cstddef>

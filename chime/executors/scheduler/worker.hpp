@@ -1,10 +1,10 @@
 #pragma once
 
-#include <chime/executors/scheduler/hint.hpp>
 #include <chime/executors/scheduler/metrics.hpp>
 #include <chime/executors/scheduler/park.hpp>
 #include <chime/executors/scheduler/queues/work_stealing_queue.hpp>
-#include <chime/executors/task.hpp>
+#include <chime/executors/tasks/hint.hpp>
+#include <chime/executors/tasks/task.hpp>
 #include <wheels/intrusive/forward_list.hpp>
 
 #include <twist/ed/stdlike/atomic.hpp>

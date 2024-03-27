@@ -1,7 +1,8 @@
 #pragma once
+#include "chime/executors/tasks/hint.hpp"
 #include <atomic>
-#include <chime/executors/executor.hpp>
-#include <chime/executors/task.hpp>
+#include <chime/executors/tasks/executor.hpp>
+#include <chime/executors/tasks/task.hpp>
 #include <chime/support/life/management.hpp>
 #include <chime/support/spinlock.hpp>
 #include <twist/ed/stdlike/atomic.hpp>
@@ -23,7 +24,7 @@ public:
   ActualStrand(ActualStrand &&) = delete;
   ActualStrand &operator=(ActualStrand &&) = delete;
 
-  void Submit(TaskBase *task) override;
+  void Submit(TaskBase *task, SchedulerHint) override;
 
 private:
   void SubmitSelf();
@@ -53,7 +54,7 @@ public:
   Strand(Strand &&) = delete;
   Strand &operator=(Strand &&) = delete;
 
-  void Submit(TaskBase *task) override;
+  void Submit(TaskBase *task, SchedulerHint) override;
 
 private:
   internal::ActualStrand *strand_;

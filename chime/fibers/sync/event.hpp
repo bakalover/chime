@@ -1,6 +1,7 @@
 #pragma once
 
-#include <chime/executors/task.hpp>
+#include <chime/executors/tasks/hint.hpp>
+#include <chime/executors/tasks/task.hpp>
 #include <chime/fibers/awaiter.hpp>
 #include <chime/fibers/fiber.hpp>
 #include <chime/fibers/handle.hpp>
@@ -23,7 +24,7 @@ private:
       if (event_.Wait(this)) {
         return;
       } else {
-        handle_.Schedule();
+        handle_.Schedule(executors::SchedulerHint::Next);
       }
       // Reordering 2 rows above -> datarace on handle in Fire/Wait functions
       // interleaving
@@ -60,7 +61,9 @@ private:
     }
   }
 
-  void WakeUpFiber(FiberHandle handle) { handle.Schedule(); }
+  void WakeUpFiber(FiberHandle handle) {
+    handle.Schedule(executors::SchedulerHint::UpToYou);
+  }
 
 private:
   internal::AwaitList wait_queue_;

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <chime/executors/task.hpp>
+#include <chime/executors/tasks/task.hpp>
 #include <utility>
 
 namespace executors {

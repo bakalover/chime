@@ -1,3 +1,4 @@
+#include "chime/executors/tasks/hint.hpp"
 #include <cassert>
 #include <chime/fibers/fiber.hpp>
 #include <chime/fibers/handle.hpp>
@@ -10,14 +11,16 @@ Fiber *FiberHandle::Release() {
   return std::exchange(fiber_, nullptr);
 }
 
-void FiberHandle::Schedule() { Release()->Schedule(); }
+void FiberHandle::Schedule(executors::SchedulerHint hint) {
+  Release()->Schedule(hint);
+}
 
 void FiberHandle::Switch() { Release()->Switch(); }
 
 void FiberHandle::ScheduleVia(executors::IExecutor *scheduler) {
   assert(scheduler != nullptr);
   fiber_->SetScheduler(scheduler);
-  Schedule();
+  Schedule(executors::SchedulerHint::UpToYou);
 }
 
 } // namespace fibers

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <chime/executors/tasks/hint.hpp>
 #include <cassert>
 #include <chime/fibers/awaiter.hpp>
 #include <chime/fibers/fiber.hpp>
@@ -17,7 +18,7 @@ private:
     void AwaitSuspend(FiberHandle handle) override {
       handle_ = handle;
       if (host_.Acquire(this)) {
-        handle_.Schedule();
+        handle_.Schedule(executors::SchedulerHint::UpToYou);
       };
     }
 
@@ -50,7 +51,7 @@ public:
       } else {
         if (TryCommit(current_head, current_head->next_,
                       std::memory_order::release)) {
-          current_head->handle_.Schedule();
+          current_head->handle_.Schedule(executors::SchedulerHint::UpToYou);
           return;
         }
         continue;

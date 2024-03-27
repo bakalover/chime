@@ -1,8 +1,8 @@
-#include <chime/executors/scheduler/park.hpp>
 #include <atomic>
+#include <chime/executors/scheduler/park.hpp>
 #include <chime/executors/scheduler/scheduler.hpp>
 #include <chime/executors/scheduler/worker.hpp>
-#include <chime/executors/task.hpp>
+#include <chime/executors/tasks/task.hpp>
 #include <cstddef>
 #include <twist/ed/local/ptr.hpp>
 #include <twist/rt/layer/strand/local/ptr.hpp>
@@ -156,7 +156,6 @@ TaskBase *Worker::TryPickTaskBeforePark() {
 TaskBase *Worker::PickTask() {
   TaskBase *next;
 
-  
   if ((next = TryPickTask()) != nullptr) {
     return next;
   }

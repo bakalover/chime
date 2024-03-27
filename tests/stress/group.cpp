@@ -22,7 +22,7 @@ void Test() {
     producers.emplace_back([&, i] {
       check[i] = true;
       wg.Done();
-    }).detach();
+    }).join();
   }
 
   wg.Wait();

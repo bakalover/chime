@@ -1,8 +1,9 @@
 #pragma once
+#include "chime/executors/tasks/hint.hpp"
 #include <cassert>
-#include <chime/executors/executor.hpp>
 #include <chime/executors/pool/unlim.hpp>
-#include <chime/executors/task.hpp>
+#include <chime/executors/tasks/executor.hpp>
+#include <chime/executors/tasks/task.hpp>
 #include <chime/support/group.hpp>
 #include <chime/support/spinlock.hpp>
 #include <cstddef>
@@ -33,7 +34,7 @@ public:
   void Start();
 
   // Schedules task for execution in one of the worker threads
-  void Submit(TaskBase *task);
+  void Submit(TaskBase *task, SchedulerHint) override;
 
   // Locates current thread pool from worker thread
   static Pool *Current();

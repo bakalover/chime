@@ -1,6 +1,8 @@
 #pragma once
 
-#include <chime/executors/executor.hpp>
+#include <chime/executors/tasks/executor.hpp>
+#include <chime/executors/tasks/hint.hpp>
+#include <chime/support/group.hpp>
 
 #include <chime/executors/scheduler/coordinator.hpp>
 #include <chime/executors/scheduler/metrics.hpp>
@@ -19,33 +21,33 @@ namespace executors::scheduler {
 class Scheduler : public IExecutor {
   friend class Worker;
 
- public:
-   explicit Scheduler(size_t threads);
-   ~Scheduler();
+public:
+  explicit Scheduler(size_t threads);
+  ~Scheduler();
 
-   // Non-copyable
-   Scheduler(const Scheduler &) = delete;
-   Scheduler &operator=(const Scheduler &) = delete;
+  // Non-copyable
+  Scheduler(const Scheduler &) = delete;
+  Scheduler &operator=(const Scheduler &) = delete;
 
-   void Start();
+  void Start();
 
-   // IExecutor
-   void Submit(TaskBase *) override;
+  // IExecutor
+  void Submit(TaskBase *, SchedulerHint hint) override;
 
-   void Stop();
+  void Stop();
 
-   // After Stop
-   PoolMetrics Metrics() const;
+  // After Stop
+  PoolMetrics Metrics() const;
 
-   static Scheduler *Current();
+  static Scheduler *Current();
 
- private:
+private:
   const size_t threads_;
   std::deque<Worker> workers_;
   Coordinator coordinator_;
   GlobalQueue global_tasks_;
   twist::ed::stdlike::random_device random_;
-  // ???
+  support::WaitGroup wg;
 };
 
 } // namespace executors::scheduler

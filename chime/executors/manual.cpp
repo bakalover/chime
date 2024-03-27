@@ -1,7 +1,9 @@
 #include <chime/executors/manual.hpp>
 
 namespace executors {
-void ManualExecutor::Submit(TaskBase *task) { queue_.PushBack(task); }
+void ManualExecutor::Submit(TaskBase *task, SchedulerHint) {
+  queue_.PushBack(task);
+}
 
 size_t ManualExecutor::RunAtMost(size_t limit) {
   size_t task_number = std::min(limit, queue_.Size());
