@@ -14,6 +14,7 @@ TWISTED_THREAD_LOCAL_PTR(Worker, curr_worker)
 Worker::Worker(Scheduler &host, size_t index) : host_{host}, index_{index} {}
 
 void Worker::Start() {
+  Host().wg_.Add();
   thread_.emplace([this]() { Work(); });
 }
 
@@ -21,11 +22,16 @@ void Worker::Join() { thread_->join(); }
 
 Worker *Worker::Current() { return curr_worker; }
 
+bool Worker::InContext(Scheduler *exe) {
+  auto worker = Worker::Current();
+  return worker != nullptr && exe == &worker->Host();
+}
+
 size_t Worker::StealTasks(std::span<TaskBase *> out_buffer) {
   return local_tasks_.Grab(out_buffer);
 }
 
-void Worker::Push(TaskBase *task, SchedulerHint hint) {
+void Worker::PushWithStrategy(TaskBase *task, SchedulerHint hint) {
   switch (hint) {
   case SchedulerHint::UpToYou:
     PushToLocalQueue(task);
@@ -156,20 +162,31 @@ TaskBase *Worker::TryPickTaskBeforePark() {
 TaskBase *Worker::PickTask() {
   TaskBase *next;
 
-  if ((next = TryPickTask()) != nullptr) {
-    return next;
+  while (Host().coordinator_.IsNotShutDowned()) {
+
+    if ((next = TryPickTask()) != nullptr) {
+      return next;
+    }
+
+    ParkingLot::Epoch epoch = parking_lot_.AnnounceEpoch();
+
+    host_.coordinator_.BecomeIdle(this);
+
+    if ((next = TryPickTaskBeforePark()) != nullptr) {
+      host_.coordinator_.BecomeActive();
+      return next;
+    }
+
+    if (Host().coordinator_.IsShutDowned()) {
+      host_.coordinator_.BecomeActive();
+      return nullptr;
+    }
+
+    Host().wg_.Done();
+    parking_lot_.ParkIfInEpoch(epoch);
+    Host().wg_.Add();
   }
-
-  ParkingLot::Epoch epoch = parking_lot_.AnnounceEpoch();
-
-  host_.coordinator_.BecomeIdle(this);
-
-  if ((next = TryPickTaskBeforePark()) != nullptr) {
-    host_.coordinator_.BecomeActive();
-    return next;
-  }
-
-  parking_lot_.ParkIfInEpoch(epoch);
+  return nullptr;
 }
 
 void Worker::PushToLifoSlot(TaskBase *task) {
@@ -200,6 +217,7 @@ void Worker::Work() {
 
   while (TaskBase *next = PickTask()) {
     next->Run();
+    Host().wg_.Done();
   }
 }
 } // namespace executors::scheduler

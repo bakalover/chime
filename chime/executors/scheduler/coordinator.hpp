@@ -23,18 +23,23 @@ public:
   explicit Coordinator(size_t threads) : threads_(threads) {}
   bool TrySpin();
   bool StopSpin();
+  bool IsShutDowned();
+  bool IsNotShutDowned();
+  void ShutDown();
 
   void BecomeIdle(Worker *worker);
   void BecomeActive();
 
   bool IsAllAsleep();
-  void WakeIfIdle();
+  void WakeOneIfIdle();
   void WakeOne();
 
 private:
   support::SpinLock spinlock_;                        //  -> LockFree Intrusive
   wheels::IntrusiveForwardList<Worker> idle_workers_; //  -> LockFree Intrusive
   twist::ed::stdlike::atomic<std::uint64_t> state_{0};
+  twist::ed::stdlike::atomic<bool> shutdown_{false};
+
   const size_t threads_;
 };
 

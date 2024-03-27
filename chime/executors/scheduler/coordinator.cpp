@@ -31,11 +31,28 @@ bool Coordinator::IsAllAsleep() {
   return ((state & idle_mask_) > 0) && ((state & spin_mask_) == 0);
 }
 
-void Coordinator::WakeIfIdle() {
+void Coordinator::WakeOneIfIdle() {
   if (IsAllAsleep()) {
     WakeOne();
   }
 }
+
+void Coordinator::ShutDown() {
+  shutdown_.store(true, std::memory_order::release);
+  {
+    support::SpinLock::Guard guard{spinlock_};
+    while (idle_workers_.NonEmpty()) {
+      state_.fetch_sub(idle_inc_);
+      idle_workers_.PopFront()->Wake();
+    }
+  }
+}
+
+bool Coordinator::IsShutDowned() {
+  return shutdown_.load(std::memory_order::acquire);
+}
+
+bool Coordinator::IsNotShutDowned() { return !IsShutDowned(); }
 
 void Coordinator::WakeOne() {
   support::SpinLock::Guard guard{spinlock_};

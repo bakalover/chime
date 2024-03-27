@@ -5,6 +5,7 @@
 #include <chime/executors/scheduler/queues/work_stealing_queue.hpp>
 #include <chime/executors/tasks/hint.hpp>
 #include <chime/executors/tasks/task.hpp>
+#include <cstddef>
 #include <wheels/intrusive/forward_list.hpp>
 
 #include <twist/ed/stdlike/atomic.hpp>
@@ -34,7 +35,7 @@ public:
   void Join();
 
   // Single producer
-  void Push(TaskBase *, SchedulerHint);
+  void PushWithStrategy(TaskBase *, SchedulerHint hint);
 
   // Steal from this worker
   size_t StealTasks(std::span<TaskBase *> out_buffer);
@@ -43,6 +44,8 @@ public:
   void Wake();
 
   static Worker *Current();
+
+  static bool InContext(Scheduler *exe);
 
   WorkerMetrics Metrics() const { return metrics_; }
 
@@ -71,6 +74,8 @@ private:
   // Run Loop
   void Work();
   bool NextIter(); // true <=> (iter_ % 61) == 0
+
+  size_t GetIndex() const { return index_; }
 
 private:
   Scheduler &host_;

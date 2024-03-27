@@ -29,12 +29,14 @@ public:
   Scheduler(const Scheduler &) = delete;
   Scheduler &operator=(const Scheduler &) = delete;
 
+  // Life-cycle
   void Start();
+  void WaitIdle();
+  void Stop();
 
   // IExecutor
-  void Submit(TaskBase *, SchedulerHint hint) override;
-
-  void Stop();
+  void Submit(TaskBase *task, SchedulerHint hint) override;
+  void PushWithStrategy(TaskBase *task, SchedulerHint hint);
 
   // After Stop
   PoolMetrics Metrics() const;
@@ -47,7 +49,7 @@ private:
   Coordinator coordinator_;
   GlobalQueue global_tasks_;
   twist::ed::stdlike::random_device random_;
-  support::WaitGroup wg;
+  support::WaitGroup wg_;
 };
 
 } // namespace executors::scheduler
