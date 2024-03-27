@@ -28,6 +28,7 @@ public:
   void BecomeActive();
 
   bool IsAllAsleep();
+  void WakeIfIdle();
   void WakeOne();
 
 private:

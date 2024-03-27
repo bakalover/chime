@@ -31,6 +31,12 @@ bool Coordinator::IsAllAsleep() {
   return ((state & idle_mask_) > 0) && ((state & spin_mask_) == 0);
 }
 
+void Coordinator::WakeIfIdle() {
+  if (IsAllAsleep()) {
+    WakeOne();
+  }
+}
+
 void Coordinator::WakeOne() {
   support::SpinLock::Guard guard{spinlock_};
   if (Worker *worker = idle_workers_.PopFront()) {
