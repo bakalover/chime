@@ -32,7 +32,7 @@ void Scheduler::PushWithStrategy(TaskBase *task, SchedulerHint hint) {
   if (Worker::InContext(this)) {
     Worker::Current()->PushWithStrategy(task, hint);
   } else {
-    wg_.Add();
+    wg_.Add(); // Track Global task
     global_tasks_.Push(task);
   }
 }

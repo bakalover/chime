@@ -14,7 +14,7 @@ TWISTED_THREAD_LOCAL_PTR(Worker, curr_worker)
 Worker::Worker(Scheduler &host, size_t index) : host_{host}, index_{index} {}
 
 void Worker::Start() {
-  Host().wg_.Add();
+  Host().wg_.Add(); // Track worker activity
   thread_.emplace([this]() { Work(); });
 }
 
@@ -45,7 +45,11 @@ void Worker::PushWithStrategy(TaskBase *task, SchedulerHint hint) {
 bool Worker::NextIter() { return ++iter_ % 61 == 0; }
 
 TaskBase *Worker::TryPickTaskFromGlobalQueue() {
-  return host_.global_tasks_.TryPop();
+  TaskBase *task = host_.global_tasks_.TryPop();
+  if (task != nullptr) {
+    Host().wg_.Done(); // Track global task
+  }
+  return task;
 }
 
 TaskBase *Worker::TryPickTaskFromLifoSlot() {
@@ -58,6 +62,8 @@ TaskBase *Worker::TryGrabTasksFromGlobalQueue() {
   size_t to_grab = kLocalQueueCapacity - local_tasks_.Size();
   size_t actual_grab =
       host_.global_tasks_.Grab({tranfer_buffer_, to_grab}, host_.threads_);
+
+  Host().wg_.Done(actual_grab); // Track Global task
 
   if (actual_grab > 0) {
     TaskBase *next = tranfer_buffer_[0];
@@ -182,9 +188,9 @@ TaskBase *Worker::PickTask() {
       return nullptr;
     }
 
-    Host().wg_.Done();
+    Host().wg_.Done(); // Track worker activity
     parking_lot_.ParkIfInEpoch(epoch);
-    Host().wg_.Add();
+    Host().wg_.Add(); // Track worker activity
   }
   return nullptr;
 }
@@ -206,6 +212,7 @@ void Worker::OffloadTasksToGlobalQueue(TaskBase *overflow) {
   size_t offload_size = local_tasks_.Size() / 2 + 1;
   size_t grab_batch_size = local_tasks_.Grab({tranfer_buffer_, offload_size});
   tranfer_buffer_[grab_batch_size++] = overflow;
+  Host().wg_.Add(grab_batch_size); // Track Global tasks
   host_.global_tasks_.Offload({tranfer_buffer_, grab_batch_size});
 }
 
@@ -217,7 +224,7 @@ void Worker::Work() {
 
   while (TaskBase *next = PickTask()) {
     next->Run();
-    Host().wg_.Done();
+    Host().wg_.Done(); // Track Worker Activity
   }
 }
 } // namespace executors::scheduler
