@@ -12,7 +12,7 @@ Scheduler::Scheduler(size_t threads)
 
 void Scheduler::Start() {
   for (size_t i = 0; i < threads_; ++i) {
-    workers_.emplace_back(Worker{*this, i});
+    workers_.emplace_back(*this, i);
   }
   for (auto &worker : workers_) {
     worker.Start();

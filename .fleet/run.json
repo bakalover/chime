@@ -1,0 +1,49 @@
+{
+    "configurations": [
+        {
+            "type": "command",
+            "name": "Configure Threads TSAN",
+            "program": "cmake",
+            "args": [
+                "--no-warn-unused-cli",
+                "-DCONTAINER=OFF",
+                "-DCMAKE_BUILD_TYPE:STRING=Debug",
+                "-DTSAN:STRING=ON",
+                "-DASAN:STRING=OFF",
+                "-DTWIST_FIBERS:STRING=OFF",
+                "-DTWIST_FAST_FIBER_QUEUES:STRING=OFF",
+                "-DTWIST_PRINT_STACKS:STRING=OFF",
+                "-DTWIST_FAULTY:STRING=OFF",
+                //"-DCMAKE_C_COMPILER:FILEPATH=clang",
+                //"-DCMAKE_CXX_COMPILER:FILEPATH=clang++",
+                "-S",
+                "$PROJECT_DIR$",
+                "-B",
+                "$PROJECT_DIR$/build",
+                "-G",
+                "Unix Makefiles",
+            ],
+        },
+        {
+            "type": "command",
+            "name": "Build Stress Tests",
+            "program": "cmake",
+            "args": [
+                "--build",
+                "$PROJECT_DIR$/build",
+                "--config",
+                "Debug",
+                "--target",
+                "chime",
+                "chime_stress_tests",
+                "-j",
+                "10",
+            ],
+        },
+        {
+            "type": "command",
+            "name": "Run Stress Tests",
+            "program": "$PROJECT_DIR$/build/tests/chime_stress_tests",
+        },
+    ]
+}
