@@ -50,9 +50,9 @@ private:
   GlobalQueue global_tasks_;
   twist::ed::stdlike::random_device random_;
 
-  // No need to add in each local task
+  // No need to track each local task
   // (we only track worker activity in general and global tasks)
-  support::WaitGroup wg_;
+  support::WaitGroup activity_;
 };
 
 } // namespace executors::scheduler

@@ -5,7 +5,7 @@
 namespace executors {
 struct IExecutor {
   virtual ~IExecutor() = default;
-  virtual void Submit(TaskBase *task, SchedulerHint hint) = 0;
+  virtual void Submit(TaskBase *task, SchedulerHint hint = SchedulerHint::UpToYou) = 0;
 };
 
 } // namespace executors

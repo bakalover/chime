@@ -5,6 +5,7 @@ cmake_minimum_required(VERSION 3.20)
 include(cmake_config/Compiler.cmake)
 
 project(chime)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 include(cmake_config/CompilerVersion.cmake)
 include(cmake_config/CompilerArgs.cmake)
 include(cmake_config/Sanitize.cmake)

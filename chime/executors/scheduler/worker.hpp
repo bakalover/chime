@@ -45,7 +45,8 @@ public:
 
   static Worker *Current();
 
-  static bool InContext(Scheduler *exe);
+  static bool InContextOf(Scheduler *exe);
+  static bool InContext();
 
   WorkerMetrics Metrics() const { return metrics_; }
 

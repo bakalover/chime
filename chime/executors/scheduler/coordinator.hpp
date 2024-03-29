@@ -1,8 +1,8 @@
 #pragma once
 
-#include "chime/executors/scheduler/worker.hpp"
-#include "chime/support/spinlock.hpp"
-#include "wheels/intrusive/forward_list.hpp"
+#include <chime/executors/scheduler/worker.hpp>
+#include <chime/support/spinlock.hpp>
+#include <wheels/intrusive/forward_list.hpp>
 #include <cstddef>
 #include <cstdint>
 #include <twist/ed/stdlike/atomic.hpp>
@@ -15,7 +15,7 @@ namespace executors::scheduler {
 static const uint64_t idle_shift_ = 32;
 static const uint64_t idle_inc_ = (uint64_t)1 << idle_shift_;
 static const uint64_t spin_mask_ = ((uint64_t)1 << idle_shift_) - 1;
-static const uint64_t idle_mask_ = !spin_mask_;
+static const uint64_t idle_mask_ = ~spin_mask_;
 
 class Coordinator {
 

@@ -6,8 +6,8 @@
 namespace executors::scheduler {
 
 Scheduler::Scheduler(size_t threads)
-    : threads_(threads), coordinator_{threads} {
-  Start();
+    : threads_{threads}, coordinator_{threads} {
+    Start();
 }
 
 void Scheduler::Start() {
@@ -29,10 +29,10 @@ void Scheduler::Submit(TaskBase *task, SchedulerHint hint) {
 }
 
 void Scheduler::PushWithStrategy(TaskBase *task, SchedulerHint hint) {
-  if (Worker::InContext(this)) {
+  if (Worker::InContextOf(this)) {
     Worker::Current()->PushWithStrategy(task, hint);
   } else {
-    wg_.Add(); // Track Global task
+    activity_.Add(); // Track Global task
     global_tasks_.Push(task);
   }
 }
@@ -42,20 +42,21 @@ void Scheduler::Stop() {
   for (auto &worker : workers_) {
     worker.Join();
   }
+  workers_.clear();
 }
 
-void Scheduler::WaitIdle() { wg_.Wait(); }
+void Scheduler::WaitIdle() { activity_.Wait(); }
 
 PoolMetrics Scheduler::Metrics() const {
   std::abort(); // Not yet implemented
 }
 
 Scheduler *Scheduler::Current() {
-  Worker *worker = Worker::Current();
-  if (worker == nullptr) {
-    return nullptr;
+
+  if (Worker::InContext()) {
+    return &Worker::Current()->Host();
   } else {
-    return &worker->Host();
+    return nullptr;
   }
 }
 

@@ -6,7 +6,8 @@
 #include <wheels/intrusive/forward_list.hpp>
 
 namespace executors {
-template <typename T> class MPMCUnlimitedQueue {
+template <typename T>
+class MPMCUnlimitedQueue {
 public:
   bool Put(T *val) {
     {

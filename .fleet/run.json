@@ -14,8 +14,6 @@
                 "-DTWIST_FAST_FIBER_QUEUES:STRING=OFF",
                 "-DTWIST_PRINT_STACKS:STRING=OFF",
                 "-DTWIST_FAULTY:STRING=OFF",
-                //"-DCMAKE_C_COMPILER:FILEPATH=clang",
-                //"-DCMAKE_CXX_COMPILER:FILEPATH=clang++",
                 "-S",
                 "$PROJECT_DIR$",
                 "-B",
@@ -42,8 +40,29 @@
         },
         {
             "type": "command",
+            "name": "Build Unit Tests",
+            "program": "cmake",
+            "args": [
+                "--build",
+                "$PROJECT_DIR$/build",
+                "--config",
+                "Debug",
+                "--target",
+                "chime",
+                "chime_unit_tests",
+                "-j",
+                "10",
+            ],
+        },
+        {
+            "type": "command",
             "name": "Run Stress Tests",
             "program": "$PROJECT_DIR$/build/tests/chime_stress_tests",
+        },
+        {
+            "type": "command",
+            "name": "Run Unit Tests",
+            "program": "$PROJECT_DIR$/build/tests/chime_unit_tests",
         },
     ]
 }

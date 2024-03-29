@@ -1,6 +1,9 @@
+#include <bitset>
 #include <chime/executors/scheduler/coordinator.hpp>
 #include <chime/support/spinlock.hpp>
 #include <cstdint>
+#include <iostream>
+#include <ostream>
 
 namespace executors::scheduler {
 

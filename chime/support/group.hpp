@@ -19,7 +19,7 @@ public:
 
   void Done(size_t delta = 1) {
     if (counter_.fetch_sub(delta) == delta) {
-      std::lock_guard<Mutex> guard{mutex_};
+      std::lock_guard guard{mutex_};
       cond_.notify_all();
     }
   }
@@ -32,8 +32,7 @@ public:
   }
 
 private:
-  using Mutex = twist::ed::stdlike::mutex;
-  Mutex mutex_;
+  twist::ed::stdlike::mutex mutex_;
   twist::ed::stdlike::condition_variable cond_;
   twist::ed::stdlike::atomic<size_t> counter_{0};
 };

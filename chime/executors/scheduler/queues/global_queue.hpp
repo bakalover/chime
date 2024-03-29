@@ -18,7 +18,7 @@ public:
     support::SpinLock::Guard guard{spinlock_};
     queue_.PushBack(item);
   }
-
+  
   void Offload(std::span<TaskBase *> buffer) {
     wheels::IntrusiveForwardList<TaskBase> tmp;
     for (size_t i = 0; i < buffer.size(); ++i) {

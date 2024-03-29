@@ -9,7 +9,9 @@
 
 namespace executors {
 
-template <typename T, size_t Cap> class WorkStealingQueue {
+template <typename T, size_t Cap>
+class WorkStealingQueue {
+
   struct Slot {
     twist::ed::stdlike::atomic<T *> item{nullptr};
   };
@@ -54,7 +56,7 @@ public:
 
   void PushMany(std::span<T *> buffer) {
     // size_t curr_head = head_.load(); // Ordering !!
-    size_t curr_tail = tail_.load(std::memory_order_relaxed); 
+    size_t curr_tail = tail_.load(std::memory_order_relaxed);
 
     for (size_t i = 0; i < buffer.size(); ++i) {
       buffer_[GetIndex(curr_tail + i)].item.store(buffer[i], std::memory_order_release);

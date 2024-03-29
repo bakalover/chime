@@ -12,11 +12,13 @@ namespace internal {
 void Spawn(executors::IExecutor *scheduler, IRoutine *task);
 }
 
-template <typename L> void Spawn(executors::IExecutor &scheduler, L &&lambda) {
+template <typename L>
+void Spawn(executors::IExecutor &scheduler, L &&lambda) {
   internal::Spawn(&scheduler, MakeRoutine(std::move(lambda)));
 };
 
-template <typename L> void Spawn(L &&lambda) {
+template <typename L>
+void Spawn(L &&lambda) {
   if (Fiber::InContext()) {
     internal::Spawn(Fiber::Self()->GetScheduler(),
                     MakeRoutine(std::move(lambda)));
